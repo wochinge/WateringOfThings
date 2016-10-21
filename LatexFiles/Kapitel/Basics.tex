@@ -1,0 +1,36 @@
+\section{Waterings of Things Start}
+
+	\renewcommand{\listingscaption}{Code Example}
+
+\begin{listing}[H]
+	\begin{minted}{python}
+class UserViewSet(viewsets.ModelViewSet):
+"""
+API endpoint that allows users to be viewed or edited.
+"""
+queryset = User.objects.all().order_by('-date_joined')
+serializer_class = UserSerializer
+	\end{minted}
+\caption{Views}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{js}
+var variable = "Beispieltext";
+alert(typeof variable);
+    \end{minted}
+    \caption{JavaScript}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{cpp}
+void printNames(const std::vector<std::string>& names)
+{
+for (const std::string& singleName : names)
+{
+std::cout << singleName << std::endl;
+}
+}
+    \end{minted}
+    \caption{C++}
+\end{listing}
