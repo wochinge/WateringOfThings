@@ -1,2 +1,0 @@
-from api.app.serializers.moisturevalue_serializer import MoistureValueSerializer
-from api.app.serializers.plant_serializer import PlantSerializer
