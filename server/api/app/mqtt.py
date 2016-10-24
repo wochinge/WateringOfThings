@@ -25,7 +25,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_moisture_values_measured(client, userdata, msg):
     split = msg.topic.split('/')
-    logger.error(msg.topic)
+    logger.info(msg.topic)
 
     micro_controller_id = split[INDEX_CONTROLLER_ID]
     micro_controller_exists = MicroController.objects.filter(pk=micro_controller_id).count() == 1
@@ -42,7 +42,6 @@ def on_moisture_values_measured(client, userdata, msg):
 
 def water_plant(micro_controller_id, plant, time):
     topic = water_topic(micro_controller_id)
-    logger.error(topic)
     message = {'position': plant.position, 'time': time}
     client.publish(topic, json.dumps(message))
 
