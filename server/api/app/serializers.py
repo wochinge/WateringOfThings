@@ -12,13 +12,15 @@ class MicroControllerSerializer(serializers.ModelSerializer):
 class MoistureValueSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = MoistureValue
+        model = MoistureValue()
         fields = ('date', 'value')
 
 
 class PlantSerializer(serializers.ModelSerializer):
-    moistureValues = MoistureValueSerializer(many=True, read_only=True)
+    latestMoistureValue = serializers.FloatField(source='get_latest', required=False)
 
     class Meta:
         model = Plant
-        fields = ('id', 'name', 'pin', 'moistureValues', 'moistureThreshold')
+        fields = ('id', 'name', 'pin', 'position', 'moistureThreshold', 'latestMoistureValue')
+
+

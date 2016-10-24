@@ -11,7 +11,15 @@ class Plant(models.Model):
     name = models.CharField(max_length=100)
     microController = models.ForeignKey(MicroController, on_delete=models.CASCADE)
     pin = models.IntegerField()
+    position = models.IntegerField()
     moistureThreshold = models.FloatField()
+
+    def get_latest(self):
+        moisture_values = self.moisturevalue_set.all()
+        if moisture_values.count() == 0:
+            return None
+        else:
+            return moisture_values.latest('date').value
 
 
 class MoistureValue(models.Model):
