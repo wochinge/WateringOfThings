@@ -1,14 +1,26 @@
-from django.contrib.auth.models import User, Group
+from api.app.models import MicroController, Plant, MoistureValue
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class MicroControllerSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
+        model = MicroController
+        fields = ('id',)
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class MoistureValueSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Group
-        fields = ('url', 'name')
+        model = MoistureValue()
+        fields = ('date', 'value')
+
+
+class PlantSerializer(serializers.ModelSerializer):
+    latestMoistureValue = serializers.FloatField(source='get_latest', required=False)
+
+    class Meta:
+        model = Plant
+        fields = ('id', 'name', 'pin', 'position', 'moistureThreshold', 'latestMoistureValue')
+
+

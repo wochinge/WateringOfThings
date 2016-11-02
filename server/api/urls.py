@@ -13,20 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import url, include
 from rest_framework import routers
 from api.app import views
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url(r'^microController/$', views.MicroControllerView.as_view()),
+    url(r'^microController/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/water/(?P<amount>.+)/$',
+        views.WaterPlantView.as_view()),
+    url(r'^microController/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/moisture/$',
+        views.MoistureView.as_view()),
+    url(r'^microController/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/$', views.PlantView.as_view()),
+    url(r'^microController/(?P<controller_id>.+)/plant/$', views.AllPlantsView.as_view()),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
