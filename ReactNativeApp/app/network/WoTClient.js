@@ -1,19 +1,23 @@
-const host = 'http://127.0.0.1:8000/microcontroller';
+const host = 'http://127.0.0.1:8000/microcontroller/';
 const header = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'
 };
 
-export default class WoTClient {
+export class WoTClient {
 
   constructor(controllerID) {
     this.controllerID = controllerID;
-    this.url = host + controllerID + '/';
+    this.url = host + controllerID;
   }
 
   createURL(...params) {
     params.unshift(this.url);
     return params.join('/') + '/';
+  }
+
+  toJSON(responseBody) {
+    return responseBody.json();
   }
 
   createController() {
@@ -30,7 +34,7 @@ export default class WoTClient {
     return fetch(this.createURL('plant'), {
       method: 'GET'
     })
-    .then((response) => response.json());
+    .then(this.toJSON);
   }
 
   createPlant(name, pin, position, threshold) {
@@ -51,7 +55,7 @@ export default class WoTClient {
       method: 'GET',
       headers: header
     })
-    .then((response) => response.json());
+    .then(this.toJSON);
   }
 
   deletePlant(plantID) {
@@ -65,7 +69,7 @@ export default class WoTClient {
       method: 'GET',
       headers: header
     })
-    .then((response) => response.json());
+    .then(this.toJSON);
   }
 
   waterPlant(plantID, amount) {
