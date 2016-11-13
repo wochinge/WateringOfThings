@@ -20,7 +20,7 @@ Repository for the web application course.
     ```
 3.  Init database
     ```bash
-    python manage.py makemigrations api.app
+    python manage.py makemigrations
     python manage.py migrate
     ```
 4.  Start server
