@@ -26,7 +26,7 @@ export default class HomeView extends Component {
     );
   }
 
-  renderPlants(plant) {
+  renderPlants(plant,rowID) {
     return (
       <TouchableHighlight onPress={() =>
         this.onPlantPress(plant)
@@ -41,22 +41,24 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push({title: 'Plant', index: 1});
+    this.props.navigator.push({title: plant, index: 1});
     // this._pressData[rowID] = !this._pressData[rowID];
   }
 
 
 }
+
+HomeView.propTypes = {
+  navigator: React.PropTypes.object,
+};
+
 const styles = StyleSheet.create({
+  listView:{
+    padding: 30,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
-    backgroundColor: '#F6F6F6',
-  },
-  thumb: {
-    width: 64,
-    height: 64,
   },
   text: {
     flex: 1,
