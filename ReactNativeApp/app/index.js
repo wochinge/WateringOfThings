@@ -1,7 +1,5 @@
 import React, { Component} from 'react';
-import {View, Text, StyleSheet, Platform, AppRegistry, Navigator, TouchableHighlight } from 'react-native';
-import Tabs from 'react-native-tabs';
-import Button from './components/Button/button';
+import {View, Text, StyleSheet, Platform, AppRegistry, Navigator } from 'react-native';
 import HomeView from './routes/Home/index';
 
 export default class WateringProject extends Component {
@@ -15,6 +13,7 @@ export default class WateringProject extends Component {
   render() {
     const routes = [
       {title: 'Home', index: 0},
+      {title: 'Plant', index: 1},
     ];
 
     return (
@@ -23,9 +22,9 @@ export default class WateringProject extends Component {
           initialRoute={routes[0]}
           initialRouteStack={routes}
           renderScene={(route, navigator) =>
-            <HomeView/>
+            <HomeView navigator={navigator}/>
           }
-s      />
+      />
     );
   }
 }
