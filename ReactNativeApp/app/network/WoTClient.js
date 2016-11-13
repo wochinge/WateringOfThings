@@ -11,17 +11,17 @@ export class WoTClient {
     this.url = host + controllerID;
   }
 
-  createURL(...params) {
+  _createURL(...params) {
     params.unshift(this.url);
     return params.join('/') + '/';
   }
 
-  toJSON(responseBody) {
+  _toJSON(responseBody) {
     return responseBody.json();
   }
 
   createController() {
-    fetch(this.createURL(), {
+    fetch(this._createURL(), {
       method: 'POST',
       headers: header,
       body: JSON.stringify({
@@ -31,14 +31,14 @@ export class WoTClient {
   }
 
   getPlants() {
-    return fetch(this.createURL('plant'), {
+    return fetch(this._createURL('plant'), {
       method: 'GET'
     })
-    .then(this.toJSON);
+    .then(this._toJSON);
   }
 
   createPlant(name, pin, position, threshold) {
-    fetch(this.createURL('plant/'), {
+    fetch(this._createURL('plant/'), {
       method: 'POST',
       headers: header,
       body: JSON.stringify({
@@ -51,29 +51,29 @@ export class WoTClient {
   }
 
   getPlant(plantID) {
-    return fetch(this.createURL('plant', plantID), {
+    return fetch(this._createURL('plant', plantID), {
       method: 'GET',
       headers: header
     })
-    .then(this.toJSON);
+    .then(this._toJSON);
   }
 
   deletePlant(plantID) {
-    fetch(this.createURL('plant', plantID), {
+    fetch(this._createURL('plant', plantID), {
       method: 'DELETE'
     });
   }
 
   getMoistureValues(plantID) {
-    return fetch(this.createURL('plant', plantID, 'moisture'), {
+    return fetch(this._createURL('plant', plantID, 'moisture'), {
       method: 'GET',
       headers: header
     })
-    .then(this.toJSON);
+    .then(this._toJSON);
   }
 
   waterPlant(plantID, amount) {
-    fetch(this.createURL('plant', plantID, 'water', amount), {
+    fetch(this._createURL('plant', plantID, 'water', amount), {
       method: 'POST'
     });
   }
