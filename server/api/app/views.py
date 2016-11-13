@@ -42,12 +42,12 @@ class AllPlantsView(APIView):
         return Response(serializer.data)
 
     def post(self, request, controller_id):
-        if not exists_microcontroller_id(controller_id):
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
         serializer = PlantSerializer(data=request.data)
-        if serializer.is_valid():
+        if exists_microcontroller_id(controller_id) and serializer.is_valid():
             serializer.save(microController_id=controller_id)
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class PlantView(APIView):
@@ -65,6 +65,7 @@ class PlantView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             plant.delete()
+            return Response(status=status.HTTP_200_OK)
 
 
 class WaterPlantView(APIView):

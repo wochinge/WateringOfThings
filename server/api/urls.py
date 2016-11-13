@@ -26,12 +26,12 @@ router = routers.DefaultRouter()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^microController/$', views.MicroControllerView.as_view()),
-    url(r'^microController/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/water/(?P<amount>.+)/$',
+    url(r'^microcontroller/$', views.MicroControllerView.as_view()),
+    url(r'^microcontroller/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/water/(?P<amount>.+)/$',
         views.WaterPlantView.as_view()),
-    url(r'^microController/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/moisture/$',
+    url(r'^microcontroller/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/moisture/$',
         views.MoistureView.as_view()),
-    url(r'^microController/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/$', views.PlantView.as_view()),
-    url(r'^microController/(?P<controller_id>.+)/plant/$', views.AllPlantsView.as_view()),
+    url(r'^microcontroller/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/$', views.PlantView.as_view()),
+    url(r'^microcontroller/(?P<controller_id>.+)/plant/$', views.AllPlantsView.as_view()),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
