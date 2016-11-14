@@ -1,4 +1,5 @@
-const host = 'http://127.0.0.1:8000/microcontroller/';
+import BASE_URL from './host';
+
 const header = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'
@@ -8,7 +9,7 @@ export default class WoTClient {
 
   constructor(controllerID) {
     this.controllerID = controllerID;
-    this.url = host + controllerID;
+    this.url = BASE_URL + controllerID;
   }
 
   _createURL(...params) {
