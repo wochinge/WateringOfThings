@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Modal, View, Text, TextInput, TouchableHighlight , StyleSheet } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import Microcontroller from '../../database/db';
+import { Button } from '../../components';
 
 export default class MicrocontrollerView extends Component {
   constructor(props) {
@@ -44,13 +45,11 @@ export default class MicrocontrollerView extends Component {
               onChangeText={(text) => this.setState({microcontrollerInput: text})}
               style={styles.row}>
             </TextInput>
-            <TouchableHighlight
-              onPress={() => this.addMicrocontroller(this.state.microcontrollerInput)}
-              style={[styles.row, styles.button]}>
-              <Text
-                style={styles.buttonText}>
-                Ok</Text>
-            </TouchableHighlight>
+            <Button
+              handlePress={() => this.addMicrocontroller(this.state.microcontrollerInput)}
+              text={'Ok'}
+              style={[styles.row, styles.button]}
+            />
           </View>
         </View>
 
