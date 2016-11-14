@@ -1,6 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView } from 'react-native';
 import WoTClient from '../../network/WoTClient';
+import MicrocontrollerView from '../MicrocontrollerView/Microcontroller';
+import LoadingView from '../../components/LoadingView/LoadingView';
 
 export default class HomeView extends Component {
 
@@ -8,47 +10,41 @@ export default class HomeView extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows([]),
+      loaded: false
     };
     this.renderPlants = this.renderPlants.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
-  getInitialState() {
-    return {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-      loaded: false,
-    };
-  }
-
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData(){
-    var wotClient = new WoTClient(3);
+  fetchData(controllerID) {
+    var wotClient = new WoTClient(controllerID);
     wotClient.getPlants()
-  .then((responseJson) => {
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(responseJson),
-      loaded: true,
+    .then((responseJson) => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(responseJson),
+        loaded: true,
+      });
     });
-  })
-  .done();
   }
 
   render() {
-    if(!this.state.loaded){
-      return this.renderLoadingView();
-    }
     return (
       <View style={styles.container}>
-      <ListView
-      dataSource={this.state.dataSource}
-      renderRow={this.renderPlants}
-      style={styles.listView}
-      />
+      { this.state.loaded?
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderPlants}
+            style={styles.listView}
+          />
+         :
+          <LoadingView
+            visible={!this.state.loaded}
+          />
+      }
+        <MicrocontrollerView
+          controllerIDReceived={this.fetchData}
+        />
       </View>
     );
   }
@@ -56,32 +52,20 @@ export default class HomeView extends Component {
   renderPlants(plant) {
     return (
       <TouchableHighlight onPress={() =>
-        this.onPlantPress(plant)
-      }>
-      <View style={styles.row}>
-      <Text style={styles.text}>
-      {plant.name}
-      </Text>
-      </View>
+        this.onPlantPress(plant)}>
+        <View
+          style={styles.row}>
+          <Text style={styles.text}>
+            {plant.name}
+          </Text>
+        </View>
       </TouchableHighlight>
-    );
-  }
-
-  renderLoadingView(){
-    return (
-    <View style={styles.container}>
-    <Text>
-    Loading movies...
-    </Text>
-    </View>
     );
   }
 
   onPlantPress(plant) {
     this.props.navigator.push({title: plant.name, index: 1});
   }
-
-
 }
 
 HomeView.propTypes = {

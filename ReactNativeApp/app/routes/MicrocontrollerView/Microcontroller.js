@@ -7,59 +7,66 @@ export default class MicrocontrollerView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      controllers: this.getMicrocontrollers(),
-      microcontrollerInput: 'das'
+      controllers: [],
+      microcontrollerInput: 'das',
+      modalVisible: false
     };
     this.addMicrocontroller.bind(this);
   }
 
-  render() {
-    if (this.state.controllers.length >= 0) {
-      return(
-        <Modal
-          animationType={'fade'}
-          transparent={true}
-          visible={this.state.modalVisible}>
-          <View
-            style={styles.container}>
-            <View
-              style={styles.innerContainer}>
-              <Text
-                style={[styles.rowTitle, styles.row]}>
-                Number of your microcontroller
-              </Text>
-              <Text
-                style={[styles.row, styles.description]}>
-                To water your plants, you have to provide the id of a controller.{'\n\n'}
-                Please enter a valid id:
-              </Text>
-              <TextInput
-                editable = {true}
-                maxLength = {40}
-                placeholder = 'Microcontroller id'
-                onChangeText={(text) => this.setState({microcontrollerInput: text})}
-                style={styles.row}>
-              </TextInput>
-              <TouchableHighlight
-                onPress={() => this.addMicrocontroller(this.state.microcontrollerInput)}
-                style={[styles.row, styles.button]}>
-                <Text
-                  style={styles.buttonText}>
-                  Ok</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+  componentDidMount() {
+    this.getMicrocontrollers();
+  }
 
-        </Modal>
-      );
-    } else {
-      return;
-    }
+  render() {
+    return(
+      <Modal
+        animationType={'fade'}
+        transparent={true}
+        visible={this.state.modalVisible}>
+        <View
+          style={styles.container}>
+          <View
+            style={styles.innerContainer}>
+            <Text
+              style={[styles.rowTitle, styles.row]}>
+              Number of your microcontroller
+            </Text>
+            <Text
+              style={[styles.row, styles.description]}>
+              To water your plants, you have to provide the id of a controller.{'\n\n'}
+              Please enter a valid id:
+            </Text>
+            <TextInput
+              editable = {true}
+              maxLength = {40}
+              placeholder = 'Microcontroller id'
+              onChangeText={(text) => this.setState({microcontrollerInput: text})}
+              style={styles.row}>
+            </TextInput>
+            <TouchableHighlight
+              onPress={() => this.addMicrocontroller(this.state.microcontrollerInput)}
+              style={[styles.row, styles.button]}>
+              <Text
+                style={styles.buttonText}>
+                Ok</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+
+      </Modal>
+    );
   }
 
   getMicrocontrollers() {
-    const controller = new Microcontroller;
-    return controller.get();
+    const db = new Microcontroller();
+    const controllers = db.get();
+    console.log(controllers);
+    if (controllers.length > 0) {
+      this.props.controllerIDReceived(controllers[0].id);
+    } else {
+      this.setState({modalVisible: true});
+    }
   }
 
   addMicrocontroller(controllerID) {
@@ -67,17 +74,18 @@ export default class MicrocontrollerView extends Component {
     if (controllerID) {
       const client = new WoTClient(controllerID);
       client.createController();
-      const controller = new Microcontroller();
-      controller.save(controllerID);
+
+      const db = new Microcontroller();
+      db.save(controllerID);
+
       this.setState({modalVisible: false});
-      client.getPlants()
-        .then((plants) => this.props.plantsReceived(plants));
+      this.props.controllerIDReceived(controllerID);
     }
   }
 }
 
 MicrocontrollerView.propTypes = {
-  plantsReceived: PropTypes.isRequired
+  controllerIDReceived: PropTypes.func
 };
 
 var styles = StyleSheet.create({
