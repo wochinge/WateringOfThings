@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import MicrocontrollerView from '../MicrocontrollerView/Microcontroller';
-import LoadingView from '../../components/LoadingView/LoadingView';
+import { LoadingView } from '../../components';
 
 export default class HomeView extends Component {
 
