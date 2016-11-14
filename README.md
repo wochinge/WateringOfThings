@@ -26,11 +26,11 @@ Repository for the web application course.
     ```bash
     pip install -r requirements.txt
     ```
-    
+
 3.  Init database
 
     ```bash
-    python manage.py makemigrations api.app
+    python manage.py makemigrations
     python manage.py migrate
     ```
 
