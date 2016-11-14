@@ -24,7 +24,8 @@ export default class MicrocontrollerView extends Component {
       <Modal
         animationType={'fade'}
         transparent={true}
-        visible={this.state.modalVisible}>
+        visible={this.state.modalVisible}
+        onRequestClose={() => console.log('Modal closed')}>
         <View
           style={styles.container}>
           <View
