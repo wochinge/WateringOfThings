@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Modal, View, Text, TextInput, TouchableHighlight , StyleSheet } from 'react-native';
+import { Modal, View, Text, TextInput , StyleSheet } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import Microcontroller from '../../database/db';
 import { Button } from '../../components';
@@ -60,7 +60,6 @@ export default class MicrocontrollerView extends Component {
   getMicrocontrollers() {
     const db = new Microcontroller();
     const controllers = db.get();
-    console.log(controllers);
     if (controllers.length > 0) {
       this.props.controllerIDReceived(controllers[0].id);
     } else {
