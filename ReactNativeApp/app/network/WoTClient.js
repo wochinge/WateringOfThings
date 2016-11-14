@@ -4,7 +4,7 @@ const header = {
   'Content-Type': 'application/json'
 };
 
-export class WoTClient {
+export default class WoTClient {
 
   constructor(controllerID) {
     this.controllerID = controllerID;
