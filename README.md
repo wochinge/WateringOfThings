@@ -3,7 +3,7 @@ Repository for the web application course.
 
 # Server
 
-## Requirments
+## Requirements
 *   Python 3
 *   Sqlite
 
