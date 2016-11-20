@@ -1,8 +1,9 @@
 import React, { Component} from 'react';
-import {Navigator } from 'react-native';
+import { Navigator, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import HomeView from './routes/Home/index';
 import PlantView from './routes/PlantView/index';
-
+import {colors, fonts} from './config';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class WateringProject extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class WateringProject extends Component {
   render() {
     const routes = [
       {title: 'Home', index: 0},
-      {title: 'Plant', index: 1},
+      {plant: 'Plant', index: 1},
     ];
 
     // var plants=[
@@ -24,6 +25,58 @@ export default class WateringProject extends Component {
     return (
 
         <Navigator
+          navigationBar={
+            <Navigator.NavigationBar
+               routeMapper={{
+                 LeftButton: (route, navigator, index, navState) =>
+                 {
+                   if (route.index === 0) {
+                     return null;
+                   } else {
+                     return (
+                       <TouchableHighlight underlayColor='transparent' onPress={() => navigator.pop()}>
+                         <Text style={styles.navText} >Back</Text>
+                       </TouchableHighlight>
+                     );
+                   }
+                 },
+                 RightButton: (route, navigator, index, navState) =>
+                 {
+                   if (route.index === 0) {
+                     return (
+                       <TouchableHighlight underlayColor='transparent' onPress={() => navigator.pop()}>
+                         <Text style={styles.navText} >Add</Text>
+                       </TouchableHighlight>
+                     );
+                   } else {
+                     return (
+                       <TouchableHighlight underlayColor='transparent' onPress={() => navigator.pop()}>
+                         <Text style={styles.navText} >Edit</Text>
+                       </TouchableHighlight>
+                     );
+                   }
+                 },
+                 Title: (route, navigator, index, navState) =>
+                 {
+                   if (route.index === 0) {
+                     return (
+                       <Text style= {styles.headline}>
+                         <Icon name="tint" style={styles.icon} size={35} />
+                         Watering my Things
+                       </Text>
+                     );
+                   } else {
+                     return (
+                       <TouchableHighlight underlayColor='transparent' onPress={() => navigator.pop()}>
+                         <Text style={styles.navText} >{route.plant.name}</Text>
+                       </TouchableHighlight>
+                     );
+                   }
+                 },
+               }}
+              style={styles.navBar}
+            />
+          }
           initialRoute={routes[0]}
           initialRouteStack={routes}
           renderScene={this.navigatorRenderScene}
@@ -36,7 +89,7 @@ export default class WateringProject extends Component {
     case 0:
       return (<HomeView   navigator={navigator}/>);
     case 1:
-      return (<PlantView title={route.title} navigator={navigator}
+      return (<PlantView plant={route.plant} navigator={navigator}
         />);
     }
   }
@@ -45,3 +98,25 @@ export default class WateringProject extends Component {
 WateringProject.propTypes = {
   navigator: React.PropTypes.object,
 };
+
+const styles = StyleSheet.create({
+  navBar: {
+    backgroundColor: colors.navbar,
+  },
+  navText:{
+    color: colors.navText,
+    alignSelf: 'center',
+  },
+  headline:{
+    fontSize: 25,
+    fontFamily: fonts.defaultFamily,
+    color: colors.navText,
+    alignSelf: 'center',
+  },
+  icon: {
+    paddingTop:30,
+    paddingRight:20,
+    marginRight:10,
+    color: colors.navText,
+  }
+});

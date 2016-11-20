@@ -4,7 +4,6 @@ import WoTClient from '../../network/WoTClient';
 import MicrocontrollerView from '../MicrocontrollerView/Microcontroller';
 import { LoadingView } from '../../components';
 import {colors, fonts} from '../../config';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class HomeView extends Component {
 
@@ -33,10 +32,6 @@ export default class HomeView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Icon name="rocket" size={30} color="#900" />
-        <Text style= {styles.headline}>
-          Watering my Things
-        </Text>
       { this.state.loaded?
           <ListView
             dataSource={this.state.dataSource}
@@ -57,7 +52,7 @@ export default class HomeView extends Component {
 
   renderPlants(plant) {
     return (
-      <TouchableHighlight underlayColor={colors.touchFeecback} onPress={() =>
+      <TouchableHighlight underlayColor={colors.touchFeedback} onPress={() =>
         this.onPlantPress(plant)}>
         <View
           style={styles.row}>
@@ -70,7 +65,7 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push({title: plant.name, index: 1});
+    this.props.navigator.push({plant: plant, index: 1});
   }
 }
 
@@ -82,10 +77,11 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     backgroundColor: colors.defaultBackground,
+    paddingTop:50,
   },
   listView:{
-    paddingTop:10,
     flex:1,
+    paddingTop:10,
   },
   row: {
     flexDirection: 'row',
@@ -100,13 +96,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
   },
-  headline:{
-    paddingTop: 30,
-    fontSize: 30,
-    fontFamily: fonts.defaultFamily,
-    color: colors.black,
-    alignSelf: 'center',
-  },
+
   text: {
     flex: 1,
     color: colors.defaultText,
@@ -115,9 +105,4 @@ const styles = StyleSheet.create({
     fontFamily: fonts.defaultFamily,
     paddingLeft: 60,
   },
-  signInWithFacebookIcon: {
-    width: 28,
-    height: 28,
-    marginLeft: 5
-  }
 });
