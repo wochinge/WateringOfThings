@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Modal, View, Text, TextInput , StyleSheet } from 'react-native';
 import WoTClient from '../../network/WoTClient';
-import Microcontroller from '../../database/db';
+import { Microcontroller } from '../../database/db';
 import { Button } from '../../components';
 import { colors } from '../../config';
 
