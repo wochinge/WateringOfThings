@@ -1,4 +1,5 @@
 import Realm from 'realm';
+import { decode } from 'base64-arraybuffer';
 
 const MicrocontrollerSchema = {
   name: 'Microcontroller',
@@ -7,9 +8,17 @@ const MicrocontrollerSchema = {
   }
 };
 
-let realm = new Realm({schema: [MicrocontrollerSchema]});
+const PlantSchema = {
+  name: 'Plant',
+  properties: {
+    id:     'int',
+    image:  'data'
+  }
+};
 
-export default class Microcontroller {
+let realm = new Realm({schema: [MicrocontrollerSchema, PlantSchema]});
+
+class Microcontroller {
 
   get() {
     return realm.objects('Microcontroller');
@@ -23,3 +32,24 @@ export default class Microcontroller {
     });
   }
 }
+
+class Plant {
+
+  get(id) {
+    return realm.objects('Plant').filtered('id = "${id}"');
+  }
+
+  save(id, imageData) {
+    realm.write(() => {
+      realm.create('Plant', {
+        id: id,
+        image: decode(imageData)
+      });
+    });
+  }
+}
+
+export {
+  Microcontroller,
+  Plant
+};
