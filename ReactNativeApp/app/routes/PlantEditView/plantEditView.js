@@ -1,7 +1,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TextInput, Image, Slider, TouchableHighlight, Navigator } from 'react-native';
-import { images } from '../../config';
+import { images, colors } from '../../config';
 import { Button } from '../../components';
 import ImagePicker from 'react-native-image-crop-picker';
 import { WoTClient } from '../../network';
@@ -54,6 +54,7 @@ export default class PlantEditView extends Component {
         style={styles.container}>
         <TouchableHighlight
           onPress={this._selectPlantImage}
+          underlayColor={colors.touchFeedback}
           style={styles.horizontalItem}>
           <Image
             source={this.state.plantImage}
