@@ -1,5 +1,5 @@
-import { colors } from './styles';
+import { colors, fonts } from './styles';
 
 export {
-  colors
+  colors, fonts
 };

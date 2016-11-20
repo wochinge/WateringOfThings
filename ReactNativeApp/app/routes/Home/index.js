@@ -3,6 +3,8 @@ import { View, Text, TouchableHighlight , StyleSheet, ListView } from 'react-nat
 import WoTClient from '../../network/WoTClient';
 import MicrocontrollerView from '../MicrocontrollerView/Microcontroller';
 import { LoadingView } from '../../components';
+import {colors, fonts} from '../../config';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class HomeView extends Component {
 
@@ -31,6 +33,10 @@ export default class HomeView extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Icon name="rocket" size={30} color="#900" />
+        <Text style= {styles.headline}>
+          Watering my Things
+        </Text>
       { this.state.loaded?
           <ListView
             dataSource={this.state.dataSource}
@@ -51,7 +57,7 @@ export default class HomeView extends Component {
 
   renderPlants(plant) {
     return (
-      <TouchableHighlight onPress={() =>
+      <TouchableHighlight underlayColor={colors.touchFeecback} onPress={() =>
         this.onPlantPress(plant)}>
         <View
           style={styles.row}>
@@ -73,15 +79,45 @@ HomeView.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    backgroundColor: colors.defaultBackground,
+  },
   listView:{
-    padding: 30,
+    paddingTop:10,
+    flex:1,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
+    flex: 1,
+    backgroundColor: colors.defaultBackground,
+    borderBottomColor : colors.separator,
+    borderTopColor: colors.defaultBackground,
+    borderRightColor: colors.defaultBackground,
+    borderLeftColor: colors.defaultBackground,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    height: 40,
+  },
+  headline:{
+    paddingTop: 30,
+    fontSize: 30,
+    fontFamily: fonts.defaultFamily,
+    color: colors.black,
+    alignSelf: 'center',
   },
   text: {
     flex: 1,
-    color: 'black',
+    color: colors.defaultText,
+    alignSelf: 'center',
+    fontSize: fonts.listSize,
+    fontFamily: fonts.defaultFamily,
+    paddingLeft: 60,
   },
+  signInWithFacebookIcon: {
+    width: 28,
+    height: 28,
+    marginLeft: 5
+  }
 });
