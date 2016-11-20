@@ -17,7 +17,7 @@ class MoistureValueSerializer(serializers.ModelSerializer):
 
 
 class PlantSerializer(serializers.ModelSerializer):
-    latestMoistureValue = serializers.FloatField(source='get_latest', required=False)
+    latestMoistureValue = serializers.FloatField(source='get_latest', required=False, read_only=True)
 
     class Meta:
         model = Plant

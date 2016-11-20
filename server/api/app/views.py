@@ -45,7 +45,7 @@ class AllPlantsView(APIView):
         serializer = PlantSerializer(data=request.data)
         if exists_microcontroller_id(controller_id) and serializer.is_valid():
             serializer.save(microController_id=controller_id)
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
