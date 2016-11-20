@@ -3,8 +3,10 @@ const colors = {
   defaultBackground: 'white',
   dimmedBackground: 'rgba(0, 0, 0, 0.5)',
   separator: 'darkgray',
-  touchFeecback: 'lightgray',
+  touchFeedback: 'lightgray',
   defaultText: 'dimgray',
+  navbar: 'green',
+  navText: 'white',
 };
 
 const fonts = {
