@@ -1,12 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import {colors} from '../../config';
+
 
 export default class PlantView extends Component {
   render() {
     return (
       <View style={styles.view}>
         <Text>{ this.props.title}</Text>
-        <TouchableHighlight onPress={() =>
+        <TouchableHighlight underlayColor={colors.touchFeecback} onPress={() =>
           this.props.navigator.pop()
         }>
           <Text>Tap me to go back</Text>
