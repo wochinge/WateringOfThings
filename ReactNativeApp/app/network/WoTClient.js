@@ -39,7 +39,7 @@ export default class WoTClient {
   }
 
   createPlant(name, pin, position, threshold) {
-    fetch(this._createURL('plant/'), {
+    return fetch(this._createURL('plant'), {
       method: 'POST',
       headers: header,
       body: JSON.stringify({
@@ -48,7 +48,8 @@ export default class WoTClient {
         position: position,
         moistureThreshold: threshold
       })
-    });
+    })
+    .then(this._toJSON);
   }
 
   getPlant(plantID) {
