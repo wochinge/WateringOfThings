@@ -3,6 +3,7 @@ import { Modal, View, Text, TextInput , StyleSheet } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import Microcontroller from '../../database/db';
 import { Button } from '../../components';
+import { colors } from '../../config';
 
 export default class MicrocontrollerView extends Component {
   constructor(props) {
@@ -92,14 +93,14 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.dimmedBackground,
   },
   innerContainer: {
     borderRadius: 10,
     alignItems: 'center',
     margin: 60,
     padding: 20,
-    backgroundColor: 'white'
+    backgroundColor: colors.defaultBackground
   },
   row: {
     flex: 1,
@@ -121,10 +122,5 @@ var styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     overflow: 'hidden',
-  },
-  buttonText: {
-    fontSize: 18,
-    margin: 5,
-    textAlign: 'center',
   }
 });
