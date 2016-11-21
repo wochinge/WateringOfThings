@@ -12,6 +12,23 @@
 #define MEASURE_MOISTURE BASE_TOPIC "/measure"
 #define MOISTURE_VALUES BASE_TOPIC "/measuredValues/"
 
+#define ANALOG_PIN 0
+#define D0 16
+#define D1 5
+#define D2 4
+#define D3 0
+#define D4 2
+#define D5 14
+#define D6 12
+#define D7 13
+#define D8 15
+#define D9 3
+#define D10 1
+
+#define A D5
+#define B D6
+#define C D7
+
 WiFiClient client;
 PubSubClient mqttclient(client);
 
@@ -48,6 +65,14 @@ void callback (char* topic, byte* payload, unsigned int length) {
   }
 }
 
+int readMoistureValue(byte channel) {
+   digitalWrite(A, bitRead(channel, 0));
+   digitalWrite(B, bitRead(channel, 1));
+   digitalWrite(C, bitRead(channel, 2));
+   delay(200);
+   return analogRead(ANALOG_PIN);
+}
+
 void setup(void) {
   Serial.begin(115200);
   delay(10);
@@ -79,6 +104,15 @@ void setup(void) {
     mqttclient.subscribe(WATER_PLANTS);
     mqttclient.subscribe(MEASURE_MOISTURE);
   }
+
+  pinMode(A, OUTPUT);
+  pinMode(B, OUTPUT);
+  pinMode(C, OUTPUT);
+  Serial.println(readMoistureValue(0));
+  Serial.println(readMoistureValue(5));
+  Serial.println(readMoistureValue(6));
+  Serial.println(readMoistureValue(7));
+
 }
 
 void loop(void) {
