@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 const colors = {
   black: 'black',
   defaultBackground: 'white',
@@ -14,4 +16,16 @@ const fonts = {
   defaultFamily: 'Arial',
 };
 
-export { colors, fonts };
+const styles = StyleSheet.create({
+  navBarButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems:'center',
+    padding: 10
+  },
+  icon: {
+    color: colors.navText
+  },
+});
+
+export { colors, fonts, styles };

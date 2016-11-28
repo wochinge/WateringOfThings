@@ -1,8 +1,9 @@
-import { colors, fonts } from './styles';
+import { colors, fonts, styles } from './styles';
 import { images } from './images';
 
 export {
   colors,
   fonts,
-  images
+  images,
+  styles
 };
