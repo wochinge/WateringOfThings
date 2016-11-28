@@ -1,12 +1,5 @@
-from watering_of_things.api.models import MicroController, Plant, MoistureValue
+from watering_of_things.api.models import Plant, MoistureValue
 from rest_framework import serializers
-
-
-class MicroControllerSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = MicroController
-        fields = ('id',)
 
 
 class MoistureValueSerializer(serializers.ModelSerializer):

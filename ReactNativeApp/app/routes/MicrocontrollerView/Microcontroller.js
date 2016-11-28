@@ -11,9 +11,9 @@ export default class MicrocontrollerView extends Component {
     this.state = {
       controllers: [],
       microcontrollerInput: 'das',
-      modalVisible: false
+      modalVisible: false,
+      inputMessage: 'To water your plants, you have to provide the id of a controller. \n\nPlease enter a valid id:'
     };
-    this.addMicrocontroller.bind(this);
   }
 
   componentDidMount() {
@@ -37,8 +37,7 @@ export default class MicrocontrollerView extends Component {
             </Text>
             <Text
               style={[styles.row, styles.description]}>
-              To water your plants, you have to provide the id of a controller.{'\n\n'}
-              Please enter a valid id:
+              {this.state.inputMessage}
             </Text>
             <TextInput
               editable = {true}
@@ -48,7 +47,7 @@ export default class MicrocontrollerView extends Component {
               style={styles.row}>
             </TextInput>
             <Button
-              handlePress={() => this.addMicrocontroller(this.state.microcontrollerInput)}
+              handlePress={() => this.validateControllerID(this.state.microcontrollerInput)}
               text={'Ok'}
               style={[styles.row, styles.button]}
             />
@@ -69,20 +68,27 @@ export default class MicrocontrollerView extends Component {
     }
   }
 
-  addMicrocontroller(controllerID) {
+  validateControllerID(controllerID) {
     controllerID = controllerID.trim();
     if (controllerID) {
       const client = new WoTClient(controllerID);
-      client.createController();
+      client.existsController()
+      .then(response => this.controllerValidationResult(response.exists, controllerID));
+    }
+  }
 
+  controllerValidationResult(isValid, id) {
+    if (isValid) {
       const db = new Microcontroller();
-      db.save(controllerID);
-
+      db.save(id);
       this.setState({modalVisible: false});
-      this.props.controllerIDReceived(controllerID);
+      this.props.controllerIDReceived(id);
+    } else {
+      this.setState({inputMessage: 'The given id was not valid. Please provide an valid id!'});
     }
   }
 }
+
 
 MicrocontrollerView.propTypes = {
   controllerIDReceived: PropTypes.func

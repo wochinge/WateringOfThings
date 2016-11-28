@@ -21,14 +21,12 @@ export default class WoTClient {
     return responseBody.json();
   }
 
-  createController() {
-    fetch(this._createURL(), {
-      method: 'POST',
-      headers: header,
-      body: JSON.stringify({
-        id: this.controllerID
-      })
-    });
+  existsController() {
+    return fetch(this._createURL(), {
+      method: 'GET',
+      headers: header
+    })
+    .then(this._toJSON);
   }
 
   getPlants() {

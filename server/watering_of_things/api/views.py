@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from watering_of_things.api.models import MicroController, Plant
-from watering_of_things.api.serializers import MicroControllerSerializer, PlantSerializer, MoistureValueSerializer
+from watering_of_things.api.serializers import PlantSerializer, MoistureValueSerializer
 from watering_of_things.api.mqtt import water_plant
 
 
@@ -22,13 +22,14 @@ def exists_plant(controller_id, plant_id):
     return get_plant(controller_id, plant_id) is not None
 
 
-class MicroControllerView(APIView):
+class ControllerView(APIView):
 
-    def post(self, request):
-        serializer = MicroControllerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+    def get(self, request, controller_id):
+        if exists_microcontroller_id(controller_id):
+            response_data = {'exists': True}
+        else:
+            response_data = {'exists': False}
+        return Response(status=status.HTTP_200_OK, data=response_data)
 
 
 class AllPlantsView(APIView):
