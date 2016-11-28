@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from api.app import views
+from watering_of_things.api import views
 
 urlpatterns = [
     url(r'^controller/$', views.MicroControllerView.as_view()),

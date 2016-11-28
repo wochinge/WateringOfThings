@@ -1,4 +1,4 @@
-from api.app.models import MicroController, Plant, MoistureValue
+from watering_of_things.api.models import MicroController, Plant, MoistureValue
 from rest_framework import serializers
 
 

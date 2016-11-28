@@ -2,10 +2,10 @@ from django.apps import AppConfig
 
 
 class AppConfig(AppConfig):
-    name = 'api.app'
+    name = 'watering_of_things.api'
 
     def ready(self):
-        from api.app.models import MicroController, Plant, MoistureValue
+        from watering_of_things.api.models import MicroController, Plant, MoistureValue
         controller, _ = MicroController.objects.get_or_create(id='3')
 
         raspberry, _ = Plant.objects.get_or_create(name="Himbeere", pin=1, position=0, moistureThreshold=22.0, microController=controller)

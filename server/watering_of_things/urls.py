@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import url, include
-from rest_framework import routers
-from api.app.urls import urlpatterns as v1_router
+from rest_framework import routers, urls
+from watering_of_things.api.urls import urlpatterns as v1_router
 
 router = routers.DefaultRouter()
 
@@ -24,7 +24,9 @@ router = routers.DefaultRouter()
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^api/v1/', include(v1_router, namespace='rest_v1'))
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/v1/', include(v1_router, namespace='watering_of_things.api')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+
 ]

@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import paho.mqtt.client as mqtt
 from paho.mqtt.publish import single
-from api.app.models import MicroController, Plant, MoistureValue
+from watering_of_things.api.models import MicroController, Plant, MoistureValue
 import logging
 import json
 

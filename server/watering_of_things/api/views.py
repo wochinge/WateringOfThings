@@ -2,9 +2,9 @@ from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.app.models import MicroController, Plant
-from api.app.serializers import MicroControllerSerializer, PlantSerializer, MoistureValueSerializer
-from api.app.mqtt import water_plant
+from watering_of_things.api.models import MicroController, Plant
+from watering_of_things.api.serializers import MicroControllerSerializer, PlantSerializer, MoistureValueSerializer
+from watering_of_things.api.mqtt import water_plant
 
 
 def exists_microcontroller_id(controller_id):
