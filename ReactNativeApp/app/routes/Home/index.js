@@ -35,6 +35,7 @@ export default class HomeView extends Component {
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderPlants}
+          enableEmptySections={true}
           style={styles.listView}
         />
         <MicrocontrollerView
