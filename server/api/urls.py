@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url, include
 from rest_framework import routers
-from api.app import views
+from api.app.urls import urlpatterns as v1_router
 
 router = routers.DefaultRouter()
 
@@ -26,12 +26,5 @@ router = routers.DefaultRouter()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^microcontroller/$', views.MicroControllerView.as_view()),
-    url(r'^microcontroller/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/water/(?P<amount>.+)/$',
-        views.WaterPlantView.as_view()),
-    url(r'^microcontroller/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/moisture/$',
-        views.MoistureView.as_view()),
-    url(r'^microcontroller/(?P<controller_id>.+)/plant/(?P<plant_id>.+)/$', views.PlantView.as_view()),
-    url(r'^microcontroller/(?P<controller_id>.+)/plant/$', views.AllPlantsView.as_view()),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^v1/', include(v1_router, namespace='v1'))
 ]
