@@ -36,8 +36,8 @@ export default class WateringProject extends Component {
         defaultRouteConfig={{
           navigationBar: {
             backgroundColor: colors.navbar,
-            tintColor: '#fff',
-            renderLeft: () => <BackButton/>
+            renderLeft: () => <BackButton/>,
+            tintColor: colors.navText
           }
         }} />
       </NavigationProvider>

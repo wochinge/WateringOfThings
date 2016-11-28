@@ -1,7 +1,8 @@
 import { withNavigation } from '@exponent/ex-navigation';
-import React, { Component } from 'react';
-import { Text, TouchableHighlight , StyleSheet } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { TouchableHighlight , StyleSheet } from 'react-native';
 import { colors } from '../../config';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 @withNavigation
 export default class BackButton extends Component {
@@ -9,16 +10,19 @@ export default class BackButton extends Component {
   render() {
     return (
       <TouchableHighlight underlayColor='transparent' onPress={() => this.props.navigator.pop()}>
-        <Text style={styles.navText}>
-          Back
-        </Text>
+        <Icon name="chevron-left" size={20} style={styles.icon} />
       </TouchableHighlight>
     );}
 }
 
 const styles = StyleSheet.create({
-  navText:{
+  icon: {
     color: colors.navText,
-    alignSelf: 'center',
+    justifyContent: 'center',
+    padding: 10
   },
 });
+
+BackButton.propTypes = {
+  navigator: PropTypes.object
+};

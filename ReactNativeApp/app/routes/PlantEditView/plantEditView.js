@@ -1,6 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TextInput, Image, Slider, TouchableHighlight, Navigator } from 'react-native';
+import { View, Text, TextInput, Image, Slider, TouchableHighlight } from 'react-native';
 import { images, colors } from '../../config';
 import { Button } from '../../components';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -144,7 +144,7 @@ export default class PlantEditView extends Component {
 
 PlantEditView.propTypes = {
   controllerID: PropTypes.string,
-  navigator: PropTypes.instanceOf(Navigator)
+  navigator: PropTypes.object
 };
 
 const styles = {
