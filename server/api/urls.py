@@ -26,5 +26,5 @@ router = routers.DefaultRouter()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^v1/', include(v1_router, namespace='v1'))
+    url(r'^api/v1/', include(v1_router, namespace='rest_v1'))
 ]
