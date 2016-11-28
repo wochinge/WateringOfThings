@@ -4,6 +4,15 @@ import {colors, images, fonts} from '../../config';
 import { Button } from '../../components';
 
 export default class PlantView extends Component {
+
+  static route = {
+    navigationBar: {
+      title(params) {
+        return `${params.plant.name}`;
+      }
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>

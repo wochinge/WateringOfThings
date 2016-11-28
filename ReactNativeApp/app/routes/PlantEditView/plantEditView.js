@@ -6,7 +6,15 @@ import { Button } from '../../components';
 import ImagePicker from 'react-native-image-crop-picker';
 import { WoTClient } from '../../network';
 import { Plant as PlantDB } from '../../database';
+
+
 export default class PlantEditView extends Component {
+
+  static route = {
+    navigationBar: {
+      title: 'Create plant'
+    }
+  }
 
   constructor(props) {
     super(props);
@@ -16,7 +24,7 @@ export default class PlantEditView extends Component {
       position: 0,
       moistureThreshold: 0,
       plantImage: images.defaultPlantImage,
-      plantImageData: 0
+      plantImageData: 0,
     };
 
     this._cancelEditing = this._cancelEditing.bind(this);

@@ -3,8 +3,23 @@ import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicato
 import WoTClient from '../../network/WoTClient';
 import MicrocontrollerView from '../MicrocontrollerView/Microcontroller';
 import {colors, fonts} from '../../config';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Router } from '../../index';
 
 export default class HomeView extends Component {
+
+  static route = {
+    navigationBar: {
+      title: 'Home',
+      renderTitle: () => { return (
+        <Text style= {styles.headline}>
+        <Icon name="tint" style={styles.icon} size={35} />
+        Watering my Things
+        </Text>
+      );},
+      renderLeft: () => {},
+    }
+  }
 
   constructor(props) {
     super(props);
@@ -32,41 +47,41 @@ export default class HomeView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderPlants}
-          enableEmptySections={true}
-          style={styles.listView}
-        />
-        <MicrocontrollerView
-          controllerIDReceived={this.fetchData}
-        />
-        <ActivityIndicator
-          animating={!this.state.loaded}
-          style={styles.activityIndicator}
-        />
+      <ListView
+      dataSource={this.state.dataSource}
+      renderRow={this.renderPlants}
+      enableEmptySections={true}
+      style={styles.listView}
+      />
+      <MicrocontrollerView
+      controllerIDReceived={this.fetchData}
+      />
+      <ActivityIndicator
+      animating={!this.state.loaded}
+      style={styles.activityIndicator}
+      />
       </View>
     );
   }
 
-  renderPlants(plant, sectionID, rowID, highlightRow) {
+  renderPlants(plant) {
     return (
       <TouchableHighlight underlayColor={colors.touchFeedback} onPress={() =>
         this.onPlantPress(plant)}>
         <View
-          style={styles.row}>
-          <Text style={styles.text}>
-            {plant.name}
-          </Text>
+        style={styles.row}>
+        <Text style={styles.text}>
+        {plant.name}
+        </Text>
         </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
     );
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push({plant: plant, index: 1});
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant}));
   }
-}
+  }
 
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
@@ -108,4 +123,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1
   },
+  headline:{
+    fontSize: 25,
+    fontFamily: fonts.defaultFamily,
+    color: colors.navText,
+    alignSelf: 'center',
+  },
+  icon: {
+    paddingTop:30,
+    paddingRight:20,
+    marginRight:10,
+    color: colors.navText,
+  }
 });
