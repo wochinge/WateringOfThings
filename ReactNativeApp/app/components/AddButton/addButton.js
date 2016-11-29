@@ -11,7 +11,7 @@ export default class AddButton extends Component {
   render() {
     return(
       <TouchableHighlight
-        onPress={() => this.props.navigator.push(Router.getRoute(this.props.route))}
+        onPress={() => this.props.navigator.push(Router.getRoute(this.props.route, this.props.routeParams))}
         style={styles.navBarButton}>
         <Icon name="plus-square-o" size={18} style={styles.icon} />
       </TouchableHighlight>

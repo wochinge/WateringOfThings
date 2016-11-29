@@ -19,7 +19,9 @@ export default class HomeView extends Component {
         </Text>
       );},
       renderLeft: () => {},
-      renderRight: () => <AddButton route='plantEdit'/>
+      renderRight: (params) => {
+        return (<AddButton route='plantEdit' routeParams={{controllerID: params.params.controllerID}}/>);
+      }
     }
   }
 
@@ -35,6 +37,9 @@ export default class HomeView extends Component {
   }
 
   fetchData(controllerID) {
+    this.props.navigator.updateCurrentRouteParams({
+      controllerID: controllerID
+    });
     this.setState({loaded: false});
     var wotClient = new WoTClient(controllerID);
     wotClient.getPlants()
