@@ -14,8 +14,8 @@ export default class HomeView extends Component {
     navigationBar: {
       renderTitle: () => { return (
         <Text style= {styles.headline}>
-        <Icon name="tint" style={styles.icon} size={35} />
-        Watering my Things
+          <Icon name="tint" style={styles.icon} size={35} />
+          Watering my Things
         </Text>
       );},
       renderLeft: () => {},
@@ -54,19 +54,19 @@ export default class HomeView extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <ListView
-      dataSource={this.state.dataSource}
-      renderRow={this.renderPlants}
-      enableEmptySections={true}
-      style={styles.listView}
-      />
-      <MicrocontrollerView
-      controllerIDReceived={this.fetchData}
-      />
-      <ActivityIndicator
-      animating={!this.state.loaded}
-      style={styles.activityIndicator}
-      />
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderPlants}
+          enableEmptySections={true}
+          style={styles.listView}
+        />
+        <MicrocontrollerView
+          controllerIDReceived={this.fetchData}
+        />
+        <ActivityIndicator
+          animating={!this.state.loaded}
+          style={styles.activityIndicator}
+        />
       </View>
     );
   }
