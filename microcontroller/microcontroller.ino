@@ -3,14 +3,14 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
-#define WLAN_SSID       ""
-#define WLAN_PASS       ""
+#include "WifiConfig.h" //provides WLAN_SSID and WLAN_PASS
 
 #define ARDUINO_ID "123456789"
 #define BASE_TOPIC "WateringOfPlants/microController/" ARDUINO_ID 
 #define WATER_PLANTS BASE_TOPIC "/water"
 #define MEASURE_MOISTURE BASE_TOPIC "/measure"
 #define MOISTURE_VALUES BASE_TOPIC "/measuredValues/"
+
 
 #define ANALOG_PIN 0
 #define D0 16
@@ -28,6 +28,7 @@
 #define A D5
 #define B D6
 #define C D7
+#define MOISTURE_START_PIN D4
 
 WiFiClient client;
 PubSubClient mqttclient(client);
@@ -41,12 +42,17 @@ void waterPlant(int position, int time) {
 }
 
 void getMoistureValues(JsonArray& pins, int nrOfPins) {
+  digitalWrite(MOISTURE_START_PIN, HIGH);
+  delay(10);
+  char buf[4];
   char concatenated[sizeof(MOISTURE_VALUES) + 1];
   for (int i = 0; i < nrOfPins; ++i) {
     sprintf(concatenated,"%s%i", MOISTURE_VALUES, pins[i].as<int>());
-    Serial.println(concatenated);
-    mqttclient.publish(concatenated, "hallo");
+    sprintf (buf, "%04d", readMoistureValue(pins[i]));
+    mqttclient.publish(concatenated, buf);
   }
+  digitalWrite(MOISTURE_START_PIN, LOW); 
+
 }
 
 void callback (char* topic, byte* payload, unsigned int length) {
@@ -69,7 +75,7 @@ int readMoistureValue(byte channel) {
    digitalWrite(A, bitRead(channel, 0));
    digitalWrite(B, bitRead(channel, 1));
    digitalWrite(C, bitRead(channel, 2));
-   delay(200);
+   delay(1);
    return analogRead(ANALOG_PIN);
 }
 
@@ -80,17 +86,14 @@ void setup(void) {
   // We start by connecting to a WiFi network
   WiFi.begin(WLAN_SSID, WLAN_PASS);
 
-  Serial.println();
-  Serial.println();
-  Serial.print("Wait for WiFi... ");
+  Serial.print("\nWait for WiFi... ");
 
   while(WiFi.status() != WL_CONNECTED) {
       Serial.print(".");
       delay(500);
   }
 
-  Serial.println("");
-  Serial.println("WiFi connected");
+  Serial.println("\nWiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   
@@ -108,11 +111,7 @@ void setup(void) {
   pinMode(A, OUTPUT);
   pinMode(B, OUTPUT);
   pinMode(C, OUTPUT);
-  Serial.println(readMoistureValue(0));
-  Serial.println(readMoistureValue(5));
-  Serial.println(readMoistureValue(6));
-  Serial.println(readMoistureValue(7));
-
+  pinMode(MOISTURE_START_PIN, OUTPUT);
 }
 
 void loop(void) {
