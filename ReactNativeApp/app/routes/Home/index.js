@@ -30,7 +30,8 @@ export default class HomeView extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([]),
-      loaded: true
+      loaded: true,
+      constructorID: ''
     };
     this.renderPlants = this.renderPlants.bind(this);
     this.fetchData = this.fetchData.bind(this);
@@ -40,7 +41,7 @@ export default class HomeView extends Component {
     this.props.navigator.updateCurrentRouteParams({
       controllerID: controllerID
     });
-    this.setState({loaded: false});
+    this.setState({loaded: false, controllerID: controllerID});
     var wotClient = new WoTClient(controllerID);
     wotClient.getPlants()
     .then((responseJson) => {
@@ -86,9 +87,9 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push(Router.getRoute('plant', {plant: plant}));
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.state.controllerID}));
   }
-  }
+}
 
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
