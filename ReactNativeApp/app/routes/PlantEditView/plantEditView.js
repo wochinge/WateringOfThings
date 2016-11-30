@@ -27,7 +27,6 @@ export default class PlantEditView extends Component {
       plantImageData: 0,
     };
 
-    this._cancelEditing = this._cancelEditing.bind(this);
     this._savePlant = this._savePlant.bind(this);
     this._selectPlantImage = this._selectPlantImage.bind(this);
   }
@@ -44,15 +43,12 @@ export default class PlantEditView extends Component {
     .catch(e => console.log(e));
   }
 
-  _cancelEditing() {
-    this.props.navigator.pop();
-  }
-
   _savePlant() {
     const db = new PlantDB();
     const client = new WoTClient(this.props.controllerID);
     client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
     .then(created => db.save(created.id, this.state.plantImage.uri));
+    this.props.navigator.pop();
 
   }
 
@@ -127,10 +123,6 @@ export default class PlantEditView extends Component {
         </View>
         <View
           style={styles.horizontalItem}>
-          <Button
-            handlePress={this._cancelEditing}
-            text='Cancel'
-          />
           <Button
             handlePress={this._savePlant}
             text='Save'
