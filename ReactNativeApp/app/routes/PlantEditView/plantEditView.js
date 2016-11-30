@@ -36,12 +36,10 @@ export default class PlantEditView extends Component {
     ImagePicker.openPicker({
       width: 150,
       height: 150,
-      cropping: true,
-      includeBase64: true
+      cropping: true
     })
     .then(image => this.setState({
       plantImage: {uri: image.path},
-      plantImageData: image.data
     }))
     .catch(e => console.log(e));
   }
@@ -53,7 +51,9 @@ export default class PlantEditView extends Component {
   _savePlant() {
     const db = new PlantDB();
     const client = new WoTClient(this.props.controllerID);
-    client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold).then(created => db.save(created.id, this.state.plantImageData));
+    client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
+    .then(created => db.save(created.id, this.state.plantImage.uri));
+
   }
 
   render() {

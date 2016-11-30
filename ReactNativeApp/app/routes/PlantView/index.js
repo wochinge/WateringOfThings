@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import {colors, images, fonts} from '../../config';
 import { Button } from '../../components';
+import { Plant } from '../../database';
 
 export default class PlantView extends Component {
 
@@ -13,10 +14,24 @@ export default class PlantView extends Component {
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      imageURL: images.basil
+    };
+    const plantDB = new Plant();
+    const plantImageURL = plantDB.getPlantImagePath(this.props.plant.id);
+    if (plantImageURL) {
+      this.state = {
+        imageURL: plantImageURL
+      };
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.image} source={images.basil}/>
+        <Image style={styles.image} source={this.state.imageURL}/>
         <View style={styles.innerContainer}>
           {this.moistureValue()}
         <Button
@@ -29,9 +44,10 @@ export default class PlantView extends Component {
     );
   }
 
-  onPressWater(plant){
+  onPressWater(plant) {
 
   }
+
   moistureValue(){
     if(this.props.plant.latestMoistureValue){
       if(this.props.plant.latestMoistureValue< this.props.plant.moistureThreshold){
