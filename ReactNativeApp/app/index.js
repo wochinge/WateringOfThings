@@ -33,15 +33,20 @@ export default class WateringProject extends Component {
       <NavigationProvider router={Router}>
       <StackNavigation
         initialRoute={Router.getRoute('home')}
+        onTransitionStart={this.handleTransition.bind(this)}
         defaultRouteConfig={{
           navigationBar: {
             backgroundColor: colors.navbar,
             renderLeft: () => <BackButton/>,
-            tintColor: colors.navText
+            tintColor: colors.navText,
           }
         }} />
       </NavigationProvider>
     );
+  }
+
+  handleTransition(routeWhereIsTransitionedTo) {
+    routeWhereIsTransitionedTo.scene.route.getEventEmitter().emit('onFocus', '');
   }
 }
 

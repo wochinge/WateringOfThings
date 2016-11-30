@@ -37,6 +37,18 @@ export default class HomeView extends Component {
     this.fetchData = this.fetchData.bind(this);
   }
 
+  componentWillMount() {
+    this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
+      if (this.state.controllerID) {
+        this.fetchData(this.state.controllerID);
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._subscription.remove();
+  }
+
   fetchData(controllerID) {
     this.props.navigator.updateCurrentRouteParams({
       controllerID: controllerID
@@ -93,6 +105,7 @@ export default class HomeView extends Component {
 
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
+  route: React.PropTypes.object
 };
 
 const styles = StyleSheet.create({
