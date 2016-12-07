@@ -1,9 +1,9 @@
-import { colors, fonts, styles } from './styles';
+import { colors, fonts, commonStyles } from './styles';
 import { images } from './images';
 
 export {
   colors,
   fonts,
   images,
-  styles
+  commonStyles
 };

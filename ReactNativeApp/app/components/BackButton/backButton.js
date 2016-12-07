@@ -1,7 +1,7 @@
 import { withNavigation } from '@exponent/ex-navigation';
 import React, { Component, PropTypes } from 'react';
 import { TouchableHighlight } from 'react-native';
-import { styles } from '../../config';
+import { commonStyles } from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 @withNavigation
@@ -12,8 +12,8 @@ export default class BackButton extends Component {
       <TouchableHighlight
         underlayColor='transparent'
         onPress={() => this.props.navigator.pop()}
-        style={styles.navBarButton}>
-        <Icon name="chevron-left" size={18} style={styles.icon} />
+        style={commonStyles.navBarButton}>
+        <Icon name="chevron-left" size={18} style={commonStyles.icon} />
       </TouchableHighlight>
     );}
 }

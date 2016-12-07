@@ -6,20 +6,20 @@ import { Router } from '../../index';
 import { commonStyles } from '../../config';
 
 @withNavigation
-export default class AddButton extends Component {
+export default class EditButton extends Component {
 
   render() {
     return(
       <TouchableHighlight
         onPress={() => this.props.navigator.push(Router.getRoute(this.props.route, this.props.routeParams))}
         style={commonStyles.navBarButton}>
-        <Icon name="plus-square-o" size={18} style={commonStyles.icon} />
+        <Icon name="pencil" size={18} style={commonStyles.icon} />
       </TouchableHighlight>
     );
   }
 }
 
-AddButton.propTypes = {
+EditButton.propTypes = {
   route: PropTypes.string,
   navigator: PropTypes.object,
   routeParams: PropTypes.object,

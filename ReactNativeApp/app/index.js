@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import HomeView from './routes/Home/index';
 import PlantEditView from './routes/PlantEditView/plantEditView';
 import PlantView from './routes/PlantView/index';
+import WaterPlantView from './routes/PlantView/waterPlant';
 import { colors } from './config/styles';
 import { BackButton } from './components';
 
@@ -14,7 +15,8 @@ import {
 export const Router = createRouter(() => ({
   home: () => HomeView,
   plant: () => PlantView,
-  plantEdit: () => PlantEditView
+  plantEdit: () => PlantEditView,
+  waterPlant: () => WaterPlantView,
 }));
 
 export default class WateringProject extends Component {

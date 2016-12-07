@@ -31,7 +31,8 @@ export default class HomeView extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([]),
       loaded: true,
-      constructorID: ''
+      controllerID: '',
+      controller: null,
     };
     this.renderPlants = this.renderPlants.bind(this);
     this.fetchData = this.fetchData.bind(this);
@@ -54,12 +55,13 @@ export default class HomeView extends Component {
       controllerID: controllerID
     });
     this.setState({loaded: false, controllerID: controllerID});
-    var wotClient = new WoTClient(controllerID);
+    const wotClient = new WoTClient(controllerID);
     wotClient.getPlants()
     .then((responseJson) => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(responseJson),
         loaded: true,
+        controller: wotClient,
       });
     });
   }
@@ -99,13 +101,14 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.state.controllerID}));
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controller: this.state.controller}));
   }
 }
 
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
-  route: React.PropTypes.object
+  route: React.PropTypes.object,
+  controller: React.PropTypes.object
 };
 
 const styles = StyleSheet.create({
