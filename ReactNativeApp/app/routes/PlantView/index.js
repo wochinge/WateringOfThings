@@ -15,7 +15,9 @@ export default class PlantView extends Component {
         return `${params.plant.name}`;
       },
       renderRight: (params) => {
-        return (<EditButton route='plantEdit' routeParams={{controllerID: params.params.controllerID, plant: params.params.plant}}/>);
+        return (<EditButton route='plantEdit' routeParams={{
+          controllerID: params.params.controller.controllerID,
+          plant: params.params.plant}}/>);
       }
     }
   }
@@ -25,6 +27,10 @@ export default class PlantView extends Component {
     this.state = {
       imageURL: images.defaultPlantImage
     };
+    this._setImage();
+  }
+
+  _setImage() {
     const plantDB = new Plant();
     const plantImageURL = plantDB.getPlantImagePath(this.props.plant.id);
     if (plantImageURL) {
@@ -74,9 +80,8 @@ export default class PlantView extends Component {
 PlantView.propTypes = {
   plant: React.PropTypes.object,
   controller: React.PropTypes.object,
-  // plant: PropTypes.string.isRequired,
-
   navigator: React.PropTypes.object,
+  route: React.PropTypes.object,
 };
 
 

@@ -1,8 +1,9 @@
 
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TextInput, Image, Slider, TouchableHighlight } from 'react-native';
-import { images, colors } from '../../config';
-import { Button } from '../../components';
+import { images, colors, commonStyles } from '../../config';
+
+import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
 import { WoTClient } from '../../network';
 import { Plant as PlantDB } from '../../database';
@@ -70,9 +71,15 @@ export default class PlantEditView extends Component {
   _savePlant() {
     const db = new PlantDB();
     const client = new WoTClient(this.props.controllerID);
-    client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
-    .then(created => db.save(created.id, this.state.plantImage.uri));
-    this.props.navigator.pop();
+    if (this.state.plantEditMode) {
+      client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
+      .then(() => db.save(this.props.plant.id, this.state.plantImage.uri));
+      this.props.navigator.pop(2);
+    } else {
+      client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
+      .then(created => db.save(created.id, this.state.plantImage.uri));
+      this.props.navigator.pop();
+    }
 
   }
 
@@ -150,11 +157,10 @@ export default class PlantEditView extends Component {
         </View>
         <View
           style={styles.horizontalItem}>
-          <Button
-            handlePress={this._savePlant}
-            text='Save'
-            //style={styles.item}
-          />
+          <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
+            onPress={this._savePlant}>
+            Save
+          </Button>
         </View>
       </View>
     );
@@ -170,14 +176,14 @@ PlantEditView.propTypes = {
 const styles = {
   container: {
     margin: 20,
-    marginTop: 40,
+    marginTop: 0,
     flex: 1
   },
   item: {
     marginBottom: 20
   },
   label: {
-    marginBottom: 15
+    marginBottom: 10
   },
   input: {
     minHeight: 30
@@ -195,16 +201,13 @@ const styles = {
     justifyContent: 'center'
   },
   plantImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    margin: 20,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
   },
   button: {
-    borderRadius: 5,
     flex: 1,
-    height: 35,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    marginTop: 10
   }
 };
