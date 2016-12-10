@@ -60,6 +60,16 @@ class PlantView(APIView):
         else:
             return Response(PlantSerializer(plant).data)
 
+    def put(self, request, controller_id, plant_id):
+        plant = get_plant(controller_id, plant_id)
+        updated = PlantSerializer(data=request.data)
+        if plant is None or not updated.is_valid():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            updated.update(plant, updated.validated_data)
+            return Response(status=status.HTTP_200_OK, data=updated.validated_data)
+
+
     def delete(self, request, controller_id, plant_id):
         plant = get_plant(controller_id, plant_id)
         if plant is None:

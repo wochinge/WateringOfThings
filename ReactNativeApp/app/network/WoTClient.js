@@ -50,6 +50,20 @@ export default class WoTClient {
     .then(this._toJSON);
   }
 
+  updatePlant(id, name, pin, position, threshold) {
+    return fetch(this._createURL('plant', id), {
+      method: 'PUT',
+      headers: header,
+      body: JSON.stringify({
+        name: name,
+        pin: pin,
+        position: position,
+        moistureThreshold: threshold
+      })
+    })
+    .then(this._toJSON);
+  }
+
   getPlant(plantID) {
     return fetch(this._createURL('plant', plantID), {
       method: 'GET',
