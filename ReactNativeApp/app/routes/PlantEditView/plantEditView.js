@@ -12,23 +12,47 @@ export default class PlantEditView extends Component {
 
   static route = {
     navigationBar: {
-      title: 'Create plant'
+      title(params) {
+        return params.plant ? 'Edit plant' : 'Create plant';
+      }
     }
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      pin: 0,
-      position: 0,
-      moistureThreshold: 0,
-      plantImage: images.defaultPlantImage,
-      plantImageData: 0,
-    };
+    let plant = null;
+    let plantEditMode = false;
+    if (this.props.plant) {
+      plant = this.props.plant;
+      plantEditMode = true;
+    }
 
+    console.log(plant);
+
+    this.state = {
+      name: plantEditMode ? plant.name : '',
+      pin: plantEditMode? plant.pin : 0,
+      position: plantEditMode ? plant.position : 0,
+      moistureThreshold: plantEditMode ? plant.moistureThreshold : 0,
+      plantImage: this._getPlantImage(plantEditMode, plant),
+      plantImageData: 0,
+      plantEditMode: plantEditMode
+    };
     this._savePlant = this._savePlant.bind(this);
     this._selectPlantImage = this._selectPlantImage.bind(this);
+  }
+
+  _getPlantImage(plantEditMode, plant) {
+    let plantURL = null;
+    if (plantEditMode) {
+      const db = new PlantDB();
+      plantURL = db.getPlantImagePath(plant.id);
+    }
+
+    if (!plantURL) {
+      return images.defaultPlantImage;
+    }
+    return plantURL;
   }
 
   _selectPlantImage() {
@@ -73,6 +97,7 @@ export default class PlantEditView extends Component {
           </Text>
           <TextInput
             placeholder='e.g. Basil'
+            defaultValue={this.state.plantEditMode ? this.props.plant.name : null}
             onChangeText={(name) => this.setState({name})}
             style={styles.input}/>
         </View>
@@ -84,6 +109,7 @@ export default class PlantEditView extends Component {
           </Text>
           <TextInput
             placeholder='e.g. 3'
+            defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : null}
             keyboardType='numeric'
             onChangeText={(pin) => this.setState({pin})}
             style={styles.input}/>
@@ -96,6 +122,7 @@ export default class PlantEditView extends Component {
           </Text>
           <TextInput
             placeholder='e.g. 90'
+            defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : null}
             keyboardType='numeric'
             onChangeText={(position) => this.setState({position})}
             style={styles.input}/>
@@ -119,7 +146,7 @@ export default class PlantEditView extends Component {
             onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold})}
             minimumValue={0.0}
             maximumValue={100.0}
-            value={50}/>
+            value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 50}/>
         </View>
         <View
           style={styles.horizontalItem}>
@@ -136,7 +163,8 @@ export default class PlantEditView extends Component {
 
 PlantEditView.propTypes = {
   controllerID: PropTypes.string,
-  navigator: PropTypes.object
+  navigator: PropTypes.object,
+  plant: React.PropTypes.object
 };
 
 const styles = {

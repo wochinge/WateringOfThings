@@ -15,7 +15,7 @@ export default class PlantView extends Component {
         return `${params.plant.name}`;
       },
       renderRight: (params) => {
-        return (<EditButton route='plantEdit' routeParams={{controllerID: params.params.controllerID}}/>);
+        return (<EditButton route='plantEdit' routeParams={{controllerID: params.params.controllerID, plant: params.params.plant}}/>);
       }
     }
   }
