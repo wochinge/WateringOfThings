@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <Servo.h>
 
 #include "WifiConfig.h" //provides WLAN_SSID and WLAN_PASS
 
@@ -30,15 +31,29 @@
 #define C D7
 #define MOISTURE_START_PIN D4
 
+#define SERVO_PIN D2
+#define PUMP_PIN D3
+#define TILL_SERVO_FINISHED 3000
+
 WiFiClient client;
 PubSubClient mqttclient(client);
+
+Servo pumpMover;
 
 void waterPlant(int position, int time) {
   Serial.println("Water plant");
   Serial.println(position);
+  movePumpTo(position);
   Serial.println(time);
+  digitalWrite(PUMP_PIN, HIGH);
   delay(time);
+  digitalWrite(PUMP_PIN, LOW);
   Serial.println("Watering end");  
+}
+
+void movePumpTo(int position) {
+  pumpMover.write(position);
+  delay(TILL_SERVO_FINISHED);
 }
 
 void getMoistureValues(JsonArray& pins, int nrOfPins) {
@@ -52,7 +67,6 @@ void getMoistureValues(JsonArray& pins, int nrOfPins) {
     mqttclient.publish(concatenated, buf);
   }
   digitalWrite(MOISTURE_START_PIN, LOW); 
-
 }
 
 void callback (char* topic, byte* payload, unsigned int length) {
@@ -60,7 +74,6 @@ void callback (char* topic, byte* payload, unsigned int length) {
   JsonObject& root = jsonBuffer.parseObject((char*) payload);
   String parsedTopic(topic);
   Serial.println(topic);
-  //free(topic);
   if (parsedTopic == WATER_PLANTS) {
     waterPlant(root["position"], root["time"]);
   } else if (parsedTopic == MEASURE_MOISTURE) {
@@ -112,8 +125,12 @@ void setup(void) {
   pinMode(B, OUTPUT);
   pinMode(C, OUTPUT);
   pinMode(MOISTURE_START_PIN, OUTPUT);
+  pinMode(PUMP_PIN, OUTPUT);
+  pumpMover.attach(SERVO_PIN);
+
 }
 
 void loop(void) {
   mqttclient.loop();
 }
+
