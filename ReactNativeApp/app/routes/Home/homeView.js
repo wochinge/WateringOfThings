@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator } from 'react-native';
 import WoTClient from '../../network/WoTClient';
-import { AddButton } from '../../components';
+import { NavbarButton } from '../../components';
 import {colors, fonts} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../index';
@@ -19,7 +19,7 @@ export default class HomeView extends Component {
       );},
       renderLeft: () => {},
       renderRight: (params) => {
-        return (<AddButton route='plantEdit' routeParams={{controllerID: params.params.controllerID}}/>);
+        return (<NavbarButton iconName='plus-square-o' route='plantEdit' routeParams={{controllerID: params.params.controllerID}}/>);
       }
     }
   }

@@ -1,9 +1,7 @@
 import BackButton from './BackButton/backButton';
-import AddButton from './AddButton/addButton';
-import EditButton from './EditButton/editButton';
+import NavbarButton from './NavbarButton/navbarButton';
 
 export {
   BackButton,
-  AddButton,
-  EditButton,
+  NavbarButton,
 };

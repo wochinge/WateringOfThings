@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import {colors, images, fonts, commonStyles} from '../../config';
-import { EditButton } from '../../components';
+import { NavbarButton } from '../../components';
 import Button from 'apsl-react-native-button';
 import { Plant } from '../../database';
 import { Router } from '../../index';
@@ -15,7 +15,7 @@ export default class PlantView extends Component {
         return `${params.plant.name}`;
       },
       renderRight: (params) => {
-        return (<EditButton route='plantEdit' routeParams={{
+        return (<NavbarButton iconName='pencil' route='plantEdit' routeParams={{
           controllerID: params.params.controller.controllerID,
           plant: params.params.plant}}/>);
       }
