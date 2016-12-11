@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Slider } from 'react-native';
 import {colors, images, fonts, commonStyles} from '../../config';
 import Button from 'apsl-react-native-button';
-
-
+import { WoTClient } from '../../network';
 
 export default class WaterPlantView extends Component {
 
   static route = {
     navigationBar: {
-      renderTitle: () => { return (
-        <Text style= {styles.headline}>
-          water your plant
-        </Text>
-      );},
+      title: 'Water your plant'
     }
   }
 
@@ -21,6 +16,7 @@ export default class WaterPlantView extends Component {
     super(props);
     this.state = {
       amount: 0,
+      controller: new WoTClient(this.props.controllerID)
     };
     this.onPressWatering = this.onPressWatering.bind(this);
   }
@@ -55,7 +51,7 @@ export default class WaterPlantView extends Component {
   }
 
   onPressWatering(amount) {
-    this.props.controller.waterPlant(this.props.plant.id, amount);
+    this.state.controller.waterPlant(this.props.plant.id, amount);
     //client.waterPlant(this.props.plant.id, 10);
   }
 
@@ -75,7 +71,7 @@ export default class WaterPlantView extends Component {
 
 WaterPlantView.propTypes = {
   plant: React.PropTypes.object,
-  controller: React.PropTypes.object,
+  controllerID: React.PropTypes.string,
   navigator: React.PropTypes.object,
 };
 

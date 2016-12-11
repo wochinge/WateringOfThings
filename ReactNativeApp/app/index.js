@@ -1,9 +1,5 @@
 import React, { Component} from 'react';
-import HomeView from './routes/Home/index';
-import PlantEditView from './routes/PlantEditView/plantEditView';
-import PlantView from './routes/PlantView';
-import WaterPlantView from './routes/PlantView/waterPlant';
-import AddControllerView from './routes/AddControllerView';
+import { AddControllerView, HomeView, PlantEditView, PlantView, WaterPlantView } from './routes';
 import { colors } from './config/styles';
 import { BackButton } from './components';
 import { Microcontroller } from './database/db';

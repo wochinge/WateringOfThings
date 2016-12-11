@@ -92,7 +92,7 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controller: this.state.client}));
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controller: this.props.controllerID}));
   }
 }
 

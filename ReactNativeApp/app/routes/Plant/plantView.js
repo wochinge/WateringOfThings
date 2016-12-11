@@ -59,7 +59,7 @@ export default class PlantView extends Component {
   }
 
   onPressWater(plant) {
-    this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant, controller: this.props.controller}));
+    this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant, controllerID: this.props.controllerID}));
     //client.waterPlant(this.props.plant.id, 10);
   }
 
@@ -79,7 +79,7 @@ export default class PlantView extends Component {
 
 PlantView.propTypes = {
   plant: React.PropTypes.object,
-  controller: React.PropTypes.object,
+  controllerID: React.PropTypes.string,
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
 };
