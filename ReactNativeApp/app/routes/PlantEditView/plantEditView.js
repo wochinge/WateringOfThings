@@ -28,8 +28,6 @@ export default class PlantEditView extends Component {
       plantEditMode = true;
     }
 
-    console.log(plant);
-
     this.state = {
       name: plantEditMode ? plant.name : '',
       pin: plantEditMode? plant.pin : 0,

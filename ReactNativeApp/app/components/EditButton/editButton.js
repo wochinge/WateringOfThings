@@ -13,7 +13,7 @@ export default class EditButton extends Component {
       <TouchableHighlight
         onPress={() => this.props.navigator.push(Router.getRoute(this.props.route, this.props.routeParams))}
         style={commonStyles.navBarButton}>
-        <Icon name="pencil" size={18} style={commonStyles.icon} />
+        <Icon name='pencil' size={18} style={commonStyles.icon} />
       </TouchableHighlight>
     );
   }

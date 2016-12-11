@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import { AddButton } from '../../components';
-import MicrocontrollerView from '../MicrocontrollerView/Microcontroller';
 import {colors, fonts} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../index';
@@ -31,8 +30,7 @@ export default class HomeView extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([]),
       loaded: true,
-      controllerID: '',
-      controller: null,
+      client: new WoTClient(this.props.controllerID),
     };
     this.renderPlants = this.renderPlants.bind(this);
     this.fetchData = this.fetchData.bind(this);
@@ -40,28 +38,24 @@ export default class HomeView extends Component {
 
   componentWillMount() {
     this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
-      if (this.state.controllerID) {
-        this.fetchData(this.state.controllerID);
+      if (this.props.controllerID) {
+        this.fetchData();
       }
     });
+    this.fetchData();
   }
 
   componentWillUnmount() {
     this._subscription.remove();
   }
 
-  fetchData(controllerID) {
-    this.props.navigator.updateCurrentRouteParams({
-      controllerID: controllerID
-    });
-    this.setState({loaded: false, controllerID: controllerID});
-    const wotClient = new WoTClient(controllerID);
-    wotClient.getPlants()
+  fetchData() {
+    this.setState({loaded: false});
+    this.state.client.getPlants()
     .then((responseJson) => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(responseJson),
-        loaded: true,
-        controller: wotClient,
+        loaded: true
       });
     });
   }
@@ -74,9 +68,6 @@ export default class HomeView extends Component {
           renderRow={this.renderPlants}
           enableEmptySections={true}
           style={styles.listView}
-        />
-        <MicrocontrollerView
-          controllerIDReceived={this.fetchData}
         />
         <ActivityIndicator
           animating={!this.state.loaded}
@@ -101,14 +92,14 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controller: this.state.controller}));
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controller: this.state.client}));
   }
 }
 
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
-  controller: React.PropTypes.object
+  controllerID: React.PropTypes.string
 };
 
 const styles = StyleSheet.create({

@@ -1,10 +1,12 @@
 import React, { Component} from 'react';
 import HomeView from './routes/Home/index';
 import PlantEditView from './routes/PlantEditView/plantEditView';
-import PlantView from './routes/PlantView/index';
+import PlantView from './routes/PlantView';
 import WaterPlantView from './routes/PlantView/waterPlant';
+import AddControllerView from './routes/AddControllerView';
 import { colors } from './config/styles';
 import { BackButton } from './components';
+import { Microcontroller } from './database/db';
 
 import {
   createRouter,
@@ -17,11 +19,15 @@ export const Router = createRouter(() => ({
   plant: () => PlantView,
   plantEdit: () => PlantEditView,
   waterPlant: () => WaterPlantView,
+  provideController: () => AddControllerView
 }));
 
 export default class WateringProject extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      controllerID: this._getControllerID()
+    };
   }
   render() {
 
@@ -34,8 +40,8 @@ export default class WateringProject extends Component {
     return (
       <NavigationProvider router={Router}>
       <StackNavigation
-        initialRoute={Router.getRoute('home')}
-        onTransitionStart={this.handleTransition.bind(this)}
+        initialRoute={this.state.controllerID ? Router.getRoute('home', {controllerID: this.state.controllerID}) : Router.getRoute('provideController')}
+        onTransitionStart={this._handleTransition.bind(this)}
         defaultRouteConfig={{
           navigationBar: {
             backgroundColor: colors.navbar,
@@ -47,7 +53,16 @@ export default class WateringProject extends Component {
     );
   }
 
-  handleTransition(routeWhereIsTransitionedTo) {
+  _getControllerID() {
+    const db = new Microcontroller();
+    const controllers = db.get();
+    if (controllers.length > 0) {
+      return controllers[0].id;
+    }
+    return;
+  }
+
+  _handleTransition(routeWhereIsTransitionedTo) {
     routeWhereIsTransitionedTo.scene.route.getEventEmitter().emit('onFocus', '');
   }
 }
