@@ -16,7 +16,7 @@ export default class PlantView extends Component {
       },
       renderRight: (params) => {
         return (<NavbarButton iconName='pencil' route='plantEdit' routeParams={{
-          controllerID: params.params.controller.controllerID,
+          controllerID: params.params.controllerID,
           plant: params.params.plant}}/>);
       }
     }

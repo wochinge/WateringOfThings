@@ -71,11 +71,17 @@ export default class PlantEditView extends Component {
     const client = new WoTClient(this.props.controllerID);
     if (this.state.plantEditMode) {
       client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
-      .then(() => db.save(this.props.plant.id, this.state.plantImage.uri));
+      .then(() => db.save(this.props.plant.id, this.state.plantImage.uri))
+      .catch((error) => {
+        console.log('There has been a problem with the fetch operation: ' + error.message);
+      });
       this.props.navigator.pop(2);
     } else {
       client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
-      .then(created => db.save(created.id, this.state.plantImage.uri));
+      .then(created => db.save(created.id, this.state.plantImage.uri))
+      .catch((error) => {
+        console.log('There has been a problem with the fetch operation: ' + error.message);
+      });
       this.props.navigator.pop();
     }
 

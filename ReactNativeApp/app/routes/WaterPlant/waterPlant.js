@@ -15,7 +15,7 @@ export default class WaterPlantView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 0,
+      amount: 50,
       controller: new WoTClient(this.props.controllerID)
     };
     this.onPressWatering = this.onPressWatering.bind(this);
