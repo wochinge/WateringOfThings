@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import { NavbarButton } from '../../components';
 import {colors, fonts} from '../../config';
@@ -63,16 +63,18 @@ export default class HomeView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderPlants}
-          enableEmptySections={true}
-          style={styles.listView}
-        />
-        <ActivityIndicator
-          animating={!this.state.loaded}
-          style={styles.activityIndicator}
-        />
+        <ScrollView style={styles.scrollView}>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderPlants}
+            enableEmptySections={true}
+            style={styles.listView}
+          />
+          <ActivityIndicator
+            animating={!this.state.loaded}
+            style={styles.activityIndicator}
+          />
+        </ScrollView>
       </View>
     );
   }
@@ -92,7 +94,7 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controller: this.props.controllerID}));
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.props.controllerID}));
   }
 }
 
