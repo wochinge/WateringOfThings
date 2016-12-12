@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import {colors, images, fonts, commonStyles} from '../../config';
 import { NavbarButton } from '../../components';
 import Button from 'apsl-react-native-button';
@@ -43,17 +43,19 @@ export default class PlantView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.image} source={this.state.imageURL}/>
-        <View style={styles.innerContainer}>
-        <Text style={styles.statusText}>
-          Health Status
-        </Text>
-          {this.moistureValue()}
-          <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
-            onPress={() => this.onPressWater(this.props.plant)}>
-            water
-          </Button>
-        </View>
+        <ScrollView>
+          <Image style={styles.image} source={this.state.imageURL}/>
+          <View style={styles.innerContainer}>
+          <Text style={styles.statusText}>
+            Health Status
+          </Text>
+            {this.moistureValue()}
+            <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
+              onPress={() => this.onPressWater(this.props.plant)}>
+              water
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     );
   }

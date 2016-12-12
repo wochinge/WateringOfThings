@@ -1,6 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TextInput, Image, Slider, TouchableHighlight } from 'react-native';
+import { View, Text, TextInput, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
 import { images, colors, commonStyles } from '../../config';
 
 import Button from 'apsl-react-native-button';
@@ -91,81 +91,83 @@ export default class PlantEditView extends Component {
     return(
       <View
         style={styles.container}>
-        <TouchableHighlight
-          onPress={this._selectPlantImage}
-          underlayColor={colors.touchFeedback}
-          style={styles.horizontalItem}>
-          <Image
-            source={this.state.plantImage}
-            style={styles.plantImage}
-          />
-        </TouchableHighlight>
-        <View
-          style={styles.item}>
-          <Text
-            style={styles.label}>
-            Name
-          </Text>
-          <TextInput
-            placeholder='e.g. Basil'
-            defaultValue={this.state.plantEditMode ? this.props.plant.name : null}
-            onChangeText={(name) => this.setState({name})}
-            style={styles.input}/>
-        </View>
-        <View
-          style={styles.item}>
-          <Text
-            style={styles.label}>
-            Pin
-          </Text>
-          <TextInput
-            placeholder='e.g. 3'
-            defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : null}
-            keyboardType='numeric'
-            onChangeText={(pin) => this.setState({pin})}
-            style={styles.input}/>
-        </View>
-        <View
-          style={styles.item}>
-          <Text
-            style={styles.label}>
-            Position in degree
-          </Text>
-          <TextInput
-            placeholder='e.g. 90'
-            defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : null}
-            keyboardType='numeric'
-            onChangeText={(position) => this.setState({position})}
-            style={styles.input}/>
-        </View>
-        <View
-          style={styles.item}>
-          <Text
-            style={styles.label}>
-            Moisture threshold
-          </Text>
+        <ScrollView>
+          <TouchableHighlight
+            onPress={this._selectPlantImage}
+            underlayColor={colors.touchFeedback}
+            style={styles.horizontalItem}>
+            <Image
+              source={this.state.plantImage}
+              style={styles.plantImage}
+            />
+          </TouchableHighlight>
           <View
-            style={styles.sliderImages}>
-            <Image
-              source={images.cactus}
-              style={styles.sliderIcon}/>
-            <Image
-              style={styles.sliderIcon}
-              source={images.lotus}/>
+            style={styles.item}>
+            <Text
+              style={styles.label}>
+              Name
+            </Text>
+            <TextInput
+              placeholder='e.g. Basil'
+              defaultValue={this.state.plantEditMode ? this.props.plant.name : null}
+              onChangeText={(name) => this.setState({name})}
+              style={styles.input}/>
           </View>
-          <Slider
-            onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold})}
-            minimumValue={0.0}
-            maximumValue={100.0}
-            value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 50}/>
-        </View>
-        <View
-          style={styles.horizontalItem}>
-          <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
-            onPress={this._savePlant}>
-            Save
-          </Button>
-        </View>
+          <View
+            style={styles.item}>
+            <Text
+              style={styles.label}>
+              Pin
+            </Text>
+            <TextInput
+              placeholder='e.g. 3'
+              defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : null}
+              keyboardType='numeric'
+              onChangeText={(pin) => this.setState({pin})}
+              style={styles.input}/>
+          </View>
+          <View
+            style={styles.item}>
+            <Text
+              style={styles.label}>
+              Position in degree
+            </Text>
+            <TextInput
+              placeholder='e.g. 90'
+              defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : null}
+              keyboardType='numeric'
+              onChangeText={(position) => this.setState({position})}
+              style={styles.input}/>
+          </View>
+          <View
+            style={styles.item}>
+            <Text
+              style={styles.label}>
+              Moisture threshold
+            </Text>
+            <View
+              style={styles.sliderImages}>
+              <Image
+                source={images.cactus}
+                style={styles.sliderIcon}/>
+              <Image
+                style={styles.sliderIcon}
+                source={images.lotus}/>
+            </View>
+            <Slider
+              onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold})}
+              minimumValue={0.0}
+              maximumValue={100.0}
+              value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 50}/>
+          </View>
+          <View
+            style={styles.horizontalItem}>
+            <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
+              onPress={this._savePlant}>
+              Save
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     );
   }

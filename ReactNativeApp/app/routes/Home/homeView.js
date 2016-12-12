@@ -63,7 +63,7 @@ export default class HomeView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderPlants}

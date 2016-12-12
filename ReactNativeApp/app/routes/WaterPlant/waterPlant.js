@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Slider } from 'react-native';
+import { View, Text, StyleSheet, Image, Slider, ScrollView } from 'react-native';
 import {colors, images, fonts, commonStyles} from '../../config';
 import Button from 'apsl-react-native-button';
 import { WoTClient } from '../../network';
@@ -24,28 +24,30 @@ export default class WaterPlantView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.innerContainer}>
-          {this.moistureValue()}
-            <View
-              style={styles.sliderImages}>
-              <Image
-                source={images.cactus}
-                style={styles.sliderIcon}/>
-              <Image
-                style={styles.sliderIcon}
-                source={images.lotus}/>
-            </View>
-            <Slider style={styles.slider}
-              onSlidingComplete={(amount) => this.setState({amount})}
-              minimumValue={0.0}
-              maximumValue={100.0}
-              value={50}/>
+        <ScrollView>
+          <View style={styles.innerContainer}>
+            {this.moistureValue()}
+              <View
+                style={styles.sliderImages}>
+                <Image
+                  source={images.cactus}
+                  style={styles.sliderIcon}/>
+                <Image
+                  style={styles.sliderIcon}
+                  source={images.lotus}/>
+              </View>
+              <Slider style={styles.slider}
+                onSlidingComplete={(amount) => this.setState({amount})}
+                minimumValue={0.0}
+                maximumValue={100.0}
+                value={50}/>
 
-          <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
-            onPress={() => this.onPressWatering(this.state.amount)}>
-            water
-          </Button>
-        </View>
+            <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
+              onPress={() => this.onPressWatering(this.state.amount)}>
+              water
+            </Button>
+          </View>
+        </ScrollView>
       </View>
     );
   }
