@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     // borderLeftColor: colors.defaultBackground,
     // borderStyle: 'solid',
     alignSelf: 'center',
-    width: 115,
+    width: 170,
     height: 130,
   },
   imageContainer:{
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   image:{
-    width: 115,
+    width: 170,
     height: 130,
     flex: 1,
     justifyContent: 'flex-end',
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
     textAlign: 'center',
-    width: 115,
+    width: 170,
   },
   textBackground: {
     backgroundColor: colors.gridTextBackground,
