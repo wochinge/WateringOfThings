@@ -62,15 +62,19 @@ export default class HomeView extends Component {
 
   render() {
     return (
+      <View style={styles.container}>
+        <ScrollView>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
           />
-          // <ActivityIndicator
-          //   animating={!this.state.loaded}
-          //   style={styles.activityIndicator}
-          // />
+           <ActivityIndicator
+              animating={!this.state.loaded}
+              style={styles.activityIndicator}
+          />
+        </ScrollView>
+      </View>
     );
   }
 
@@ -103,7 +107,6 @@ HomeView.propTypes = {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.defaultBackground,
-    paddingTop:50,
   },
   list: {
     flexDirection: 'row',
