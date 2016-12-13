@@ -62,20 +62,15 @@ export default class HomeView extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderPlants}
-            enableEmptySections={true}
-            style={styles.listView}
+            contentContainerStyle={styles.list}
           />
-          <ActivityIndicator
-            animating={!this.state.loaded}
-            style={styles.activityIndicator}
-          />
-        </ScrollView>
-      </View>
+          // <ActivityIndicator
+          //   animating={!this.state.loaded}
+          //   style={styles.activityIndicator}
+          // />
     );
   }
 
@@ -83,13 +78,14 @@ export default class HomeView extends Component {
     return (
       <TouchableHighlight underlayColor={colors.touchFeedback} onPress={() =>
         this.onPlantPress(plant)}>
-        <View
-        style={styles.row}>
-        <Text style={styles.text}>
-        {plant.name}
-        </Text>
+        <View>
+          <View style={styles.row}>
+            <Text style={styles.text}>
+            {plant.name}
+            </Text>
+          </View>
         </View>
-        </TouchableHighlight>
+      </TouchableHighlight>
     );
   }
 
@@ -106,39 +102,36 @@ HomeView.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.defaultBackground,
     paddingTop:50,
   },
-  listView: {
-    flex:1,
-    paddingTop:10,
+  list: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: colors.defaultBackground,
-    borderBottomColor : colors.separator,
-    borderTopColor: colors.defaultBackground,
-    borderRightColor: colors.defaultBackground,
-    borderLeftColor: colors.defaultBackground,
-    borderStyle: 'solid',
+    margin: 5,
+    alignItems: 'center',
     borderWidth: 1,
-    height: 40,
+    borderColor: colors.separator,
+    backgroundColor: colors.defaultBackground,
+    // borderBottomColor : colors.separator,
+    // borderTopColor: colors.defaultBackground,
+    // borderRightColor: colors.defaultBackground,
+    // borderLeftColor: colors.defaultBackground,
+    // borderStyle: 'solid',
+    width: 110,
+    height: 100,
   },
   text: {
-    flex: 1,
     color: colors.defaultText,
-    alignSelf: 'center',
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
-    paddingLeft: 60,
   },
   activityIndicator: {
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1
   },
   headline:{
     fontSize: 25,
