@@ -142,17 +142,21 @@ const styles = StyleSheet.create({
     // borderRightColor: colors.defaultBackground,
     // borderLeftColor: colors.defaultBackground,
     // borderStyle: 'solid',
+    alignSelf: 'center',
     width: 115,
     height: 100,
   },
   image:{
     width: 90,
     height: 80,
+    flex: 1,
   },
   text: {
     color: colors.defaultText,
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
+//     <Text style={styles.text}>
+// {plant.name}
   },
   activityIndicator: {
     justifyContent: 'center',
