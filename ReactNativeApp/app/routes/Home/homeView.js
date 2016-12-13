@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, Image } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import { NavbarButton } from '../../components';
-import {colors, fonts} from '../../config';
+import {colors, fonts, images} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../index';
+import { Plant } from '../../database';
 
 
 export default class HomeView extends Component {
@@ -68,6 +69,7 @@ export default class HomeView extends Component {
             dataSource={this.state.dataSource}
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
+            enableEmptySections={true}
           />
            <ActivityIndicator
               animating={!this.state.loaded}
@@ -84,14 +86,29 @@ export default class HomeView extends Component {
         this.onPlantPress(plant)}>
         <View>
           <View style={styles.row}>
-            <Text style={styles.text}>
-            {plant.name}
-            </Text>
+
+            {this._setImage(plant)}
+
           </View>
         </View>
       </TouchableHighlight>
     );
   }
+
+  _setImage(plant) {
+    const plantDB = new Plant();
+    const plantImageURL = plantDB.getPlantImagePath(plant.id);
+    if (plantImageURL) {
+      return (
+        <Image style={styles.image} source={plantImageURL}/>
+      );
+    }else{
+      return (
+      <Image style={styles.image} source={images.defaultPlantImage}/>
+      );
+    }
+  }
+
 
   onPlantPress(plant) {
     this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.props.controllerID}));
@@ -112,9 +129,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   row: {
-    margin: 5,
+    margin: 2,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.separator,
@@ -124,8 +142,12 @@ const styles = StyleSheet.create({
     // borderRightColor: colors.defaultBackground,
     // borderLeftColor: colors.defaultBackground,
     // borderStyle: 'solid',
-    width: 110,
+    width: 115,
     height: 100,
+  },
+  image:{
+    width: 90,
+    height: 80,
   },
   text: {
     color: colors.defaultText,
