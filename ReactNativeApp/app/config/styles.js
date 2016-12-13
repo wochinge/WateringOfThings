@@ -5,12 +5,14 @@ const colors = {
   buttonText: 'white',
   defaultBackground: 'white',
   dimmedBackground: 'rgba(0, 0, 0, 0.5)',
-  separator: 'darkgray',
+  separator: 'lightgray',
   touchFeedback: 'lightgray',
   defaultText: 'dimgray',
+  gridText: 'white',
   navbar: 'green',
   navText: 'white',
   button: 'blue',
+  gridTextBackground: 'rgba(0, 0, 0, 0.5)',
 };
 
 const fonts = {

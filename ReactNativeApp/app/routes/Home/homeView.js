@@ -98,15 +98,19 @@ export default class HomeView extends Component {
   _setImage(plant) {
     const plantDB = new Plant();
     const plantImageURL = plantDB.getPlantImagePath(plant.id);
+    var imageURL = images.defaultPlantImage;
     if (plantImageURL) {
-      return (
-        <Image style={styles.image} source={plantImageURL}/>
-      );
-    }else{
-      return (
-      <Image style={styles.image} source={images.defaultPlantImage}/>
-      );
+      imageURL = plantImageURL;
     }
+    return (
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={imageURL}>
+          <View style={styles.textBackground}>
+            <Text style={styles.textStyle}>{plant.name}</Text>
+          </View>
+        </Image>
+    </View>
+    );
   }
 
 
@@ -144,19 +148,29 @@ const styles = StyleSheet.create({
     // borderStyle: 'solid',
     alignSelf: 'center',
     width: 115,
-    height: 100,
+    height: 130,
+  },
+  imageContainer:{
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   image:{
-    width: 90,
-    height: 80,
+    width: 115,
+    height: 130,
     flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
-  text: {
-    color: colors.defaultText,
+  textStyle: {
+    color: colors.gridText,
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
-//     <Text style={styles.text}>
-// {plant.name}
+    textAlign: 'center',
+    width: 115,
+  },
+  textBackground: {
+    backgroundColor: colors.gridTextBackground,
+    justifyContent :'flex-end',
   },
   activityIndicator: {
     justifyContent: 'center',
