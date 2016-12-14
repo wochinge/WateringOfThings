@@ -1,8 +1,8 @@
 
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TextInput, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
 import { images, colors, commonStyles } from '../../config';
-
+import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
 import { WoTClient } from '../../network';
@@ -31,14 +31,19 @@ export default class PlantEditView extends Component {
     this.state = {
       name: plantEditMode ? plant.name : '',
       pin: plantEditMode? plant.pin : 0,
-      position: plantEditMode ? plant.position : 0,
-      moistureThreshold: plantEditMode ? plant.moistureThreshold : 0,
+      position: plantEditMode ? plant.position : '',
+      moistureThreshold: plantEditMode ? plant.moistureThreshold : '',
       plantImage: this._getPlantImage(plantEditMode, plant),
       plantImageData: 0,
-      plantEditMode: plantEditMode
+      plantEditMode: plantEditMode,
+      validPin: plantEditMode ? true : false,
+      validPosition: plantEditMode ? true : false
     };
     this._savePlant = this._savePlant.bind(this);
     this._selectPlantImage = this._selectPlantImage.bind(this);
+    this._validateName = this._validateName.bind(this);
+    this._validatePin = this._validatePin.bind(this);
+    this._validatePosition = this._validatePosition.bind(this);
   }
 
   _getPlantImage(plantEditMode, plant) {
@@ -89,6 +94,36 @@ export default class PlantEditView extends Component {
     }
 
   }
+  _validateName(name) {
+    const trimmed = name.trim();
+    this.setState({
+      name: trimmed != '',
+    });
+  }
+
+  _validatePin(pin) {
+    pin = parseInt(pin);
+    let valid = !isNaN(pin);
+    if (pin < 0 || pin > 8) {
+      valid = false;
+    }
+    this.setState({
+      pin: pin,
+      validPin: valid
+    });
+  }
+
+  _validatePosition(position) {
+    position = parseInt(position);
+    let valid = false;
+    if (!isNaN(position)) {
+      valid = true;
+    }
+    this.setState({
+      position: position,
+      validPosition: valid
+    });
+  }
 
   render() {
     return(
@@ -104,44 +139,9 @@ export default class PlantEditView extends Component {
               style={styles.plantImage}
             />
           </TouchableHighlight>
-          <View
-            style={styles.item}>
-            <Text
-              style={styles.label}>
-              Name
-            </Text>
-            <TextInput
-              placeholder='e.g. Basil'
-              defaultValue={this.state.plantEditMode ? this.props.plant.name : null}
-              onChangeText={(name) => this.setState({name})}
-              style={styles.input}/>
-          </View>
-          <View
-            style={styles.item}>
-            <Text
-              style={styles.label}>
-              Pin
-            </Text>
-            <TextInput
-              placeholder='e.g. 3'
-              defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : null}
-              keyboardType='numeric'
-              onChangeText={(pin) => this.setState({pin})}
-              style={styles.input}/>
-          </View>
-          <View
-            style={styles.item}>
-            <Text
-              style={styles.label}>
-              Position in degree
-            </Text>
-            <TextInput
-              placeholder='e.g. 90'
-              defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : null}
-              keyboardType='numeric'
-              onChangeText={(position) => this.setState({position})}
-              style={styles.input}/>
-          </View>
+          <InputFormRow label='Name' defaultValue={this.state.plantEditMode ? this.props.plant.name : ''} placeholder='e.g. Basil' valid={this.state.name != ''} onChange={this._validateName}/>
+          <InputFormRow label='Pin' defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : ''}placeholder='e.g. 3' valid={this.state.validPin} onChange={this._validatePin}/>
+          <InputFormRow label='Position' defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : ''} placeholder='e.g. 90' valid={this.state.validPosition} onChange={this._validatePosition}/>
           <View
             style={styles.item}>
             <Text
@@ -166,7 +166,8 @@ export default class PlantEditView extends Component {
           <View
             style={styles.horizontalItem}>
             <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
-              onPress={this._savePlant}>
+              onPress={this._savePlant}
+              isDisabled={!this.state.name || !this.state.validPin || !this.state.validPosition}>
               Save
             </Button>
           </View>
@@ -176,6 +177,7 @@ export default class PlantEditView extends Component {
   }
 }
 
+
 PlantEditView.propTypes = {
   controllerID: PropTypes.string,
   navigator: PropTypes.object,
@@ -183,20 +185,15 @@ PlantEditView.propTypes = {
   navigation: PropTypes.object,
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     margin: 20,
     marginTop: 0,
     flex: 1
   },
-  item: {
-    marginBottom: 20
-  },
   label: {
-    marginBottom: 10
-  },
-  input: {
-    minHeight: 30
+    minHeight: 30,
+    flex: 1,
   },
   sliderImages: {
     flexDirection: 'row',
@@ -208,7 +205,8 @@ const styles = {
   },
   horizontalItem: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: 20
   },
   plantImage: {
     margin: 20,
@@ -220,4 +218,4 @@ const styles = {
     flex: 1,
     marginTop: 10
   }
-};
+});
