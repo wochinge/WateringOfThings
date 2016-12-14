@@ -82,7 +82,10 @@ export default class PlantEditView extends Component {
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
-      this.props.navigator.pop();
+      this.props.navigation.performAction(({ tabs, stacks }) => {
+        tabs('main').jumpToTab('home');
+        stacks('home').popToTop();
+      });
     }
 
   }
@@ -176,7 +179,8 @@ export default class PlantEditView extends Component {
 PlantEditView.propTypes = {
   controllerID: PropTypes.string,
   navigator: PropTypes.object,
-  plant: React.PropTypes.object
+  plant: React.PropTypes.object,
+  navigation: PropTypes.object,
 };
 
 const styles = {

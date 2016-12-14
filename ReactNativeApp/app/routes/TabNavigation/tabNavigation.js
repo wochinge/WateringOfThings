@@ -4,9 +4,7 @@ import {
   TabNavigationItem as TabItem,
   StackNavigation,
 } from '@exponent/ex-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router, defaultRouteConfig , _handleTransition } from '../../index';
-import { colors } from '../../config';
 
 
 export default class TabNavigationLayout extends Component {
@@ -26,7 +24,15 @@ export default class TabNavigationLayout extends Component {
           >
         <TabItem
           id="home"
-          title="Home">
+          title="Home"
+          onPress={() => {
+            this.props.navigation.performAction(({tabs, stacks}) => {
+              tabs('main').jumpToTab('home');
+              stacks('home').popToTop();
+
+            });
+          }}
+          >
           <StackNavigation
             id="home"
             navigatorUID="home"
@@ -61,6 +67,7 @@ export default class TabNavigationLayout extends Component {
 }
 
 TabNavigationLayout.propTypes = {
+  navigation: React.PropTypes.object,
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
   controllerID: React.PropTypes.string
