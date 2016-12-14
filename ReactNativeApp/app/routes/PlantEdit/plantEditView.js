@@ -32,7 +32,7 @@ export default class PlantEditView extends Component {
       name: plantEditMode ? plant.name : '',
       pin: plantEditMode? plant.pin : 0,
       position: plantEditMode ? plant.position : '',
-      moistureThreshold: plantEditMode ? plant.moistureThreshold : '',
+      moistureThreshold: plantEditMode ? plant.moistureThreshold : 50,
       plantImage: this._getPlantImage(plantEditMode, plant),
       plantImageData: 0,
       plantEditMode: plantEditMode,
@@ -75,14 +75,14 @@ export default class PlantEditView extends Component {
     const db = new PlantDB();
     const client = new WoTClient(this.props.controllerID);
     if (this.state.plantEditMode) {
-      client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
+      client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
       .then(() => db.save(this.props.plant.id, this.state.plantImage.uri))
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
       this.props.navigator.pop(2);
     } else {
-      client.createPlant(this.state.name, this.state.pin, this.state.position, this.state.moistureThreshold)
+      client.createPlant(this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
       .then(created => db.save(created.id, this.state.plantImage.uri))
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
@@ -97,7 +97,7 @@ export default class PlantEditView extends Component {
   _validateName(name) {
     const trimmed = name.trim();
     this.setState({
-      name: trimmed != '',
+      name: trimmed,
     });
   }
 
@@ -158,7 +158,7 @@ export default class PlantEditView extends Component {
                 source={images.lotus}/>
             </View>
             <Slider
-              onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold})}
+              onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold: moistureThreshold})}
               minimumValue={0.0}
               maximumValue={100.0}
               value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 50}/>
