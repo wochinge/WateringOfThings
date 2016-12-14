@@ -197,7 +197,9 @@ const styles = StyleSheet.create({
   },
   sliderImages: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingLeft: 10,
+    paddingRight: 10
   },
   sliderIcon: {
     width: 50,
