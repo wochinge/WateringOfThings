@@ -43,6 +43,9 @@ export default class HomeView extends Component {
         this.fetchData();
       }
     });
+  }
+
+  componentDidMount() {
     this.fetchData();
   }
 
