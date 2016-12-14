@@ -13,6 +13,8 @@ const colors = {
   navText: 'white',
   button: 'blue',
   gridTextBackground: 'rgba(0, 0, 0, 0.5)',
+  valid: 'green',
+  invalid: 'red'
 };
 
 const fonts = {
