@@ -57,7 +57,7 @@ void movePumpTo(int position) {
 }
 
 void getMoistureValues(JsonArray& pins, int nrOfPins) {
-  digitalWrite(MOISTURE_START_PIN, HIGH);
+  digitalWrite(MOISTURE_START_PIN, LOW);
   delay(10);
   char buf[4];
   char concatenated[sizeof(MOISTURE_VALUES) + 1];
@@ -66,7 +66,7 @@ void getMoistureValues(JsonArray& pins, int nrOfPins) {
     sprintf (buf, "%04d", readMoistureValue(pins[i]));
     mqttclient.publish(concatenated, buf);
   }
-  digitalWrite(MOISTURE_START_PIN, LOW); 
+  digitalWrite(MOISTURE_START_PIN, HIGH); 
 }
 
 void callback (char* topic, byte* payload, unsigned int length) {
@@ -125,6 +125,7 @@ void setup(void) {
   pinMode(B, OUTPUT);
   pinMode(C, OUTPUT);
   pinMode(MOISTURE_START_PIN, OUTPUT);
+  digitalWrite(MOISTURE_START_PIN, LOW);
   pinMode(PUMP_PIN, OUTPUT);
   pumpMover.attach(SERVO_PIN);
 
