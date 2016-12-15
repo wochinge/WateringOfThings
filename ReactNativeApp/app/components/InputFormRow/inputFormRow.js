@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { colors } from '../../config';
+import { commonStyles } from '../../config';
 
 export default class InputFormRow extends Component {
 
@@ -32,7 +32,7 @@ export default class InputFormRow extends Component {
         { this.state.firstInput ? null
           : <Icon
               name={this.props.valid ? 'check' : 'exclamation-triangle'}
-              style={this.props.valid ? inputStyles.validIcon : inputStyles.invalidIcon} size={18}/>
+              style={this.props.valid ? commonStyles.validIcon : commonStyles.invalidIcon} size={18}/>
         }
 
       </View>
@@ -67,14 +67,5 @@ const inputStyles = StyleSheet.create({
   input: {
     flex: 2,
     minHeight: 30,
-  },
-  validIcon: {
-    flex: 1,
-    color: colors.valid
-  },
-  invalidIcon: {
-    flex: 1,
-    color: colors.invalid
   }
-
 });

@@ -42,6 +42,14 @@ const commonStyles = StyleSheet.create({
   icon: {
     color: colors.navText
   },
+  validIcon: {
+    flex: 1,
+    color: colors.valid
+  },
+  invalidIcon: {
+    flex: 1,
+    color: colors.invalid
+  }
 });
 
 export { colors, fonts, commonStyles };
