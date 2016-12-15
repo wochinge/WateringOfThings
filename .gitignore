@@ -52,6 +52,7 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
+migrations/
 
 # Flask stuff:
 instance/
@@ -81,6 +82,7 @@ celerybeat-schedule
 # virtualenv
 venv/
 ENV/
+activate/
 
 # Spyder project settings
 .spyderproject
@@ -375,3 +377,5 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+*.gch
+WifiConfig.h
