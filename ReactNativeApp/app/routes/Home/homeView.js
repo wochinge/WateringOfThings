@@ -33,6 +33,7 @@ export default class HomeView extends Component {
       loaded: true,
       client: new WoTClient(this.props.controllerID),
     };
+
     this.renderPlants = this.renderPlants.bind(this);
     this.fetchData = this.fetchData.bind(this);
   }
@@ -54,6 +55,7 @@ export default class HomeView extends Component {
   }
 
   fetchData() {
+    console.log('fetch');
     this.setState({loaded: false});
     this.state.client.getPlants()
     .then((responseJson) => {
@@ -101,7 +103,7 @@ export default class HomeView extends Component {
   _setImage(plant) {
     const plantDB = new Plant();
     const plantImageURL = plantDB.getPlantImagePath(plant.id);
-    var imageURL = images.defaultPlantImage;
+    let imageURL = images.defaultPlantImage;
     if (plantImageURL) {
       imageURL = plantImageURL;
     }
