@@ -57,6 +57,8 @@ export default class AddControllerView extends Component {
             style={[commonStyles.defaultButton, styles.item]}
             textStyle={commonStyles.defaultButtonText}
             onPress={this._save}
+            isLoading={this.state.validating}
+            activityIndicatorColor={colors.buttonText}
             isDisabled={this.state.microcontrollerInput == ''}>
             Save
           </Button>
@@ -67,17 +69,20 @@ export default class AddControllerView extends Component {
 
   _validateControllerID(controllerID) {
     this.setState({
+      validating: false,
       microcontrollerInput: controllerID.trim()
     });
   }
 
   _save() {
+    this.setState({validating: true});
     const client = new WoTClient(this.state.microcontrollerInput);
     client.existsController()
     .then(response => this._controllerValidationResult(response.exists));
   }
 
   _controllerValidationResult(isValid) {
+    this.setState({validating: false});
     if (isValid) {
       const id = this.state.microcontrollerInput;
       const db = new Microcontroller();
