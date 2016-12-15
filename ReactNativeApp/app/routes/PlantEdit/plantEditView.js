@@ -139,9 +139,22 @@ export default class PlantEditView extends Component {
               style={styles.plantImage}
             />
           </TouchableHighlight>
-          <InputFormRow label='Name' defaultValue={this.state.plantEditMode ? this.props.plant.name : ''} placeholder='e.g. Basil' valid={this.state.name != ''} onChange={this._validateName}/>
-          <InputFormRow label='Pin' defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : ''}placeholder='e.g. 3' valid={this.state.validPin} onChange={this._validatePin}/>
-          <InputFormRow label='Position' defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : ''} placeholder='e.g. 90' valid={this.state.validPosition} onChange={this._validatePosition}/>
+          <InputFormRow label='Name'
+            defaultValue={this.state.plantEditMode ? this.props.plant.name : ''}
+            placeholder='e.g. Basil' valid={this.state.name != ''}
+            onChange={this._validateName}/>
+          <InputFormRow label='Pin'
+            defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : ''}
+            placeholder='e.g. 3'
+            valid={this.state.validPin}
+            keyboardType='numeric'
+            onChange={this._validatePin}/>
+          <InputFormRow label='Position'
+            defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : ''}
+            placeholder='e.g. 90'
+            keyboardType='numeric'
+            valid={this.state.validPosition}
+            onChange={this._validatePosition}/>
           <View
             style={styles.item}>
             <Text

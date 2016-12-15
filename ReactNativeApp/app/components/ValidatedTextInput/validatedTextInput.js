@@ -10,7 +10,12 @@ export default class ValidatedTextInput extends Component {
   render() {
     return(
       <View style={[styles.wrapper, this.props.style]}>
-        <TextInput style={styles.input} placeholder={this.props.placeholder} onChangeText={this.props.onChange}/>
+        <TextInput
+            style={styles.input}
+            placeholder={this.props.placeholder}
+            onChangeText={this.props.onChange}
+            keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
+            autoCorrect={!this.props.disableAutoCorrect}/>
         <Icon
          name={this.props.valid ? 'check' : 'exclamation-triangle'}
          style={this.props.valid ? commonStyles.validIcon : commonStyles.invalidIcon} size={18}/>
@@ -23,7 +28,9 @@ ValidatedTextInput.propTypes = {
   style: PropTypes.element,
   placeholder: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  valid: PropTypes.bool.isRequired
+  valid: PropTypes.bool.isRequired,
+  disableAutoCorrect: PropTypes.bool,
+  keyboardType: PropTypes.string
 };
 
 const styles = StyleSheet.create({

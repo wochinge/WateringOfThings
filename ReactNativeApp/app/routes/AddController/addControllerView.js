@@ -49,7 +49,11 @@ export default class AddControllerView extends Component {
           <Text style={styles.label}>
             {this.state.inputMessage}
           </Text>
-          <ValidatedTextInput placeholder='controller id' valid={this.state.microcontrollerInput != ''} onChange={(this._validateControllerID)} />
+          <ValidatedTextInput
+            placeholder='controller id'
+            valid={this.state.microcontrollerInput != ''}
+            onChange={(this._validateControllerID)}
+            disableAutoCorrect={true}/>
         </View>
 
         <View style={styles.bottom}>
