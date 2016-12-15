@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { Image, View, Text, TextInput , StyleSheet } from 'react-native';
+import { Image, View, Text , StyleSheet } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import { Microcontroller } from '../../database/db';
 import Button from 'apsl-react-native-button';
 import { colors, images, commonStyles } from '../../config';
+import { ValidatedTextInput } from '../../components';
+
 import { Router } from '../../index';
 
 export default class AddControllerView extends Component {
@@ -20,8 +22,12 @@ export default class AddControllerView extends Component {
     this.state = {
       controllers: [],
       microcontrollerInput: '',
-      inputMessage: 'To water your plants, you have to provide the id of a controller.'
+      inputMessage: 'To water your plants, you have to provide the id of a controller.',
+      validating: false
     };
+    this._validateControllerID = this._validateControllerID.bind(this);
+    this._save = this._save.bind(this);
+    this._controllerValidationResult = this._controllerValidationResult.bind(this);
   }
 
   render() {
@@ -29,112 +35,114 @@ export default class AddControllerView extends Component {
       <View
         style={styles.container}>
 
-        <View
-          style={styles.imageView}>
+        <View style={styles.top}>
           <Image
             source={images.startIcon}
-            resizeMode="contain"
-            style={styles.image}
-          />
-        </View>
-
-        <View
-          style={styles.header}>
-          <Text>
+            resizeMode='contain'
+            style={styles.image}/>
+          <Text style={styles.header}>
             Welcome to WateringOfPlants!
           </Text>
         </View>
 
-        <View
-          style={styles.content}>
-          <Text
-            style={styles.label}>
+        <View style={styles.middle}>
+          <Text style={styles.label}>
             {this.state.inputMessage}
           </Text>
-
-          <TextInput
-            editable = {true}
-            maxLength = {40}
-            placeholder = 'Microcontroller id'
-            onChangeText={(text) => this.setState({microcontrollerInput: text})}
-            style={styles.input}>
-          </TextInput>
+          <ValidatedTextInput placeholder='controller id' valid={this.state.microcontrollerInput != ''} onChange={(this._validateControllerID)} />
         </View>
-      <View
-        style={styles.horizontalItem}>
-        <Button
-          style={[commonStyles.defaultButton, styles.item]}
-          textStyle={commonStyles.defaultButtonText}
-          onPress={() => this.validateControllerID(this.state.microcontrollerInput)}>
-          Save
-        </Button>
-      </View>
+
+        <View style={styles.bottom}>
+          <Button
+            style={[commonStyles.defaultButton, styles.item]}
+            textStyle={commonStyles.defaultButtonText}
+            onPress={this._save}
+            isLoading={this.state.validating}
+            activityIndicatorColor={colors.buttonText}
+            isDisabled={this.state.microcontrollerInput == ''}>
+            Save
+          </Button>
+        </View>
       </View>
     );
   }
 
-  validateControllerID(controllerID) {
-    controllerID = controllerID.trim();
-    if (controllerID) {
-      const client = new WoTClient(controllerID);
-      client.existsController()
-      .then(response => this.controllerValidationResult(response.exists, controllerID));
-    }
+  _validateControllerID(controllerID) {
+    this.setState({
+      validating: false,
+      microcontrollerInput: controllerID.trim()
+    });
   }
 
-  controllerValidationResult(isValid, id) {
+  _save() {
+    this.setState({validating: true});
+    const client = new WoTClient(this.state.microcontrollerInput);
+    client.existsController()
+    .then(response => this._controllerValidationResult(response.exists));
+  }
+
+  _controllerValidationResult(isValid) {
+    this.setState({validating: false});
     if (isValid) {
+      const id = this.state.microcontrollerInput;
       const db = new Microcontroller();
       db.save(id);
-      this.props.navigator.replace(Router.getRoute('home', {controllerID: id}));
+      if (this.props.firstAppStart) {
+        this.props.navigator.push(Router.getRoute('tabNavigationLayout', {controllerID: id}));
+      } else {
+        this.props.navigation.performAction(({ tabs, stacks }) => {
+          tabs('main').jumpToTab('home');
+          stacks('home').popToTop();
+          stacks('home').replace(Router.getRoute('home', {controllerID: this.state.microcontrollerInput}));
+        });
+      }
+
     } else {
-      this.setState({inputMessage: 'The given id was not valid. Please provide an valid id!'});
+      this.setState({
+        inputMessage: 'The given id was not valid. Please provide an valid id!',
+        microcontrollerInput: ''
+      });
     }
   }
 }
 
-
 AddControllerView.propTypes = {
-  navigator: PropTypes.object
+  navigation: PropTypes.object.isRequired,
+  navigator: PropTypes.object,
+  firstAppStart: PropTypes.bool,
 };
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     margin: 20,
     flexDirection: 'column',
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
     backgroundColor: colors.defaultBackground,
+    justifyContent: 'space-between'
   },
-  imageView: {
+  top: {
     flex: 1,
-    marginBottom: 10,
+  },
+  middle: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'center'
   },
   image: {
     alignSelf: 'center',
-    height: 100
+    height: 100,
+    margin: 20
   },
   header: {
-    flex: 1
-  },
-  content: {
-    flex: 2
+    textAlign: 'center',
   },
   label: {
-    marginBottom: 25,
-    flexDirection: 'row'
-  },
-  input: {
-    borderWidth: 0.5,
-    minHeight: 30,
-    padding: 5
-  },
-  horizontalItem: {
-    flexDirection: 'row',
-    justifyContent: 'center'
+    marginBottom: 20
   },
   item: {
-    flex: 1
+    height: 40,
   }
 });

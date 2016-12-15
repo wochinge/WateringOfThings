@@ -5,12 +5,16 @@ const colors = {
   buttonText: 'white',
   defaultBackground: 'white',
   dimmedBackground: 'rgba(0, 0, 0, 0.5)',
-  separator: 'darkgray',
+  separator: 'lightgray',
   touchFeedback: 'lightgray',
   defaultText: 'dimgray',
+  gridText: 'white',
   navbar: 'green',
   navText: 'white',
   button: 'blue',
+  gridTextBackground: 'rgba(0, 0, 0, 0.5)',
+  valid: 'green',
+  invalid: 'red'
 };
 
 const fonts = {
@@ -38,6 +42,14 @@ const commonStyles = StyleSheet.create({
   icon: {
     color: colors.navText
   },
+  validIcon: {
+    flex: 1,
+    color: colors.valid
+  },
+  invalidIcon: {
+    flex: 1,
+    color: colors.invalid
+  }
 });
 
 export { colors, fonts, commonStyles };

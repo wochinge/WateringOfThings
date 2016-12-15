@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, Image } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import { NavbarButton } from '../../components';
-import {colors, fonts} from '../../config';
+import {colors, fonts, images} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../index';
+import { Plant } from '../../database';
 
 
 export default class HomeView extends Component {
@@ -32,6 +33,7 @@ export default class HomeView extends Component {
       loaded: true,
       client: new WoTClient(this.props.controllerID),
     };
+
     this.renderPlants = this.renderPlants.bind(this);
     this.fetchData = this.fetchData.bind(this);
   }
@@ -42,6 +44,9 @@ export default class HomeView extends Component {
         this.fetchData();
       }
     });
+  }
+
+  componentDidMount() {
     this.fetchData();
   }
 
@@ -50,6 +55,7 @@ export default class HomeView extends Component {
   }
 
   fetchData() {
+    console.log('fetch');
     this.setState({loaded: false});
     this.state.client.getPlants()
     .then((responseJson) => {
@@ -67,12 +73,12 @@ export default class HomeView extends Component {
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderPlants}
+            contentContainerStyle={styles.list}
             enableEmptySections={true}
-            style={styles.listView}
           />
-          <ActivityIndicator
-            animating={!this.state.loaded}
-            style={styles.activityIndicator}
+           <ActivityIndicator
+              animating={!this.state.loaded}
+              style={styles.activityIndicator}
           />
         </ScrollView>
       </View>
@@ -83,15 +89,35 @@ export default class HomeView extends Component {
     return (
       <TouchableHighlight underlayColor={colors.touchFeedback} onPress={() =>
         this.onPlantPress(plant)}>
-        <View
-        style={styles.row}>
-        <Text style={styles.text}>
-        {plant.name}
-        </Text>
+        <View>
+          <View style={styles.row}>
+
+            {this._setImage(plant)}
+
+          </View>
         </View>
-        </TouchableHighlight>
+      </TouchableHighlight>
     );
   }
+
+  _setImage(plant) {
+    const plantDB = new Plant();
+    const plantImageURL = plantDB.getPlantImagePath(plant.id);
+    let imageURL = images.defaultPlantImage;
+    if (plantImageURL) {
+      imageURL = plantImageURL;
+    }
+    return (
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={imageURL}>
+          <View style={styles.textBackground}>
+            <Text style={styles.textStyle}>{plant.name}</Text>
+          </View>
+        </Image>
+    </View>
+    );
+  }
+
 
   onPlantPress(plant) {
     this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.props.controllerID}));
@@ -106,39 +132,54 @@ HomeView.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: colors.defaultBackground,
-    paddingTop:50,
   },
-  listView: {
-    flex:1,
-    paddingTop:10,
+  list: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flex: 1,
-    backgroundColor: colors.defaultBackground,
-    borderBottomColor : colors.separator,
-    borderTopColor: colors.defaultBackground,
-    borderRightColor: colors.defaultBackground,
-    borderLeftColor: colors.defaultBackground,
-    borderStyle: 'solid',
+    margin: 2,
+    alignItems: 'center',
     borderWidth: 1,
-    height: 40,
-  },
-  text: {
-    flex: 1,
-    color: colors.defaultText,
+    borderColor: colors.separator,
+    backgroundColor: colors.defaultBackground,
+    // borderBottomColor : colors.separator,
+    // borderTopColor: colors.defaultBackground,
+    // borderRightColor: colors.defaultBackground,
+    // borderLeftColor: colors.defaultBackground,
+    // borderStyle: 'solid',
     alignSelf: 'center',
+    width: 170,
+    height: 130,
+  },
+  imageContainer:{
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
+  image:{
+    width: 170,
+    height: 130,
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  textStyle: {
+    color: colors.gridText,
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
-    paddingLeft: 60,
+    textAlign: 'center',
+    width: 170,
+  },
+  textBackground: {
+    backgroundColor: colors.gridTextBackground,
+    justifyContent :'flex-end',
   },
   activityIndicator: {
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1
   },
   headline:{
     fontSize: 25,

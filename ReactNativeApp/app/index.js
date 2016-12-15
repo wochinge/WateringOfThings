@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { AddControllerView, HomeView, PlantEditView, PlantView, WaterPlantView } from './routes';
+import { AddControllerView, HomeView, PlantEditView, PlantView, WaterPlantView, TabNavigationLayout } from './routes';
 import { colors } from './config/styles';
 import { BackButton } from './components';
 import { Microcontroller } from './database/db';
@@ -15,37 +15,43 @@ export const Router = createRouter(() => ({
   plant: () => PlantView,
   plantEdit: () => PlantEditView,
   waterPlant: () => WaterPlantView,
-  provideController: () => AddControllerView
+  provideController: () => AddControllerView,
+  tabNavigationLayout: () => TabNavigationLayout,
 }));
 
+export function _handleTransition(routeWhereIsTransitionedTo) {
+  routeWhereIsTransitionedTo.scene.route.getEventEmitter().emit('onFocus', '');
+}
+
+export const defaultRouteConfig = {
+  navigationBar: {
+    backgroundColor: colors.navbar,
+    renderLeft: <BackButton/>,
+    tintColor: colors.navText,
+  }
+};
+
 export default class WateringProject extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       controllerID: this._getControllerID()
     };
   }
+
   render() {
-
-    // var plants=[
-    //   {title:'Sonnenblume', id:0},
-    //   {title:'Basilikum', id:1},
-    //   {title:'Gummibaum', id:2},
-    // ]
-
     return (
       <NavigationProvider router={Router}>
-      <StackNavigation
-        initialRoute={this.state.controllerID ? Router.getRoute('home', {controllerID: this.state.controllerID}) : Router.getRoute('provideController')}
-        onTransitionStart={this._handleTransition.bind(this)}
-        defaultRouteConfig={{
-          navigationBar: {
-            backgroundColor: colors.navbar,
-            renderLeft: () => <BackButton/>,
-            tintColor: colors.navText,
-          }
-        }} />
+        <StackNavigation
+            initialRoute={this.state.controllerID
+              ? Router.getRoute('tabNavigationLayout', {controllerID: this.state.controllerID})
+              : Router.getRoute('provideController', {firstAppStart: true})}
+            onTransitionStart={_handleTransition.bind(this)}
+            defaultRouteConfig={defaultRouteConfig}
+            />
       </NavigationProvider>
+
     );
   }
 
@@ -56,10 +62,6 @@ export default class WateringProject extends Component {
       return controllers[0].id;
     }
     return;
-  }
-
-  _handleTransition(routeWhereIsTransitionedTo) {
-    routeWhereIsTransitionedTo.scene.route.getEventEmitter().emit('onFocus', '');
   }
 }
 
