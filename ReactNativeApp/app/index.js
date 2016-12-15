@@ -41,17 +41,12 @@ export default class WateringProject extends Component {
   }
 
   render() {
-
-    // var plants=[
-    //   {title:'Sonnenblume', id:0},
-    //   {title:'Basilikum', id:1},
-    //   {title:'Gummibaum', id:2},
-    // ]
-
     return (
       <NavigationProvider router={Router}>
         <StackNavigation
-            initialRoute={Router.getRoute('tabNavigationLayout', {controllerID: this.state.controllerID})}
+            initialRoute={this.state.controllerID
+              ? Router.getRoute('tabNavigationLayout', {controllerID: this.state.controllerID})
+              : Router.getRoute('provideController', {firstAppStart: true})}
             onTransitionStart={_handleTransition.bind(this)}
             defaultRouteConfig={defaultRouteConfig}
             />

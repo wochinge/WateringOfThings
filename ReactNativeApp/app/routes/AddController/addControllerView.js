@@ -82,11 +82,16 @@ export default class AddControllerView extends Component {
       const id = this.state.microcontrollerInput;
       const db = new Microcontroller();
       db.save(id);
-      this.props.navigation.performAction(({ tabs, stacks }) => {
-        tabs('main').jumpToTab('home');
-        stacks('home').popToTop();
-        stacks('home').replace(Router.getRoute('home', {controllerID: this.state.microcontrollerInput}));
-      });
+      if (this.props.firstAppStart) {
+        this.props.navigator.push(Router.getRoute('tabNavigationLayout', {controllerID: id}));
+      } else {
+        this.props.navigation.performAction(({ tabs, stacks }) => {
+          tabs('main').jumpToTab('home');
+          stacks('home').popToTop();
+          stacks('home').replace(Router.getRoute('home', {controllerID: this.state.microcontrollerInput}));
+        });
+      }
+
     } else {
       this.setState({
         inputMessage: 'The given id was not valid. Please provide an valid id!',
@@ -97,7 +102,9 @@ export default class AddControllerView extends Component {
 }
 
 AddControllerView.propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  navigator: PropTypes.object,
+  firstAppStart: PropTypes.bool,
 };
 
 const styles = StyleSheet.create({

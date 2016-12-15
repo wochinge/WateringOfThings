@@ -36,7 +36,7 @@ export default class TabNavigationLayout extends Component {
           <StackNavigation
             id="home"
             navigatorUID="home"
-            initialRoute={this.props.controllerID ? Router.getRoute('home', {controllerID: this.props.controllerID}) :        Router.getRoute('provideController')}
+            initialRoute={Router.getRoute('home', {controllerID: this.props.controllerID})}
             defaultRouteConfig={defaultRouteConfig}
             onTransitionStart={_handleTransition.bind(this)}
             />
