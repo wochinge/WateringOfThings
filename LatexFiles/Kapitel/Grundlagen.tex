@@ -1,7 +1,83 @@
 \section{Grundlagen}
 
 \subsection{React}
-http://www.reactnative.com/under-the-hood-of-react-native/
+\textit{React} ist eine 2013 von Facebook vorgestellte Bibliothek zur programmatischen Erstellung von UI-Komponenten mittels JavaScript \cite{facebook_inc._react_2016}. Im Gegensatz zu Frameworks wie \textit{AngularJS} oder \textit{Ember.js} handelt sich hierbei nicht um die Umsetzung des MV*-Paradigmas. Stattdessen fokussiert sich React auf die View-Komponente. Während Web-Frameworks die View meist mittels Templates beziehungsweise HTML beschreiben, setzt React diese mittels JavaScript um \cite{hunt_why_2013}. Die Motivation von Facebook zur Entwicklung von React war es Single-Page-Anwendungen zu schreiben, deren Komponenten sich bei Datenänderung selbst updaten. Änderungen am DOM sind sehr kostenintensiv. Daher arbeitet React mit einem sogenannten \textit{Virtual DOM}. Änderungen werden zuerst auf den Virtual DOM angewandt, welcher diese performant verarbeiten kann. Anhand eines Vergleichs werden die minimal durchzuführenden Änderungen festgestellt und auf den eigentliche DOM angewandt. Dies führt dazu, dass React eine sehr performante Möglichkeit ist Webanwendungen mit sich dynamisch ändernden Views umzusetzen. Weiterhin kann React sowohl Client- als auch Server-seitig gerendert werden \cite{hunt_why_2013}.
+ 
+ %TODO oneDirectional
 \subsection{JSX}
+Die Erstellung von View-Komponenten mittels JavaScript und React wirkt insbesondere für HTML-gewöhnte Entwickler wenig intuitiv. Beispielsweise wird mit folgendem Code ein div-Element mit dem Text \textit{Hello} erzeugt.
+\begin{listing}[H]
+    \begin{minted}{js}
+   const element = React.createElement(
+        "div",
+        null,
+        "Hello"
+        );
+    }
+    \end{minted}
+    \caption{Erstellung eines div-Elements mit dem Text \textit{Hello} ohne JSX}
+    \label{lst:jsx_without_jsx}
+\end{listing}
+
+Meist wird daher die Syntax-Erweiterung \textit{JSX} genutzt. JSX ist ein an HTML angelehnte \textit{Syntactic Sugar}, welcher es erlaubt Listing \ref{lst:jsx_without_jsx} wie folgt zu schreiben:
+\begin{listing}[H]
+    \begin{minted}{js}
+    const element = <div>Hello</div>;
+    \end{minted}
+    \caption{Erstellung eines div-Elements mit dem Text \textit{Hello} mit JSX}
+    \label{lst:jsx_with_jsx}
+\end{listing}
+Diese neue Syntax muss vor Ausführung jedoch wieder zu konventionellem JavaScript übersetzt werden. Dies kann beispielsweise mit Babel geschehen \cite{facebook_inc._introducing_2016}.
+Innerhalb der mittels JSX-Komponenten eingesetztes JavaScript muss innerhalb von geschweiften Klammern definiert werden: 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+    const userName = 'Max';
+    const element =  <div>Hello {userName}</div>;
+    \end{minted}
+    \caption{Verwendung von JavaScript-Ausdrücken innerhalb von JSX-Komponenten}
+    \label{lst:embedded_expression}
+\end{listing}
+
+Mehrere Elemente können wie in HTML geschachtelt werden, sofern sie sich in einem gemeinsamen Elternelement befinden.
+
+\begin{listing}[H]
+    \begin{minted}{js}
+    const userName = 'Max';
+    const element = (
+        <div>
+            <div>Hello</div>
+            <div>{userName}</div>
+        </div>
+        );
+    \end{minted}
+    \caption{Geschachteltes JSX}
+    \label{lst:jsx_nested}
+\end{listing}
+
+Oft ist es weiterhin notwendig Daten von den Elternkomponenten in die Kindkomponenten zu übergeben. Dies wird in JSX mittels sogenannter \textit{Properties} umgesetzt.
+
+\begin{listing}[H]
+    \begin{minted}{js}
+    class Hello extends React.Component {
+        render() {
+            return (
+                <div>Hello {this.props.userName}</div>
+            );
+        }
+    }
+    
+    ReactDOM.render(<Hello userName='Max' />, mountNodeInDOM);
+    \end{minted}
+    \caption{Übergabe von Properties an Kind-Komponenten}
+    \label{lst:jsx_nested}
+\end{listing}
+
+
+
+% 
+% Properties
+% Unterlemente
+
 
 \subsection{Cross-Platform-Mobile-Development}
