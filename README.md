@@ -6,6 +6,7 @@ Repository for the web application course.
 ## Requirements
 *   Python 3
 *   Sqlite
+*   Running Redis server
 
 ## Installation
 1.  Create a virtualenv to isolate our package dependencies locally
@@ -43,5 +44,5 @@ Repository for the web application course.
 5.  Start Celery beat and worker (for regular moisture measurements)
 
     ```bash
-    celery -B  -A api worker -l info
+    celery -B  -A watering_of_things worker -l info
     ```

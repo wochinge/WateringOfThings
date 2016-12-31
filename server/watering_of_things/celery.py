@@ -8,3 +8,4 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'watering_of_things.settings')
 
 app = Celery('watering_of_things', broker='django://', include=['watering_of_things.api.tasks'])
+app.conf.broker_url = 'redis://localhost:6379/0'

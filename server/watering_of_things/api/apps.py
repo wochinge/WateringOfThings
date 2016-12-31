@@ -7,7 +7,7 @@ class AppConfig(AppConfig):
     def ready(self):
         from watering_of_things.api.models import MicroController, Plant, MoistureValue
         controller, _ = MicroController.objects.get_or_create(id='3')
-
+        controller, _ = MicroController.objects.get_or_create(id='123456789')
         raspberry, _ = Plant.objects.get_or_create(name="Himbeere", pin=1, position=0, moistureThreshold=22.0, microController=controller)
         MoistureValue.objects.get_or_create(plant=raspberry, value=50)
         MoistureValue.objects.get_or_create(plant=raspberry, value=100)

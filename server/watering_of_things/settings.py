@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'kombu.transport.django',
     'watering_of_things.api.apps.AppConfig',
 ]
 
