@@ -34,12 +34,13 @@ export default class PlantEditView extends Component {
       position: plantEditMode ? plant.position : '',
       moistureThreshold: plantEditMode ? plant.moistureThreshold : 50,
       plantImage: this._getPlantImage(plantEditMode, plant),
-      plantImageData: 0,
+      imageSelected: false,
       plantEditMode: plantEditMode,
       validPin: plantEditMode ? true : false,
       validPosition: plantEditMode ? true : false
     };
     this._savePlant = this._savePlant.bind(this);
+    this._saveImage = this._saveImage.bind(this);
     this._selectPlantImage = this._selectPlantImage.bind(this);
     this._validateName = this._validateName.bind(this);
     this._validatePin = this._validatePin.bind(this);
@@ -54,6 +55,7 @@ export default class PlantEditView extends Component {
     }
 
     if (!plantURL) {
+      console.log(images.defaultPlantImage);
       return images.defaultPlantImage;
     }
     return plantURL;
@@ -67,23 +69,23 @@ export default class PlantEditView extends Component {
     })
     .then(image => this.setState({
       plantImage: {uri: image.path},
+      imageSelected: true
     }))
     .catch(e => console.log(e));
   }
 
   _savePlant() {
-    const db = new PlantDB();
     const client = new WoTClient(this.props.controllerID);
     if (this.state.plantEditMode) {
       client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
-      .then(() => db.save(this.props.plant.id, this.state.plantImage.uri))
+      .then(() => this._saveImage(this.props.plant.id))
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
       this.props.navigator.pop(2);
     } else {
       client.createPlant(this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
-      .then(created => db.save(created.id, this.state.plantImage.uri))
+      .then(created => this._saveImage(created.id))
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
@@ -92,8 +94,15 @@ export default class PlantEditView extends Component {
         stacks('home').popToTop();
       });
     }
-
   }
+
+    _saveImage(id) {
+      if (this.state.imageSelected) {
+        const db = new PlantDB();
+        db.save(id, this.state.plantImage.uri);
+      }
+    }
+
   _validateName(name) {
     const trimmed = name.trim();
     this.setState({
