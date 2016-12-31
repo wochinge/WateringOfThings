@@ -33,7 +33,7 @@
 
 #define SERVO_PIN D2
 #define PUMP_PIN D3
-#define TILL_SERVO_FINISHED 3000
+#define TILL_SERVO_FINISHED 1000
 
 WiFiClient client;
 PubSubClient mqttclient(client);
@@ -43,17 +43,20 @@ Servo pumpMover;
 void waterPlant(int position, int time) {
   Serial.println("Water plant");
   Serial.println(position);
-  movePumpTo(position);
+  movePumpTo(position, true);
   Serial.println(time);
   digitalWrite(PUMP_PIN, HIGH);
   delay(time);
   digitalWrite(PUMP_PIN, LOW);
+  movePumpTo(-position, false);
   Serial.println("Watering end");  
 }
 
-void movePumpTo(int position) {
+void movePumpTo(int position, boolean delayTillFinished) {
   pumpMover.write(position);
-  delay(TILL_SERVO_FINISHED);
+  if (delayTillFinished) {
+      delay(TILL_SERVO_FINISHED);
+  }
 }
 
 void getMoistureValues(JsonArray& pins, int nrOfPins) {
@@ -125,9 +128,11 @@ void setup(void) {
   pinMode(B, OUTPUT);
   pinMode(C, OUTPUT);
   pinMode(MOISTURE_START_PIN, OUTPUT);
-  digitalWrite(MOISTURE_START_PIN, LOW);
+  digitalWrite(MOISTURE_START_PIN, HIGH);
   pinMode(PUMP_PIN, OUTPUT);
   pumpMover.attach(SERVO_PIN);
+  // Fix for invalid starting position
+  movePumpTo(-90, false);
 
 }
 
