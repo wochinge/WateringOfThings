@@ -27,51 +27,88 @@ export default class HomeView extends Component {
 
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const healthy = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+    const dry = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
     this.state = {
-      dataSource: ds.cloneWithRows([]),
+      healthy_plants: healthy.cloneWithRows([]),
+      dry_plants: dry.cloneWithRows([]),
       loaded: true,
       client: new WoTClient(this.props.controllerID),
     };
-
     this.renderPlants = this.renderPlants.bind(this);
-    this.fetchData = this.fetchData.bind(this);
+    this._fetchData = this._fetchData.bind(this);
+    this._categorizePlants = this._categorizePlants.bind(this);
   }
 
   componentWillMount() {
     this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
       if (this.props.controllerID) {
-        this.fetchData();
+        this._fetchData();
       }
     });
   }
 
   componentDidMount() {
-    this.fetchData();
+    this._fetchData();
   }
 
   componentWillUnmount() {
     this._subscription.remove();
   }
 
-  fetchData() {
-    console.log('fetch');
+  _fetchData() {
     this.setState({loaded: false});
     this.state.client.getPlants()
-    .then((responseJson) => {
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(responseJson),
-        loaded: true
-      });
+    .then(this._categorizePlants);
+  }
+
+  _categorizePlants(listOfPlants) {
+    const ok = [];
+    const toDry = [];
+
+    for (let plant of listOfPlants) {
+      if (!plant.lastMoistureValue || (plant.lastMoistureValue > plant.moistureThreshold))
+        ok.push(plant);
+      else {
+        toDry.push(plant);
+      }
+    }
+    this.setState({
+      healthy_plants: this.state.healthy_plants.cloneWithRows(ok),
+      dry_plants: this.state.dry_plants.cloneWithRows(toDry),
+      loaded: true
     });
+
   }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView>
+          {this.state.dry_plants._cachedRowCount > 0 ?
+            <View
+              style={styles.sectionHeader}>
+              <Icon name="exclamation-triangle" size={18}/>
+            </View>
+            : null}
           <ListView
-            dataSource={this.state.dataSource}
+            dataSource={this.state.dry_plants}
+            renderRow={this.renderPlants}
+            contentContainerStyle={styles.list}
+            enableEmptySections={true}
+          />
+          {this.state.healthy_plants._cachedRowCount > 0 ?
+            <View
+              style={styles.sectionHeader}>
+              <Icon name="check" size={18}/>
+            </View>
+            : null}
+          <ListView
+            dataSource={this.state.healthy_plants}
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
             enableEmptySections={true}
@@ -118,7 +155,6 @@ export default class HomeView extends Component {
     );
   }
 
-
   onPlantPress(plant) {
     this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.props.controllerID}));
   }
@@ -134,6 +170,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.defaultBackground,
   },
+  sectionHeader: {
+    flex: 1,
+    padding: 10,
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+
   list: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -146,11 +189,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.separator,
     backgroundColor: colors.defaultBackground,
-    // borderBottomColor : colors.separator,
-    // borderTopColor: colors.defaultBackground,
-    // borderRightColor: colors.defaultBackground,
-    // borderLeftColor: colors.defaultBackground,
-    // borderStyle: 'solid',
     alignSelf: 'center',
     width: 170,
     height: 130,
