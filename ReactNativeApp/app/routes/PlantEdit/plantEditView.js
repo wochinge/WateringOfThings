@@ -1,7 +1,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
-import { images, colors, commonStyles } from '../../config';
+import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -14,7 +14,7 @@ export default class PlantEditView extends Component {
   static route = {
     navigationBar: {
       title(params) {
-        return params.plant ? 'Edit plant' : 'Create plant';
+        return params.plant ? I18n.t('edit_plant') : I18n.t('create_plant');
       }
     }
   }
@@ -113,7 +113,7 @@ export default class PlantEditView extends Component {
   _validatePin(pin) {
     pin = parseInt(pin);
     let valid = !isNaN(pin);
-    if (pin < 0 || pin > 8) {
+    if (pin < 0 || pin > 7) {
       valid = false;
     }
     this.setState({
@@ -148,19 +148,20 @@ export default class PlantEditView extends Component {
               style={styles.plantImage}
             />
           </TouchableHighlight>
-          <InputFormRow label='Name'
+          <InputFormRow label={I18n.t('name')}
             defaultValue={this.state.plantEditMode ? this.props.plant.name : ''}
-            placeholder='e.g. Basil' valid={this.state.name != ''}
+            placeholder={I18n.t('namePlaceholder')}
+            valid={this.state.name != ''}
             onChange={this._validateName}/>
-          <InputFormRow label='Pin'
+          <InputFormRow label={I18n.t('pin')}
             defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : ''}
-            placeholder='e.g. 3'
+            placeholder={I18n.t('pinPlaceHolder')}
             valid={this.state.validPin}
             keyboardType='numeric'
             onChange={this._validatePin}/>
-          <InputFormRow label='Position'
+          <InputFormRow label={I18n.t('position')}
             defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : ''}
-            placeholder='e.g. 90'
+            placeholder={I18n.t('positionPlaceholder')}
             keyboardType='numeric'
             valid={this.state.validPosition}
             onChange={this._validatePosition}/>
@@ -168,7 +169,7 @@ export default class PlantEditView extends Component {
             style={styles.item}>
             <Text
               style={styles.label}>
-              Moisture threshold
+              {I18n.t('moistureThreshold')}
             </Text>
             <View
               style={styles.sliderImages}>
@@ -190,7 +191,7 @@ export default class PlantEditView extends Component {
             <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
               onPress={this._savePlant}
               isDisabled={!this.state.name || !this.state.validPin || !this.state.validPosition}>
-              Save
+              {I18n.t('save')}
             </Button>
           </View>
         </ScrollView>
