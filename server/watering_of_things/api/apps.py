@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class AppConfig(AppConfig):
+class APIConfig(AppConfig):
     name = 'watering_of_things.api'

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'watering_of_things.api.apps.AppConfig',
+    'watering_of_things.api.apps.APIConfig',
 ]
 
 REST_FRAMEWORK = {
