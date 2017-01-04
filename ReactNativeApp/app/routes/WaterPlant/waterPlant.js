@@ -33,14 +33,18 @@ export default class WaterPlantView extends Component {
                 <Image
                   source={images.cactus}
                   style={styles.sliderIcon}/>
+                <Text>
+                  {this.state.amount} ml
+                </Text>
                 <Image
                   style={styles.sliderIcon}
                   source={images.lotus}/>
               </View>
               <Slider style={styles.slider}
-                onSlidingComplete={(amount) => this.setState({amount})}
+                onValueChange={(amount) => this.setState({amount})}
                 minimumValue={1.0}
                 maximumValue={200.0}
+                step={1}
                 value={100}/>
 
             <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
