@@ -4,11 +4,11 @@
 #include <ArduinoJson.h>
 #include <Servo.h>
 
-#include "WifiConfig.h" //provides WLAN_SSID and WLAN_PASS
-#include "MqttConfig.h" //provides MQTT_SERVER, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD
+#include "WifiConfig.h" // provides WLAN_SSID and WLAN_PASS
+#include "MqttConfig.h" // provides MQTT_SERVER, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD
+#include "ID.h" // provides CONTROLLER_ID
 
-#define ARDUINO_ID "123456789"
-#define BASE_TOPIC "WateringOfPlants/microController/" ARDUINO_ID 
+#define BASE_TOPIC "WateringOfPlants/microController/" CONTROLLER_ID 
 #define WATER_PLANTS BASE_TOPIC "/water"
 #define MEASURE_MOISTURE BASE_TOPIC "/measure"
 #define MOISTURE_VALUES BASE_TOPIC "/measuredValues/"
