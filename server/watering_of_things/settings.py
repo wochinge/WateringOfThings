@@ -127,6 +127,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/var/www/virtual/wocit/WebApps/WateringOfThings'
+STATIC_ROOT = '/var/www/virtual/wocit/WebApps/WateringOfThings/static'
 
 USE_X_FORWARDED_HOST = True
