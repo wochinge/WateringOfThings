@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Slider, ScrollView } from 'react-native';
-import {colors, images, fonts, commonStyles} from '../../config';
+import {colors, images, fonts, commonStyles, I18n} from '../../config';
 import Button from 'apsl-react-native-button';
 import { WoTClient } from '../../network';
+import { Plant } from '../../models';
 
 export default class WaterPlantView extends Component {
 
   static route = {
     navigationBar: {
-      title: 'Water your plant'
+      title: I18n.t('water')
     }
   }
 
@@ -38,13 +39,13 @@ export default class WaterPlantView extends Component {
               </View>
               <Slider style={styles.slider}
                 onSlidingComplete={(amount) => this.setState({amount})}
-                minimumValue={0.0}
-                maximumValue={100.0}
-                value={50}/>
+                minimumValue={1.0}
+                maximumValue={200.0}
+                value={100}/>
 
             <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
               onPress={() => this.onPressWatering(this.state.amount)}>
-              water
+              {I18n.t('water')}
             </Button>
           </View>
         </ScrollView>
@@ -54,19 +55,11 @@ export default class WaterPlantView extends Component {
 
   onPressWatering(amount) {
     this.state.controller.waterPlant(this.props.plant.id, amount);
-    //client.waterPlant(this.props.plant.id, 10);
   }
 
-  moistureValue(){
-    if(this.props.plant.latestMoistureValue){
-      if(this.props.plant.latestMoistureValue< this.props.plant.moistureThreshold){
-        return (<Text style={styles.moistureText}> Plant is a little bit dry </Text>);
-      }else{
-        return (<Text style={styles.moistureText}> Plant lives in perfect conditions </Text>);
-      }
-    }else{
-      return (<Text style={styles.moistureText}> No values available </Text>);
-    }
+  moistureValue() {
+    const plant = new Plant(this.props.plant);
+    return <Text style={styles.moistureText}>{plant.healthStatusText()}</Text>;
   }
 
 }
@@ -79,12 +72,6 @@ WaterPlantView.propTypes = {
 
 
 const styles = StyleSheet.create({
-  headline:{
-    fontSize: 25,
-    fontFamily: fonts.defaultFamily,
-    color: colors.navText,
-    alignSelf: 'center',
-  },
   container: {
     paddingTop: 30,
     flex: 1,

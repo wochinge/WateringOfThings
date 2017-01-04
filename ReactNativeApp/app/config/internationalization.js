@@ -25,7 +25,13 @@ I18n.translations = {
     positionPlaceholder: '0 - 180 degree',
     pin: 'Pin',
     pinPlaceHolder: '0 - 7',
-    moistureThreshold: 'Moisture threshold'
+    moistureThreshold: 'Moisture threshold',
+
+    healthState: 'Health status',
+    tooDry: 'Plant is too dry.',
+    enoughWater: 'Plant lives in perfect conditions.',
+    noValues: 'No values available.',
+    water: 'Water'
   },
   de: {
     homeTab: 'Home',
@@ -46,7 +52,13 @@ I18n.translations = {
     position: 'Position',
     positionPlaceholder: '0 - 180 Grad',
     pin: 'Pin',
-    moistureThreshold: 'Feuchtigkeitsgrenzwert'
+    moistureThreshold: 'Feuchtigkeitsgrenzwert',
+
+    healthState: 'Bewässerungszustand',
+    tooDry: 'Pflanze ist zu trocken.',
+    enoughWater: 'Pflanze hat genug Wasser.',
+    noValues: 'Keine Daten vorhanden.',
+    water: 'Gießen'
 
   }
 };
