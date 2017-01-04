@@ -382,3 +382,4 @@ WifiConfig.h
 *.pdf
 MqttConfig.h
 mqtt_settings.py
+*.sqlite3
