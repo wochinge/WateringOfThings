@@ -25,7 +25,7 @@ SECRET_KEY = '3bqkg(7s78q7pq@s&mwlydn3uw88j)zgl1gjv8_o-w^x7v061*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2', 'watering-of-things.wocit.ankaa.uberspace.de']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2', 'wocit.ankaa.uberspace.de']
 
 
 # Application definition
@@ -127,6 +127,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/var/www/virtual/wocit/WebApps/WateringOfThings/static'
+STATIC_ROOT = '/var/www/virtual/wocit/html/static'
 
 USE_X_FORWARDED_HOST = True
