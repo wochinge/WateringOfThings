@@ -380,3 +380,5 @@ android/keystores/debug.keystore
 *.gch
 WifiConfig.h
 *.pdf
+MqttConfig.h
+mqtt_settings.py
