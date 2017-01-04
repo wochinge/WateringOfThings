@@ -25,7 +25,7 @@ SECRET_KEY = '3bqkg(7s78q7pq@s&mwlydn3uw88j)zgl1gjv8_o-w^x7v061*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2', 'watering-of-things.wocit.ankaa.uberspace.de']
 
 
 # Application definition
@@ -111,9 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de-de'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -127,4 +127,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = '/var/www/virtual/wocit/WebApps/WateringOfThings'
+
+USE_X_FORWARDED_HOST = True
