@@ -182,9 +182,9 @@ export default class PlantEditView extends Component {
             </View>
             <Slider
               onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold: moistureThreshold})}
-              minimumValue={0.0}
-              maximumValue={100.0}
-              value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 50}/>
+              minimumValue={100}
+              maximumValue={900}
+              value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 500}/>
           </View>
           <View
             style={styles.horizontalItem}>
