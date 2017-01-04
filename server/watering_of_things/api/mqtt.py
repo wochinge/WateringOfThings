@@ -4,7 +4,7 @@ from paho.mqtt.publish import single
 from watering_of_things.api.models import MicroController, Plant, MoistureValue
 import logging
 import json
-
+import watering_of_things.config.mqtt_settings as mqtt_config
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +63,7 @@ def request_moisture_values(controller_id, pins):
 client = mqtt.Client()
 client.on_connect = _on_connect
 client.message_callback_add(MOISTURE_VALUES_TOPIC, _on_moisture_values_measured)
-client.connect_async(host=HOSTNAME, port=PORT, keepalive=60)
+client.username_pw_set(mqtt_config.USERNAME, password=mqtt_config.PASSWORD)
+client.connect_async(host=mqtt_config.SERVER, port=mqtt_config.PORT, keepalive=60)
 client.loop_start()
 

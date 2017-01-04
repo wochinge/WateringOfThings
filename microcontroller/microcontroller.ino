@@ -5,6 +5,7 @@
 #include <Servo.h>
 
 #include "WifiConfig.h" //provides WLAN_SSID and WLAN_PASS
+#include "MqttConfig.h" //provides MQTT_SERVER, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD
 
 #define ARDUINO_ID "123456789"
 #define BASE_TOPIC "WateringOfPlants/microController/" ARDUINO_ID 
@@ -113,11 +114,11 @@ void setup(void) {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   
-  mqttclient.setServer("test.mosca.io", 1883);
+  mqttclient.setServer(MQTT_SERVER, MQTT_PORT);
   mqttclient.setCallback(callback);
   
  // did that last thing work? sweet, let's do something
-  if (mqttclient.connect("clientId-nr78ZXWMF5")) {
+  if (mqttclient.connect(MQTT_USERNAME, MQTT_USERNAME, MQTT_PASSWORD)) {
     Serial.println("Connected to mqtt broker");
     mqttclient.publish(BASE_TOPIC, "Initial");
     mqttclient.subscribe(WATER_PLANTS);
