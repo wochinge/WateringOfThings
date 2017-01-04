@@ -33,6 +33,8 @@ Repository for the web application course.
     ```bash
     python manage.py makemigrations
     python manage.py migrate
+    python manage.py makemigrations api
+    python manage.py migrate api
     ```
 
 4.  Start server
