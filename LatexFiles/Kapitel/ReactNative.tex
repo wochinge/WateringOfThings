@@ -132,10 +132,32 @@ const styles = StyleSheet.create({
 \end{listing}
 
 \subsection{Layout}
-% Flexbox
+Nicht jedes Smartphone hat die selben Abmessungen und unterschiedliche Bildschirmgrößen. React Native verwendet für dieses Problem den Style \textit{flex} \cite{facebook_inc._flex_2017}.  Hiermit können Components sich dem gegebenen Platz in Höhe und Breite perfekt anpassen. Wird jeder Component \textit{flex: 1} gegeben, teilen sich die Components den Platz gleichmäßig auf. Je größer die vergebene Zahl ist, desto mehr Platz erhält diese Component dann im Verhältnis zu anderen Components in einem Parent-Element \cite{facebook_inc._flex_2017}. 
 
-\subsection{Views}
-% ListView ScrollView
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import {View } from 'react-native';
+
+class HomeView extends Component {
+    render() {
+        return (
+            <View style={{flex: 1}}>
+                <View style={{flex: 1}} />
+                <View style={{flex: 2}} />
+            </View>
+        );
+    }
+};
+
+    \end{minted}
+    \caption{Flexbox}
+    \label{lst:flex}
+\end{listing}
+
+Zusätzlich kann mithilfe von Flexboxen ein einheitliches Layout gewährleistet werden. Weitere Styles zum verfeinern des Layouts sind \textit{flexDirection}, \textit{alignItems} und \textit{justifyContent}. Mit FlexDirection kann die Ausrichtung der Objekte bestimmt werden, d.h. die Objekte können vertikal \textit{column} oder horizontal \textit{row} angeordnet werden. Der Standardwert für flexboxen ist horizontal. AlignItems regelt die Ausrichtung der Kind-Components \cite{facebook_inc._flex_2017}. \\
+
+Die Verteilung der Components wird mit justifyContent geregelt. Es ist möglich die Objekte links-, rechtsbündig oder mittig anzuordnen oder mit Abstand um das Objekt oder zwischen den Objekten \cite{facebook_inc._flex_2017}.
 
 \subsection{Plattform-Spezialisierung}
 Auch wenn es das Ziel ist, möglichst viel Code zwischen den Plattformen wiederzuverwenden, gibt es Situationen in denen zwischen den Plattformen differenziert werden muss. Dies kann beispielsweise nötig werden, falls die App an das Look-And-Feel der jeweiligen Plattformen angepasst werden solll, um die User-Experience zu erhöhen.
@@ -177,4 +199,24 @@ const styles = StyleSheet.create({
 \end{listing}
 
 \subsection{Networking}
-%Oder wo anders, aber eigentlich hier?
+Zum Ansprechen einer Rest API hat React Native die \textit{Fetch API} \cite{facebook_inc._fetch_2017}. Um Daten von einer URL zu laden, muss diese nur an die fetch Funktion übergeben werden. Des weiteren kann die Methode oder Header definiert werden. 
+
+
+\begin{listing}[H]
+    \begin{minted}{js}
+fetch('https://mywebsite.com/endpoint/', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        firstParam: 'yourValue',
+        secondParam: 'yourOtherValue',
+    })
+})
+    \end{minted}
+    \caption{Fetch \cite{facebook_inc._fetch_2017}}
+    \label{lst:fetch}
+\end{listing}
+
