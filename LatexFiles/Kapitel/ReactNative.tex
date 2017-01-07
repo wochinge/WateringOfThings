@@ -1,6 +1,6 @@
 \section{React Native}
 
-\subsection{Components}
+\subsection{Components} \label{component}
 React Native und React konstruieren Applikationen mit Hilfe von \textit{Components}. React Native verwendet dabei native Komponenten von Android und iOS, während React Web Components nutzt  \cite{facebook_inc._getting_2017}. Die \textit{React.Component} Klasse von React wird als abstrakte Basisklasse verwendet. Alle eigenen Klassen werden im Normalfall von dieser Klasse abgeleitet. Mithilfe von Components kann die Anwendung in unabhängige und isolierte Teile gegliedert werden. Components sind mit JavaScript Funktionen vergleichbar, welche eine Eingabe erhalten und zurückgeben was am Bildschirm angezeigt werden soll \cite{facebook_inc._components_2017}. Im unteren Beispiel \ref{lst:component} wird die Component \textit{HomeView} angelegt. Jede Component braucht eine \textit{render} Funktion, die JSX rendert. \textit{AppRegistry} definiert den Anfangspunkt der App für React Native. Die wird in der App meist nur in der obersten index Datei verwendet \cite{facebook_inc._getting_2017}. 
 
 \begin{listing}[H]
