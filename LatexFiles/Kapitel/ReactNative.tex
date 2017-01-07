@@ -132,10 +132,36 @@ const styles = StyleSheet.create({
 \end{listing}
 
 \subsection{Layout}
-% Flexbox
+Nicht jedes Smartphone hat die selben Abmessungen und unterschiedliche Bildschirmgrößen. React Native verwendet für dieses Problem den Style \textit{flex} \cite{facebook_inc._flex_2017}.  Hiermit können Components sich dem gegebenen Platz in Höhe und Breite perfekt anpassen. Wird jeder Component \textit{flex: 1} gegeben, teilen sich die Components den Platz gleichmäßig auf. Je größer die vergebene Zahl ist, desto mehr Platz erhält diese Component dann im Verhältnis zu anderen Components in einem Parent-Element \cite{facebook_inc._flex_2017}. 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import {View } from 'react-native';
+
+class HomeView extends Component {
+    render() {
+        return (
+            <View style={{flex: 1}}>
+                <View style={{flex: 1}} />
+                <View style={{flex: 2}} />
+            </View>
+        );
+    }
+};
+
+    \end{minted}
+    \caption{Flexbox}
+    \label{lst:flex}
+\end{listing}
+
+Zusätzlich kann mithilfe von Flexboxen ein einheitliches Layout gewährleistet werden. Weitere Styles zum verfeinern des Layouts sind \textit{flexDirection}, \textit{alignItems} und \textit{justifyContent}. Mit FlexDirection kann die Ausrichtung der Objekte bestimmt werden, d.h. die Objekte können vertikal \textit{column} oder horizontal \textit{row} angeordnet werden. Der Standardwert für flexboxen ist horizontal. AlignItems regelt die Ausrichtung der Kind-Components. \\
+
+Die Verteilung der Components wird mit justifyContent geregelt. Es ist möglich die Objekte links-, rechtsbündig oder mittig anzuordnen oder mit Abstand um das Objekt oder zwischen den Objekten. 
+
 
 \subsection{Views}
-% ListView ScrollView
+In den oberen Beispielen wurde bereits die Component View erwähnt und verwendet. Eine speziellere Form von View ist der \textit{ScrollView}, dieser ermöglicht ein scrollen in der App. Wie der View kann auch der ScrollView mehrere Components beinhalten. 
 
 \subsection{Plattform-Spezialisierung}
 https://facebook.github.io/react-native/docs/platform-specific-code.html
