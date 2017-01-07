@@ -4,8 +4,37 @@
 React Native lässt sich in jedem Texteditor entwickeln. Es gibt aber auch spezielle Entwicklungsumgebungen wie \textit{Nuclide}, welches ein Package für den Texteditor Atom ist. Allerdings fiel beim Text auf, dass dies Atom sehr langsam machte und für die Entwicklung kaum Vorteile brachte. Deco ist eine weitere mögliche Entwicklungsumgebung. Diese beinhaltet allerdings wenige Features und keine ES-Lint Integration, dies macht eine qualitative Entwicklung einer App schwierig. Die besten Erfahrungen konnten mit Atom in Kombination mit Es-Lint und weiteren React Native Packages gemacht werden. 
 
 \subsection{Verzeichnisstruktur}
-Ein React Native Projekt hat schon zu Beginn eine Reihe von Dateien und Ordnern. Der \textit{android} Ordner beinhaltet all den nativen Code für eine Android App. In dem Ordner befinden sich unter anderem gradle, java und xml Dateien. Das Gegenstück hierzu ist der \textit{ios} Ordner, welcher allen nativen iOS Code beinhaltet. Beispielsweise ist in diesem Ordner das Xcode Projekt der App \cite{carli_project_2016}. Passend zu den Ordner gibt es eine Index Datei für Android und eine für iOS. \textit{index.ios.js} ist der Ausgangspunkt für die iOS App. In dieser Datei wird die App registriert, wie in Kapitel \ref{component} dargestellt. In der \textit{index.android.js} Datei muss die App für Android ebenfalls registriert werden \cite{carli_project_2016}. Die beiden Dateien beinhalten meist den gleichen Code. Hinzukommen noch ein \textit{node\_modules} Ordner für die Node Dateien. 
-package json
+Wie Listing \ref{lst:idirectory_structure} zeigt, besitzt ein React Native Projekt schon zu Beginn eine Reihe von Dateien und Ordnern.
+Die Ordner \textit{android} und \textit{ios} beinhalten dabei all den nativen Code ihrer jeweiligen Plattform. Diese werden nur selten benötigt. Im i\textit{ios}-Ordner befindet sich beispielsweise das Xcode-Projekt der App \cite{carli_project_2016}. Passend zu den Ordnern gibt es jeweils eine Index-Datei für Android und eine für iOS. \textit{index.ios.js} ist der Ausgangspunkt für die iOS-App beziehungsweise \textit{index.android.js} für die Android-App. In diesen Dateien wird die App registriert, wie in Kapitel \ref{component} dargestellt. Da die beiden Dateien zu Beginn überwiegend gleichen Code beinhalten, lohnt es sich diesen in eine Datei auszulagern, die schließlich importiert wird. Die eigentliche App wird schließlich im Ordner \textit{App} entwickelt. Entwickelte Tests werden im Ordner \textit{\_\_tests\_\_} gespeichert. Hinzukommen noch ein \textit{node\_modules}-Ordner, in der die mittels des \textit{Node Package Manager} installierten Bibliotheken gespeichert werden. Weiterhin liegen verschiedene Konfigurationsdateien im Projektordner. Diese werden weitestgehend von React Native selbst verwaltet. Hervorzuheben sind die \textit{package.json}, welche die installierten Bibliotheken und deren Versionen auflistet, sowie die Konfiguration des JavaScript-Compilers \textit{Babel .babelrc}, welche zum Beispiel beim Hinzufügen von Sprachfeatures, wie speziellen Annotationen, angepasst werden muss. 
+
+  \lstdefinestyle{tree}{
+    literate=
+    {├}{{\smash{\raisebox{-1ex}{\rule{1pt}{\baselineskip}}}\raisebox{0.5ex}{\rule{1ex}{1pt}}}}1 
+    {─}{{\raisebox{0.5ex}{\rule{1.5ex}{1pt}}}}1 
+    {└}{{\smash{\raisebox{0.5ex}{\rule{1pt}{\dimexpr\baselineskip-1.5ex}}}\raisebox{0.5ex}{\rule{1ex}{1pt}}}}1 
+}
+        
+\begin{lstlisting}[style=tree]
+.
+├── .babelrc
+├── .buckconfig
+├── .flowconfig
+├── .watchmanconfig
+└── __tests__/
+├── android/
+├── app/
+├── index.android.js
+├── index.ios.js
+├── ios/
+├── node_modules/
+└── package.json
+    \end{lstlisting}
+\vspace{-0.5 cm}
+\begin{listing}[H]
+    \caption{Initiale Verzeichnisstruktur eines React Native Projekts}
+    \label{lst:idirectory_structure}
+\end{listing}
+
 
 
 
