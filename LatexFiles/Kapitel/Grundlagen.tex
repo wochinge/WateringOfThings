@@ -19,10 +19,10 @@ Die Erstellung von View-Komponenten mittels JavaScript und React wirkt insbesond
     \label{lst:jsx_without_jsx}
 \end{listing}
 
-Meist wird daher die Syntax-Erweiterung \textit{JSX} genutzt. JSX ist ein an HTML angelehnte \textit{Syntactic Sugar}, welcher es erlaubt Listing \ref{lst:jsx_without_jsx} wie folgt zu schreiben:
+Meist wird daher die Syntax-Erweiterung \textit{JSX} genutzt. JSX ist ein an HTML angelehnter \textit{Syntactic Sugar}, welcher es erlaubt Listing \ref{lst:jsx_without_jsx} wie folgt zu schreiben:
 \begin{listing}[H]
     \begin{minted}{js}
-    const element = <div>Hello</div>;
+const element = <div>Hello</div>;
     \end{minted}
     \caption{Erstellung eines div-Elements mit dem Text \textit{Hello} mit JSX}
     \label{lst:jsx_with_jsx}
@@ -32,8 +32,8 @@ Innerhalb der mittels JSX-Komponenten eingesetztes JavaScript muss innerhalb von
 
 \begin{listing}[H]
     \begin{minted}{js}
-    const userName = 'Max';
-    const element =  <div>Hello {userName}</div>;
+const userName = 'Max';
+const element =  <div>Hello {userName}</div>;
     \end{minted}
     \caption{Verwendung von JavaScript-Ausdrücken innerhalb von JSX-Komponenten}
     \label{lst:embedded_expression}
@@ -43,13 +43,13 @@ Mehrere Elemente können wie in HTML geschachtelt werden, sofern sie sich in ein
 
 \begin{listing}[H]
     \begin{minted}{js}
-    const userName = 'Max';
-    const element = (
-        <div>
-            <div>Hello</div>
-            <div>{userName}</div>
-        </div>
-        );
+const userName = 'Max';
+const element = (
+    <div>
+        <div>Hello</div>
+        <div>{userName}</div>
+    </div>
+    );
     \end{minted}
     \caption{Geschachteltes JSX}
     \label{lst:jsx_nested}
@@ -59,15 +59,15 @@ Oft ist es weiterhin notwendig Daten von den Elternkomponenten in die Kindkompon
 
 \begin{listing}[H]
     \begin{minted}{js}
-    class Hello extends React.Component {
-        render() {
-            return (
-                <div>Hello {this.props.userName}</div>
-            );
-        }
+class Hello extends React.Component {
+    render() {
+        return (
+            <div>Hello {this.props.userName}</div>
+        );
     }
-    
-    ReactDOM.render(<Hello userName='Max' />, mountNodeInDOM);
+}
+
+ReactDOM.render(<Hello userName='Max' />, mountNodeInDOM);
     \end{minted}
     \caption{Übergabe von Properties an Kind-Komponenten}
     \label{lst:jsx_nested}
