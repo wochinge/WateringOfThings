@@ -114,6 +114,33 @@ let r = realm.objects('Dog').filtered('age < 8');
 \end{listing}
 
 \subsection{Internationalisierung}
+Die Anzeige lässt sich dank der Bibliothek \textit{react-native-i18n} einfach internationalisieren \cite{react-native-i18n_2017}. Dazu werden englischen Formulieren sowie deren Übersetzung anhand eines eindeutigen Keys identifiziert. Sofern die Option \textins{Fallback} aktiviert ist, wird bei Fehlen einer entsprechenden Übersetzung automatisch auf die englische Version zurückgegriffen. Standardmäßig werden Texte automatisch anhand der festgelegten Gerätesprache ausgewählt.
+
+\begin{listing}[H]
+    \begin{minted}{js}
+class Example extends React.Component {
+    render () {
+        return (
+            <Text>{I18n.t('hello_word')}</Text>
+        );
+    }
+}
+
+I18n.fallbacks = true
+
+I18n.translations = {
+    en: {
+        hello_word: 'Hello world!'
+    },
+    de: {
+        hello_word: 'Hallo Welt!'
+    }
+}
+    \end{minted}
+    \caption{Internationalisierung mittels \textit{i18n}}
+    \label{lst:internationalizing}
+\end{listing}
+
 
 %TODO
-\subsection{Testing}
+% \subsection{Testing}
