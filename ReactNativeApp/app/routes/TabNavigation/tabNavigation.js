@@ -4,10 +4,12 @@ import {
   TabNavigationItem as TabItem,
   StackNavigation,
 } from '@exponent/ex-navigation';
-import { Router, defaultRouteConfig , _handleTransition } from '../../index';
+import { Router, defaultRouteConfig , _handleTransition } from '../../router';
+import { I18n } from '../../config';
+import { connect } from 'react-redux';
 
 
-export default class TabNavigationLayout extends Component {
+class TabNavigationLayout extends Component {
 
   static route = {
     navigationBar: {
@@ -24,7 +26,7 @@ export default class TabNavigationLayout extends Component {
           >
         <TabItem
           id="home"
-          title="Home"
+          title={I18n.t('homeTab')}
           onPress={() => {
             this.props.navigation.performAction(({tabs, stacks}) => {
               tabs('main').jumpToTab('home');
@@ -36,24 +38,24 @@ export default class TabNavigationLayout extends Component {
           <StackNavigation
             id="home"
             navigatorUID="home"
-            initialRoute={Router.getRoute('home', {controllerID: this.props.controllerID})}
+            initialRoute={Router.getRoute('home')}
             defaultRouteConfig={defaultRouteConfig}
             onTransitionStart={_handleTransition.bind(this)}
             />
         </TabItem>
         <TabItem
           id="plantEdit"
-          title="Add">
+          title={I18n.t('addTab')}>
           <StackNavigation
             id="plantEdit"
-            initialRoute={Router.getRoute('plantEdit', {controllerID: this.props.controllerID})}
+            initialRoute={Router.getRoute('plantEdit')}
             defaultRouteConfig={defaultRouteConfig}
             onTransitionStart={_handleTransition.bind(this)}
           />
         </TabItem>
         <TabItem
           id="provideController"
-          title="Settings">
+          title={I18n.t('settingsTab')}>
           <StackNavigation
             id="provideController"
             initialRoute={Router.getRoute('provideController')}
@@ -70,5 +72,13 @@ TabNavigationLayout.propTypes = {
   navigation: React.PropTypes.object,
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
-  controllerID: React.PropTypes.string
+  client: React.PropTypes.object.isRequired
 };
+
+const mapStateToProps = (state) => (
+  {
+    client: state.controller.client
+  }
+);
+
+export default connect(mapStateToProps)(TabNavigationLayout);

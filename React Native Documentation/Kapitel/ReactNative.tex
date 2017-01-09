@@ -1,0 +1,222 @@
+\section{React Native}
+
+\subsection{Components} \label{component}
+React Native und React konstruieren Applikationen mit Hilfe von \textit{Components}. React Native verwendet dabei native Komponenten von Android und iOS, während React Web Components nutzt  \cite{facebook_inc._getting_2017}. Die \textit{React.Component} Klasse von React wird als abstrakte Basisklasse verwendet. Alle eigenen Klassen werden im Normalfall von dieser Klasse abgeleitet. Mithilfe von Components kann die Anwendung in unabhängige und isolierte Teile gegliedert werden. Components sind mit JavaScript Funktionen vergleichbar, welche eine Eingabe erhalten und zurückgeben was am Bildschirm angezeigt werden soll \cite{facebook_inc._components_2017}. Im unteren Beispiel \ref{lst:component} wird die Component \textit{HomeView} angelegt. Jede Component braucht eine \textit{render} Funktion, die JSX rendert. \textit{AppRegistry} definiert den Anfangspunkt der App für React Native. Die wird in der App meist nur in der obersten index Datei verwendet \cite{facebook_inc._getting_2017}. 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import { AppRegistry, Text } from 'react-native';
+
+class HomeView extends Component {
+    render() {
+        return (
+            <Text>Watering of Things App</Text>
+        );
+    }
+}
+
+AppRegistry.registerComponent('HomeView', () => HomeView);
+    \end{minted}
+    \caption{Components}
+    \label{lst:component}
+\end{listing}
+
+\subsection{Props}
+JSX Attribute werden für selbst definierte Funktionen als ein Objekt übergeben. Dieses Objekt heißt \textit{Props} \cite{facebook_inc._components_2017}. Mithilfe von Props können die Components bei ihrer Erstellung angepasst werden. Props ermöglichen, dass eine Component an verschiedenen Stellen mit verschiedenen Daten wiederverwendet werden kann \cite{facebook_inc._props_2017}. Es ist allerdings nur lesender Zugriff bei Props möglich, d.h. sie können nicht modifiziert werden. Die Props werden vom Parent gesetzt. Im Beispiel \ref{lst:props} wir der Name der Pflanze übergeben um in der Component PlantView verschiedene Pflanzennamen anzeigen zu können, dadurch kann die Component leicht wiederverwendet werden. Es können eigene Components verwendet werden, als auch welche von React Native, wie beispielsweise \textit{<Text>}. Dies ermöglicht eine besondere Freiheit beim gestalten der App. Sollte eine vorgegebene Component nicht passen, kann man leicht eine neue kreieren und verwenden, wie in diesem Fall PlantView. Die \textit{<View>} Component kann verwendet werden, um einheitlichen Style und Layout zu gewährleisten. 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+
+class PlantView extends Component {
+    render() {
+        return (
+            <Text>My plant: {this.props.name}</Text>
+        );
+    }
+}
+
+class PlantsView extends Component {
+    render() {
+        return (
+            <View style={{alignItems: 'center'}}>
+                <PlantView name='Basilikum' />
+                <PlantView name='Kaktus' />
+                <PlantView name='Blume' />
+            </View>
+        );
+    }
+}
+
+    \end{minted}
+    \caption{Props}
+    \label{lst:props}
+\end{listing}
+
+\subsection{State}
+Während Props unveränderlich sind, kann man mit \textit{State} Daten ändern. State sollte im Normalfall im Konstruktor initialisiert werden, mit \textit{setState} können die Daten dann später bearbeitet werden. Im Beispiel \ref{lst:state} wird ein blinkender Text erstellt. Dies zeigt auch anschaulich den Unterschied zwischen Props und State. Props ist hier der Text, dieser wird über die zeit hinweg nicht verändert. Welcher Text angezeigt werden soll, also ein leerer Text oder der übergebene Text, wird vom State bestimmt \cite{facebook_inc._state_2017}. In einer App kann der State beispielsweise gesetzt werden wenn Daten vom Server empfangen wurden, davor wird noch ein Ladeicon angezeigt. 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import {Text, View } from 'react-native';
+
+class Blink extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {showText: true};
+
+        // Toggle the state every second
+        setInterval(() => {
+            this.setState({ showText: !this.state.showText });
+        }, 1000);
+    }
+
+    render() {
+        let display = this.state.showText ? this.props.text : ' ';
+        return (
+            <Text>{display}</Text>
+        );
+    }
+}
+
+class BlinkApp extends Component {
+    render() {
+        return (
+            <View>
+                <Blink text='blink' />
+            </View>
+        );
+    }
+}
+
+    \end{minted}
+    \caption{State \cite{facebook_inc._state_2017}}
+    \label{lst:state}
+\end{listing}
+
+
+\subsection{Styling}
+Mit React Native ist Entwickeln meist sehr einfach, dies gilt auch für die Styles einer App. Die Definition ist an CSS Styles angelehnt und die meisten Styles können verwendet werden. Geschrieben werden sie allerdings einfach in JavaScript. Alle Components akzeptieren den Prop \textit{Style} \cite{facebook_inc._style_2017}. Es ist möglich einzelne als auch mehre Styles zu übergeben. Um die Styles zu bündeln und übersichtlich zu halten, kann ein Stylesheet mit \textit{StyleSheet.create} erstellt werden \cite{facebook_inc._style_2017}. 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import {StyleSheet, Text, View } from 'react-native';
+
+class HomeView extends Component {
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.textStyle}> gestylter Text </Text>
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'grey',
+    },
+    textStyle: {
+        color: 'black',
+        fontSize: 30,
+        textAlign: 'center',
+    }
+});    
+    \end{minted}
+    \caption{Style}
+    \label{lst:style}
+\end{listing}
+
+\subsection{Layout}
+Nicht jedes Smartphone hat die selben Abmessungen und unterschiedliche Bildschirmgrößen. React Native verwendet für dieses Problem den Style \textit{flex} \cite{facebook_inc._flex_2017}.  Hiermit können Components sich dem gegebenen Platz in Höhe und Breite perfekt anpassen. Wird jeder Component \textit{flex: 1} gegeben, teilen sich die Components den Platz gleichmäßig auf. Je größer die vergebene Zahl ist, desto mehr Platz erhält diese Component dann im Verhältnis zu anderen Components in einem Parent-Element \cite{facebook_inc._flex_2017}. 
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import React, { Component } from 'react';
+import {View } from 'react-native';
+
+class HomeView extends Component {
+    render() {
+        return (
+            <View style={{flex: 1}}>
+                <View style={{flex: 1}} />
+                <View style={{flex: 2}} />
+            </View>
+        );
+    }
+};
+
+    \end{minted}
+    \caption{Flexbox}
+    \label{lst:flex}
+\end{listing}
+
+Zusätzlich kann mithilfe von Flexboxen ein einheitliches Layout gewährleistet werden. Weitere Styles zum verfeinern des Layouts sind \textit{flexDirection}, \textit{alignItems} und \textit{justifyContent}. Mit FlexDirection kann die Ausrichtung der Objekte bestimmt werden, d.h. die Objekte können vertikal \textit{column} oder horizontal \textit{row} angeordnet werden. Der Standardwert für flexboxen ist horizontal. AlignItems regelt die Ausrichtung der Kind-Components \cite{facebook_inc._flex_2017}. \\
+
+Die Verteilung der Components wird mit justifyContent geregelt. Es ist möglich die Objekte links-, rechtsbündig oder mittig anzuordnen oder mit Abstand um das Objekt oder zwischen den Objekten \cite{facebook_inc._flex_2017}.
+
+\subsection{Plattform-Spezialisierung}
+Auch wenn es das Ziel ist, möglichst viel Code zwischen den Plattformen wiederzuverwenden, gibt es Situationen in denen zwischen den Plattformen differenziert werden muss. Dies kann beispielsweise nötig werden, falls die App an das Look-And-Feel der jeweiligen Plattformen angepasst werden solll, um die User-Experience zu erhöhen.
+React Native bietet für die Plattformunterscheidung zwei Möglichkeiten. Zum einen kann die Plattform abgefragt werden, zum anderen kann Code in Dateien mit Plattform-spezifischen Endungen abgelegt werden. Beide Möglichkeiten werden nachfolgend gezeigt.
+
+\begin{listing}[H]
+    \begin{minted}{js}
+import { Platform, StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+    // Das Element hat in iOS weißen Hintergrund und einen blauen in Android
+    backgroundColor: (Platform.OS === 'ios') ? 'white' : 'blue',
+});
+    \end{minted}
+    \caption{Abfragen der Plattform}
+    \label{lst:platform_os}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{js}
+// colors.ios.js
+export default defaultBackgroundColor = 'white';
+
+// colors.android.js
+export default defaultBackgroundColor = 'blue';
+ 
+// style.js
+// Der Import erfolgt ohne Plattform spezifische Dateiendung
+import defaultBackgroundColor from './colors';
+ 
+const styles = StyleSheet.create({
+    // Das Element hat in iOS weißen Hintergrund und einen blauen in Android
+    backgroundColor: defaultBackgroundColor
+});
+     
+    \end{minted}
+    \caption{Automatische Auswahl der Datei anhand der Dateiendung}
+    \label{lst:platform_file}
+\end{listing}
+
+\subsection{Networking}
+Zum Ansprechen einer Rest API hat React Native die \textit{Fetch API} \cite{facebook_inc._fetch_2017}. Um Daten von einer URL zu laden, muss diese nur an die fetch-Funktion übergeben werden. Des Weiteren kann die Methode oder Header definiert werden. 
+
+
+\begin{listing}[H]
+    \begin{minted}{js}
+fetch('https://mywebsite.com/endpoint/', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        firstParam: 'yourValue',
+        secondParam: 'yourOtherValue',
+    })
+})
+    \end{minted}
+    \caption{Fetch \cite{facebook_inc._fetch_2017}}
+    \label{lst:fetch}
+\end{listing}
+

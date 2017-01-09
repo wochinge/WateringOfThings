@@ -1,0 +1,115 @@
+\documentclass[a4paper, headsepline]{scrartcl}
+\usepackage[T1]{fontenc} % speziell für deutsch
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{tabularx, booktabs}
+\usepackage{geometry}
+\usepackage{scrpage2}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{lstautogobble}
+\usepackage{float}
+\usepackage{microtype} %verhindert zu breite Texte
+\usepackage{setspace}
+\usepackage{abstract}
+\usepackage[justification=justified,singlelinecheck=false]{caption}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\usepackage[toc,page]{appendix}
+
+\newcommand\tab[1][0.5cm]{\hspace*{#1}} % macht ein Tab, nutzen mit \tab 
+
+%Zeilenabstand
+\onehalfspacing
+
+
+%\restylefloat{figure}
+
+ 
+%Seitenrandeinstellungen
+%\geometry{top=12mm,left=25mm,right=25mm,bottom=13mm, includeheadfoot, headsep=12mm, foot=1cm}
+
+%kein Einrücken nach Absaetzen
+\setlength{\parindent}{0em} 
+
+
+%Kopfzeileneinstellungen
+\clearscrheadfoot 
+%\pagestyle{scrheadings}  %linie unter Kopfzeile
+%\automark[subsection]{section} 
+%\renewcommand{\sectionmark}[1]{\markboth{#1}{}}% 
+%\ihead{Federated Identities for Worldwide Scientific Collaboration\hfill\leftmark}
+%\setheadsepline{0.2pt}
+\setlength{\headheight}{1.1\baselineskip}
+
+%Fusszeileneinstellung
+\cfoot{\pagemark}
+ 
+%kein Mensch will Boxen um Inhaltsverzeichnispunkte
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
+
+%Zitierweise
+\usepackage[backend=biber, style=ieee, natbib=true, hyperref=false,firstinits=true, bibencoding=utf8]{biblatex}
+\renewcommand*{\labelnamepunct}{\addcolon\addspace}
+\renewcommand*{\newunitpunct}{\addcomma\addspace}
+\renewcommand*{\finentrypunct}{}
+\DeclareFieldFormat{title}{#1\isdot}
+
+%erzwingt Blocksatz auch wenn dadurch Lücken zwischen Wörtern entstehen
+%nur wenn mans nicht anders will :)
+%\sloppy
+
+% Befehl für Anführungszeichen %Stefan: Wie folgt anwenden: \qte{Dieser Text ist in anführungszeichen}. Okay? Keine normalen Anführungszeichen reinschreiben
+\newcommand{\qte}[1]{\glqq#1\grqq}
+% \qte {Hase}
+
+%Auch Paragraphen nummerieren und ins Inhaltsverzeichnis aufnehmen
+\setcounter{secnumdepth}{4}  % = Nummerierung vertiefen *
+\setcounter{tocdepth}{4}   %= Aufnahme in das Inhaltsverzeichnis *
+
+%% ################# Listings ###################
+
+\usepackage[section]{minted}
+
+
+\graphicspath{{Pictures/}}
+
+\bibliography{literatur}
+%\bibliographystyle{plain}
+	
+\usepackage[babel,english]{csquotes}
+%Diese Felder sollen nicht im Inhaltsverzeichnis angzeigt werden
+\AtEveryBibitem {
+	\clearlist{address}
+	\clearfield{date}
+	\clearfield{eprint}
+	\clearfield{isbn}
+	\clearfield{issn}
+	\clearlist{location}
+	\clearfield{month}
+	\clearfield{series}
+	\clearfield{edition}
+	\clearfield{pagetotal}}
+	
+%% Einbinden der bib-Datei (=Quellen)
+\bibliography{literatur.bib}
+\begin{document}
+	\pagenumbering{Roman}
+	\input{Deckblatt}
+	\newpage
+	\tableofcontents
+	\newpage
+	\pagenumbering{arabic}
+    \input{Kapitel/Einleitung}
+    \input{Kapitel/Use_Cases}
+    \input{Kapitel/Konzept}
+    \input{Kapitel/Implementierung}
+   	\input{Kapitel/resume}
+    \clearpage
+	\printbibliography %Literaturverzeichnis
+\end{document}

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from '@exponent/ex-navigation';
-import { Router } from '../../index';
+import { Router } from '../../router';
 import { commonStyles } from '../../config';
 
 @withNavigation

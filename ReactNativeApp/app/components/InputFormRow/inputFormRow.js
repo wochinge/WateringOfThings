@@ -21,8 +21,10 @@ export default class InputFormRow extends Component {
             {this.props.label}
           </Text>
           <TextInput
+            keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
             placeholder={this.props.placeholder}
             defaultValue={this.props.defaultValue}
+            autoCorrect={!this.props.disableAutoCorrect}
             onChangeText={(text) => {
               this.setState({firstInput: false});
               this.props.onChange(text);
@@ -41,12 +43,14 @@ export default class InputFormRow extends Component {
 }
 
 InputFormRow.propTypes = {
+  keyboardType: PropTypes.string,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   defaultValue: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   viewStyle: PropTypes.element,
-  valid: PropTypes.bool
+  valid: PropTypes.bool,
+  disableAutoCorrect: PropTypes.bool
 };
 
 const inputStyles = StyleSheet.create({

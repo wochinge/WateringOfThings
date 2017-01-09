@@ -3,16 +3,17 @@ import { Image, View, Text , StyleSheet } from 'react-native';
 import WoTClient from '../../network/WoTClient';
 import { Microcontroller } from '../../database/db';
 import Button from 'apsl-react-native-button';
-import { colors, images, commonStyles } from '../../config';
+import { colors, images, commonStyles, I18n } from '../../config';
 import { ValidatedTextInput } from '../../components';
+import { Router } from '../../router';
+import { connect } from 'react-redux';
+import { changeControllerID } from '../../redux/actions';
 
-import { Router } from '../../index';
-
-export default class AddControllerView extends Component {
+class AddControllerView extends Component {
 
   static route = {
     navigationBar: {
-      title: 'Add Controller',
+      title: I18n.t('addControllerTitle'),
       renderLeft: () => {},
     }
   }
@@ -21,8 +22,8 @@ export default class AddControllerView extends Component {
     super(props);
     this.state = {
       controllers: [],
-      microcontrollerInput: '',
-      inputMessage: 'To water your plants, you have to provide the id of a controller.',
+      microcontrollerInput: this.props.controllerID,
+      inputMessage: I18n.t('addController'),
       validating: false
     };
     this._validateControllerID = this._validateControllerID.bind(this);
@@ -41,7 +42,7 @@ export default class AddControllerView extends Component {
             resizeMode='contain'
             style={styles.image}/>
           <Text style={styles.header}>
-            Welcome to WateringOfPlants!
+            {I18n.t('welcome')}
           </Text>
         </View>
 
@@ -49,7 +50,12 @@ export default class AddControllerView extends Component {
           <Text style={styles.label}>
             {this.state.inputMessage}
           </Text>
-          <ValidatedTextInput placeholder='controller id' valid={this.state.microcontrollerInput != ''} onChange={(this._validateControllerID)} />
+          <ValidatedTextInput
+            value={this.state.microcontrollerInput}
+            placeholder={I18n.t('controllerPlaceholder')}
+            valid={this.state.microcontrollerInput != ''}
+            onChange={(this._validateControllerID)}
+            disableAutoCorrect={true}/>
         </View>
 
         <View style={styles.bottom}>
@@ -60,7 +66,7 @@ export default class AddControllerView extends Component {
             isLoading={this.state.validating}
             activityIndicatorColor={colors.buttonText}
             isDisabled={this.state.microcontrollerInput == ''}>
-            Save
+            {I18n.t('save')}
           </Button>
         </View>
       </View>
@@ -85,21 +91,22 @@ export default class AddControllerView extends Component {
     this.setState({validating: false});
     if (isValid) {
       const id = this.state.microcontrollerInput;
+      this.props.onNewValidControllerID(id);
       const db = new Microcontroller();
       db.save(id);
       if (this.props.firstAppStart) {
-        this.props.navigator.push(Router.getRoute('tabNavigationLayout', {controllerID: id}));
+        this.props.navigator.push(Router.getRoute('tabNavigationLayout'));
       } else {
         this.props.navigation.performAction(({ tabs, stacks }) => {
           tabs('main').jumpToTab('home');
           stacks('home').popToTop();
-          stacks('home').replace(Router.getRoute('home', {controllerID: this.state.microcontrollerInput}));
+          stacks('home').replace(Router.getRoute('home'));
         });
       }
 
     } else {
       this.setState({
-        inputMessage: 'The given id was not valid. Please provide an valid id!',
+        inputMessage: I18n.t('invalidController'),
         microcontrollerInput: ''
       });
     }
@@ -109,8 +116,26 @@ export default class AddControllerView extends Component {
 AddControllerView.propTypes = {
   navigation: PropTypes.object.isRequired,
   navigator: PropTypes.object,
+  controllerID: PropTypes.string,
   firstAppStart: PropTypes.bool,
+  onNewValidControllerID: PropTypes.func.isRequired
 };
+
+const mapStateToProps = (state) => (
+  {
+    controllerID: state.controller.controllerID
+  }
+);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onNewValidControllerID: (id) => {
+      dispatch(changeControllerID(id));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddControllerView);
 
 const styles = StyleSheet.create({
   container: {

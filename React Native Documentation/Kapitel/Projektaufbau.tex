@@ -1,0 +1,55 @@
+\section{Projektaufbau}
+
+\subsection{Entwicklungsumgebung}
+React Native lässt sich in jedem Texteditor entwickeln. Es gibt aber auch spezielle Entwicklungsumgebungen wie \textit{Nuclide}, welches ein Package für den Texteditor Atom ist. Allerdings fiel beim Text auf, dass dies Atom sehr langsam machte und für die Entwicklung kaum Vorteile brachte. Deco ist eine weitere mögliche Entwicklungsumgebung. Diese beinhaltet allerdings wenige Features und keine ES-Lint Integration, dies macht eine qualitative Entwicklung einer App schwierig. Die besten Erfahrungen konnten mit Atom in Kombination mit Es-Lint und weiteren React Native Packages gemacht werden. 
+
+\subsection{Verzeichnisstruktur}
+Wie Listing \ref{lst:idirectory_structure} zeigt, besitzt ein React Native Projekt schon zu Beginn eine Reihe von Dateien und Ordnern.
+Die Ordner \textit{android} und \textit{ios} beinhalten dabei all den nativen Code ihrer jeweiligen Plattform. Diese werden nur selten benötigt. Im i\textit{ios}-Ordner befindet sich beispielsweise das Xcode-Projekt der App \cite{carli_project_2016}. Passend zu den Ordnern gibt es jeweils eine Index-Datei für Android und eine für iOS. \textit{index.ios.js} ist der Ausgangspunkt für die iOS-App beziehungsweise \textit{index.android.js} für die Android-App. In diesen Dateien wird die App registriert, wie in Kapitel \ref{component} dargestellt. Da die beiden Dateien zu Beginn überwiegend gleichen Code beinhalten, lohnt es sich diesen in eine Datei auszulagern, die schließlich importiert wird. Die eigentliche App wird schließlich im Ordner \textit{App} entwickelt. Entwickelte Tests werden im Ordner \textit{\_\_tests\_\_} gespeichert. Hinzukommen noch ein \textit{node\_modules}-Ordner, in der die mittels des \textit{Node Package Manager} installierten Bibliotheken gespeichert werden. Weiterhin liegen verschiedene Konfigurationsdateien im Projektordner. Diese werden weitestgehend von React Native selbst verwaltet. Hervorzuheben sind die \textit{package.json}, welche die installierten Bibliotheken und deren Versionen auflistet, sowie die Konfiguration des JavaScript-Compilers \textit{Babel .babelrc}, welche zum Beispiel beim Hinzufügen von Sprachfeatures, wie speziellen Annotationen, angepasst werden muss. 
+
+  \lstdefinestyle{tree}{
+    literate=
+    {├}{{\smash{\raisebox{-1ex}{\rule{1pt}{\baselineskip}}}\raisebox{0.5ex}{\rule{1ex}{1pt}}}}1 
+    {─}{{\raisebox{0.5ex}{\rule{1.5ex}{1pt}}}}1 
+    {└}{{\smash{\raisebox{0.5ex}{\rule{1pt}{\dimexpr\baselineskip-1.5ex}}}\raisebox{0.5ex}{\rule{1ex}{1pt}}}}1 
+}
+        
+\begin{lstlisting}[style=tree]
+.
+├── .babelrc
+├── .buckconfig
+├── .flowconfig
+├── .watchmanconfig
+└── __tests__/
+├── android/
+├── app/
+├── index.android.js
+├── index.ios.js
+├── ios/
+├── node_modules/
+└── package.json
+    \end{lstlisting}
+\vspace{-0.5 cm}
+\begin{listing}[H]
+    \caption{Initiale Verzeichnisstruktur eines React Native Projekts}
+    \label{lst:idirectory_structure}
+\end{listing}
+
+
+
+
+\subsection{Ausführen der Anwendung}
+Vorausgesetzt Node und React Native wurden entsprechend der online-verfügbaren Anleitung installiert, müssen weiterhin eventuell benötigten Abhängigkeiten, welche in der \textit{package.json} hinterlegt wurden, installiert und gelinkt werden. Soll die Anwendung auf dem Android-Emulator ausgeführt werden, so muss dieser mittels \textit{android avd} schon vorher gestartet werden.
+\begin{listing}[H]
+    \begin{minted}{bash}
+npm install
+react-native link
+    \end{minted}
+    \caption{Installieren der in der package.json hinterlegten Abhängigkeiten}
+    \label{lst:install_dependencies}
+\end{listing}
+
+Um die App anschließend auszuführen wird entweder \textit{react-native run-ios} oder \textit{react-native run-android} ausgeführt. Nun wird der Code kompiliert und die App auf dem Simulator gestartet. Werden Änderungen am Projekt vorgenommen, kann die App im Simulator mittels \textit{CMD + R} (iOS) beziehungsweise \textit{RR} (Android) neugeladen werden. Aktiviert man im Developermenü die Option \textit{Hot Reloading} werden neue Quellcodeversionen automatisch geladen ohne aktuellen Zustand zu verlieren. Weiterhin kann die App auch mittels der nativen Umgebungen gestartet werden. Für iOS kann beispielsweise die Datei \textit{<Projekt>/ios/<Projekt>.xcodeproj} mit Xcode geöffnet und ausgeführt werden.
+
+\subsection{Debugging}
+Debuggen geht zum einen über die Logs der Simulatoren. Diese können entweder über den Simulator betrachtet oder mittels \textit{react-native log-ios} oder \textit{react-native log-android} betrachtet werden. Zum anderen kann die App mittels der Chrome Developer Tools debugged werden. Dazu öffnet man mittels \textit{CMD + D} (iOS) beziehungsweise \textit{CMD + M} (Android) das Developermenü auf dem Simulator und aktiviert die Option \textit{Debug JS Remotely}. Indem sich nun öffnenden Chrome-Tab können nun die Ausgaben der App in der Konsole verfolgt werden. Es ist auch möglich im Code Breakpoints mittels der Direktive \textit{debugger;} zu setzen, um die Ausführung der App an gewünschten Punkten zu pausieren.  Außerdem kann in der Developerkonsole die Option \textit{Pause On Caught Exceptions} für einfacheres Debugging aktiviert werden.

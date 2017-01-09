@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import {colors, images, fonts, commonStyles} from '../../config';
+import {colors, images, fonts, commonStyles, I18n } from '../../config';
 import { NavbarButton } from '../../components';
 import Button from 'apsl-react-native-button';
-import { Plant } from '../../database';
-import { Router } from '../../index';
+import { Plant as PlantDB } from '../../database';
+import { Router } from '../../router';
+import { Plant } from '../../models';
 
 export default class PlantView extends Component {
 
@@ -16,7 +17,6 @@ export default class PlantView extends Component {
       },
       renderRight: (params) => {
         return (<NavbarButton iconName='pencil' route='plantEdit' routeParams={{
-          controllerID: params.params.controllerID,
           plant: params.params.plant}}/>);
       }
     }
@@ -31,7 +31,7 @@ export default class PlantView extends Component {
   }
 
   _setImage() {
-    const plantDB = new Plant();
+    const plantDB = new PlantDB();
     const plantImageURL = plantDB.getPlantImagePath(this.props.plant.id);
     if (plantImageURL) {
       this.state = {
@@ -47,12 +47,12 @@ export default class PlantView extends Component {
           <Image style={styles.image} source={this.state.imageURL}/>
           <View style={styles.innerContainer}>
           <Text style={styles.statusText}>
-            Health Status
+            {I18n.t('healthState')}
           </Text>
             {this.moistureValue()}
             <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
               onPress={() => this.onPressWater(this.props.plant)}>
-              water
+              {I18n.t('water')}
             </Button>
           </View>
         </ScrollView>
@@ -61,31 +61,20 @@ export default class PlantView extends Component {
   }
 
   onPressWater(plant) {
-    this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant, controllerID: this.props.controllerID}));
-    //client.waterPlant(this.props.plant.id, 10);
+    this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant}));
   }
 
-  moistureValue(){
-    if(this.props.plant.latestMoistureValue){
-      if(this.props.plant.latestMoistureValue< this.props.plant.moistureThreshold){
-        return (<Text style={styles.moistureText}> Plant is a little bit dry </Text>);
-      }else{
-        return (<Text style={styles.moistureText}> Perfect conditions </Text>);
-      }
-    }else{
-      return (<Text style={styles.moistureText}> No values available </Text>);
-    }
+  moistureValue() {
+    const plant = new Plant(this.props.plant);
+    return <Text style={styles.moistureText}>{plant.healthStatusText()}</Text>;
   }
-
 }
 
 PlantView.propTypes = {
   plant: React.PropTypes.object,
-  controllerID: React.PropTypes.string,
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
 };
-
 
 const styles = StyleSheet.create({
   container: {

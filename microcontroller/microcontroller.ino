@@ -4,10 +4,11 @@
 #include <ArduinoJson.h>
 #include <Servo.h>
 
-#include "WifiConfig.h" //provides WLAN_SSID and WLAN_PASS
+#include "WifiConfig.h" // provides WLAN_SSID and WLAN_PASS
+#include "MqttConfig.h" // provides MQTT_SERVER, MQTT_PORT, MQTT_USERNAME, MQTT_PASSWORD
+#include "ID.h" // provides CONTROLLER_ID
 
-#define ARDUINO_ID "123456789"
-#define BASE_TOPIC "WateringOfPlants/microController/" ARDUINO_ID 
+#define BASE_TOPIC "WateringOfPlants/microController/" CONTROLLER_ID 
 #define WATER_PLANTS BASE_TOPIC "/water"
 #define MEASURE_MOISTURE BASE_TOPIC "/measure"
 #define MOISTURE_VALUES BASE_TOPIC "/measuredValues/"
@@ -33,7 +34,7 @@
 
 #define SERVO_PIN D2
 #define PUMP_PIN D3
-#define TILL_SERVO_FINISHED 3000
+#define TILL_SERVO_FINISHED 1000
 
 WiFiClient client;
 PubSubClient mqttclient(client);
@@ -43,17 +44,20 @@ Servo pumpMover;
 void waterPlant(int position, int time) {
   Serial.println("Water plant");
   Serial.println(position);
-  movePumpTo(position);
+  movePumpTo(position, true);
   Serial.println(time);
   digitalWrite(PUMP_PIN, HIGH);
   delay(time);
   digitalWrite(PUMP_PIN, LOW);
+  movePumpTo(-position, false);
   Serial.println("Watering end");  
 }
 
-void movePumpTo(int position) {
+void movePumpTo(int position, boolean delayTillFinished) {
   pumpMover.write(position);
-  delay(TILL_SERVO_FINISHED);
+  if (delayTillFinished) {
+      delay(TILL_SERVO_FINISHED);
+  }
 }
 
 void getMoistureValues(JsonArray& pins, int nrOfPins) {
@@ -110,11 +114,11 @@ void setup(void) {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   
-  mqttclient.setServer("test.mosca.io", 1883);
+  mqttclient.setServer(MQTT_SERVER, MQTT_PORT);
   mqttclient.setCallback(callback);
   
  // did that last thing work? sweet, let's do something
-  if (mqttclient.connect("clientId-nr78ZXWMF5")) {
+  if (mqttclient.connect(MQTT_USERNAME, MQTT_USERNAME, MQTT_PASSWORD)) {
     Serial.println("Connected to mqtt broker");
     mqttclient.publish(BASE_TOPIC, "Initial");
     mqttclient.subscribe(WATER_PLANTS);
@@ -125,9 +129,11 @@ void setup(void) {
   pinMode(B, OUTPUT);
   pinMode(C, OUTPUT);
   pinMode(MOISTURE_START_PIN, OUTPUT);
-  digitalWrite(MOISTURE_START_PIN, LOW);
+  digitalWrite(MOISTURE_START_PIN, HIGH);
   pinMode(PUMP_PIN, OUTPUT);
   pumpMover.attach(SERVO_PIN);
+  // Fix for invalid starting position
+  movePumpTo(-90, false);
 
 }
 
