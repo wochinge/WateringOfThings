@@ -15,7 +15,8 @@ export default class ValidatedTextInput extends Component {
             placeholder={this.props.placeholder}
             onChangeText={this.props.onChange}
             keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
-            autoCorrect={!this.props.disableAutoCorrect}/>
+            autoCorrect={!this.props.disableAutoCorrect}
+            autoCapitalize='none'/>
         <Icon
          name={this.props.valid ? 'check' : 'exclamation-triangle'}
          style={this.props.valid ? commonStyles.validIcon : commonStyles.invalidIcon} size={18}/>
