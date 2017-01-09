@@ -26,7 +26,9 @@ class Microcontroller {
   }
 
   save(controllerID) {
+    let allControllers = realm.objects('Microcontroller');
     realm.write(() => {
+      realm.delete(allControllers); // at the moment only one controller is supported
       realm.create('Microcontroller', {
         id: controllerID
       });
