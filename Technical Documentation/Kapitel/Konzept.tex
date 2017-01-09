@@ -1,5 +1,5 @@
 \section{Konzept}
-
+%TODO Beschreiben dass Pflanzen in Kreis stehen müssen.
     \subsection{Architektur}
     \begin{figure}[H]
         \centering
@@ -59,40 +59,50 @@
 
         \subsubsection{React Native}
         \subsubsection{Views}
+Die WateringOfThings App besteht aus fünf verschiedenen Ansichten, Views. Diese führen den Nutzer durch die Anwendung für die oben beschriebenen Use Cases. \\
 
+Beim ersten Start der App wird der Nutzer nach der Eingabe einer Microcontroller-Id gefragt, wie in View \ref{microcontroller} zu sehen. Diese kann von der Hardwarekomponente abgelesen werden. Die Microcontroller-Id wird daraufhin von der App gespeichert. Der Nutzer kann die Id jeder Zeit unter dem Punkt \textit{Settings} ändern. Der erste View und der Settingsview sind dabei gleich. Zu jedem Microcontroller kann der Nutzer anschließend Pflanzen hinzufügen.  
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{Views/microcontroller.png}
     \caption{Microcontroller-Id hinzufügen}
     \label{microcontroller}
 \end{figure}
-        
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{Views/list.png}
-    \caption{Pflanze hinzufügen}
-    \label{add}
-\end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{Views/plant.png}
-    \caption{Pflanze hinzufügen}
-    \label{add}
-\end{figure}
+Der Nutzer hat die Möglichkeit zu einer Microcontroller-Id Pflanzen hinzuzufügen. Hierzu kann der Nutzer ein eigenes Bild der Pflanze aus seiner Galerie auswählen. Wird kein Bild ausgewählt wird ein Standardbild angezeigt. Für die Pflanze kann ein Name vergeben werden, z.B. Basilikum. Der Pin ist der Anschluss am Microcontroller. Über ihn kann der Feuchtigkeitssensor mit der Pflanze verbunden werden. Da die Pflanzen im Kreis um den Microcontroller aufgestellt werden, muss die Position angegeben werden. Diese wird in der App in Grad eingegeben. Weitere Information sind im Datenmodell zu finden. \\
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.4]{Views/water.png}
-    \caption{Pflanze hinzufügen}
-    \label{add}
-\end{figure}
+Des Weiteren kann ein Trockenheitsschwellwert für die Pflanze angegeben werden. Jede Pflanze braucht unterschiedlich viel Wasser. Um bestimmen zu können wann eine Pflanze das nächste mal gegossen werden sollte, ist der Schwellwert einstellbar. Braucht eine Pflanze wenig Wasser, wie zum Beispiel ein Kaktus, wird der Slider etwas weiter nach links bewegt. Braucht die Pflanze mehr Wasser, wird der Slider nach rechts bewegt. \\
+
+Über eine Validierung wird sichergestellt, dass der Nutzer nur valide Eingaben machen kann. Ist die Eingabe nicht möglich wird ein rotes Ausrufezeichen angezeigt. Ist die Eingabe valide wird ein grüner Haken angezeigt. Erst wenn alle Eingaben valide sind kann die Pflanze gespeichert werden. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{Views/add.png}
     \caption{Pflanze hinzufügen}
     \label{add}
+\end{figure}
+
+
+Alle Pflanzen werden in einer Liste dargestellt, dies ist in View \ref{list} dargestellt. Die Pflanzen werden vom Nutzer zu einer bestimmten Microcontroller-Id hinzugefügt. Der View teilt sich in zwei Listen, eine für zu trockene Pflanzen und eine für gesunde Pflanzen. Fällt der gemessene Trockenheitswert der Pflanze unter ihren Schwellwert, wird die Pflanze in der Liste für Pflanzen angezeigt, die zu trocken sind. Dem Nutzer ist mithilfe der Listen schnell ersichtlich welche Pflanzen gegossen werden sollten und kann selbst entscheiden wann der beste Zeitpunkt ist. Die Pflanzen werden mit ihrem gespeicherten Bild angezeigt, ist kein Bild gespeichert wird ein Standardbild angezeigt. In der oberen Navigationsleiste wird der Name der App mit Logo dargestellt. Zusätzlich hat man in der Navigation die Möglichkeit eine Pflanze hinzuzufügen. Die untere Tableiste ist in allen Views, außer dem Startview gleich. Der Nutzer kann mit \textit{Home} stets zu der Listenansicht zurück navigieren. Mit dem Tab \textit{Add} kann der Nutzer eine neue Pflanze anlegen und im \textit{Settings} Tab die Microcontroller-Id ändern.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{Views/list.png}
+    \caption{Liste der Pflanzen}
+    \label{list}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{Views/plant.png}
+    \caption{Pflanzen-Detail Seite}
+    \label{plant}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{Views/water.png}
+    \caption{Pflanze gießen}
+    \label{water}
 \end{figure}
 
     \subsection{REST-API}
