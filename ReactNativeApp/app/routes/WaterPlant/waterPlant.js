@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Slider, ScrollView } from 'react-native';
 import {colors, images, fonts, commonStyles, I18n} from '../../config';
 import Button from 'apsl-react-native-button';
-import { WoTClient } from '../../network';
 import { Plant } from '../../models';
+import { connect } from 'react-redux';
 
-export default class WaterPlantView extends Component {
+class WaterPlantView extends Component {
 
   static route = {
     navigationBar: {
@@ -17,7 +17,6 @@ export default class WaterPlantView extends Component {
     super(props);
     this.state = {
       amount: 50,
-      controller: new WoTClient(this.props.controllerID)
     };
     this.onPressWatering = this.onPressWatering.bind(this);
   }
@@ -58,7 +57,7 @@ export default class WaterPlantView extends Component {
   }
 
   onPressWatering(amount) {
-    this.state.controller.waterPlant(this.props.plant.id, amount);
+    this.props.client.waterPlant(this.props.plant.id, amount);
   }
 
   moistureValue() {
@@ -70,10 +69,17 @@ export default class WaterPlantView extends Component {
 
 WaterPlantView.propTypes = {
   plant: React.PropTypes.object,
-  controllerID: React.PropTypes.string,
+  client: React.PropTypes.object.isRequired,
   navigator: React.PropTypes.object,
 };
 
+const mapStateToProps = (state) => (
+  {
+    client: state.controller.client
+  }
+);
+
+export default connect(mapStateToProps)(WaterPlantView);
 
 const styles = StyleSheet.create({
   container: {

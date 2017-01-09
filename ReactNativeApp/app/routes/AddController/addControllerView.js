@@ -5,9 +5,11 @@ import { Microcontroller } from '../../database/db';
 import Button from 'apsl-react-native-button';
 import { colors, images, commonStyles, I18n } from '../../config';
 import { ValidatedTextInput } from '../../components';
-import { Router } from '../../index';
+import { Router } from '../../router';
+import { connect } from 'react-redux';
+import { changeControllerID } from '../../redux/actions';
 
-export default class AddControllerView extends Component {
+class AddControllerView extends Component {
 
   static route = {
     navigationBar: {
@@ -20,7 +22,7 @@ export default class AddControllerView extends Component {
     super(props);
     this.state = {
       controllers: [],
-      microcontrollerInput: '',
+      microcontrollerInput: this.props.controllerID,
       inputMessage: I18n.t('addController'),
       validating: false
     };
@@ -49,6 +51,7 @@ export default class AddControllerView extends Component {
             {this.state.inputMessage}
           </Text>
           <ValidatedTextInput
+            value={this.state.microcontrollerInput}
             placeholder={I18n.t('controllerPlaceholder')}
             valid={this.state.microcontrollerInput != ''}
             onChange={(this._validateControllerID)}
@@ -88,15 +91,16 @@ export default class AddControllerView extends Component {
     this.setState({validating: false});
     if (isValid) {
       const id = this.state.microcontrollerInput;
+      this.props.onNewValidControllerID(id);
       const db = new Microcontroller();
       db.save(id);
       if (this.props.firstAppStart) {
-        this.props.navigator.push(Router.getRoute('tabNavigationLayout', {controllerID: id}));
+        this.props.navigator.push(Router.getRoute('tabNavigationLayout'));
       } else {
         this.props.navigation.performAction(({ tabs, stacks }) => {
           tabs('main').jumpToTab('home');
           stacks('home').popToTop();
-          stacks('home').replace(Router.getRoute('home', {controllerID: this.state.microcontrollerInput}));
+          stacks('home').replace(Router.getRoute('home'));
         });
       }
 
@@ -112,8 +116,26 @@ export default class AddControllerView extends Component {
 AddControllerView.propTypes = {
   navigation: PropTypes.object.isRequired,
   navigator: PropTypes.object,
+  controllerID: PropTypes.string,
   firstAppStart: PropTypes.bool,
+  onNewValidControllerID: PropTypes.func.isRequired
 };
+
+const mapStateToProps = (state) => (
+  {
+    controllerID: state.controller.controllerID
+  }
+);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onNewValidControllerID: (id) => {
+      dispatch(changeControllerID(id));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddControllerView);
 
 const styles = StyleSheet.create({
   container: {

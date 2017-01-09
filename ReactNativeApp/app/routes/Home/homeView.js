@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, Image } from 'react-native';
-import WoTClient from '../../network/WoTClient';
 import { NavbarButton } from '../../components';
 import {colors, fonts, images} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Router } from '../../index';
+import { Router } from '../../router';
 import { Plant } from '../../database';
+import { connect } from 'react-redux';
 
 
-export default class HomeView extends Component {
+class HomeView extends Component {
 
   static route = {
     navigationBar: {
@@ -19,9 +19,7 @@ export default class HomeView extends Component {
         </Text>
       );},
       renderLeft: () => {},
-      renderRight: (params) => {
-        return (<NavbarButton iconName='plus-square-o' route='plantEdit' routeParams={{controllerID: params.params.controllerID}}/>);
-      }
+      renderRight:<NavbarButton iconName='plus-square-o' route='plantEdit'/>
     }
   }
 
@@ -36,8 +34,7 @@ export default class HomeView extends Component {
     this.state = {
       healthy_plants: healthy.cloneWithRows([]),
       dry_plants: dry.cloneWithRows([]),
-      loaded: true,
-      client: new WoTClient(this.props.controllerID),
+      loaded: true
     };
     this.renderPlants = this.renderPlants.bind(this);
     this._fetchData = this._fetchData.bind(this);
@@ -46,7 +43,7 @@ export default class HomeView extends Component {
 
   componentWillMount() {
     this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
-      if (this.props.controllerID) {
+      if (this.props.client) {
         this._fetchData();
       }
     });
@@ -62,7 +59,7 @@ export default class HomeView extends Component {
 
   _fetchData() {
     this.setState({loaded: false});
-    this.state.client.getPlants()
+    this.props.client.getPlants()
     .then(this._categorizePlants);
   }
 
@@ -156,15 +153,23 @@ export default class HomeView extends Component {
   }
 
   onPlantPress(plant) {
-    this.props.navigator.push(Router.getRoute('plant', {plant: plant, controllerID: this.props.controllerID}));
+    this.props.navigator.push(Router.getRoute('plant', {plant: plant}));
   }
 }
 
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
-  controllerID: React.PropTypes.string
+  client: React.PropTypes.object.isRequired
 };
+
+const mapStateToProps = (state) => (
+  {
+    client: state.controller.client
+  }
+);
+
+export default connect(mapStateToProps)(HomeView);
 
 const styles = StyleSheet.create({
   container: {

@@ -5,11 +5,11 @@ import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
-import { WoTClient } from '../../network';
 import { Plant as PlantDB } from '../../database';
+import { connect } from 'react-redux';
 
 
-export default class PlantEditView extends Component {
+class PlantEditView extends Component {
 
   static route = {
     navigationBar: {
@@ -75,7 +75,7 @@ export default class PlantEditView extends Component {
   }
 
   _savePlant() {
-    const client = new WoTClient(this.props.controllerID);
+    const client = this.props.client;
     if (this.state.plantEditMode) {
       client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
       .then(() => this._saveImage(this.props.plant.id))
@@ -96,12 +96,12 @@ export default class PlantEditView extends Component {
     }
   }
 
-    _saveImage(id) {
-      if (this.state.imageSelected) {
-        const db = new PlantDB();
-        db.save(id, this.state.plantImage.uri);
-      }
+  _saveImage(id) {
+    if (this.state.imageSelected) {
+      const db = new PlantDB();
+      db.save(id, this.state.plantImage.uri);
     }
+  }
 
   _validateName(name) {
     const trimmed = name.trim();
@@ -200,13 +200,20 @@ export default class PlantEditView extends Component {
   }
 }
 
-
 PlantEditView.propTypes = {
-  controllerID: PropTypes.string,
+  client: PropTypes.object.isRequired,
   navigator: PropTypes.object,
   plant: React.PropTypes.object,
   navigation: PropTypes.object,
 };
+
+const mapStateToProps = (state) => (
+  {
+    client: state.controller.client
+  }
+);
+
+export default connect(mapStateToProps)(PlantEditView);
 
 const styles = StyleSheet.create({
   container: {

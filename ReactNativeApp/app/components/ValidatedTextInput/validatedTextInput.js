@@ -11,6 +11,7 @@ export default class ValidatedTextInput extends Component {
     return(
       <View style={[styles.wrapper, this.props.style]}>
         <TextInput
+            value={this.props.value}
             style={styles.input}
             placeholder={this.props.placeholder}
             onChangeText={this.props.onChange}
@@ -31,7 +32,8 @@ ValidatedTextInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   valid: PropTypes.bool.isRequired,
   disableAutoCorrect: PropTypes.bool,
-  keyboardType: PropTypes.string
+  keyboardType: PropTypes.string,
+  value: PropTypes.string
 };
 
 const styles = StyleSheet.create({

@@ -4,7 +4,7 @@ import {colors, images, fonts, commonStyles, I18n } from '../../config';
 import { NavbarButton } from '../../components';
 import Button from 'apsl-react-native-button';
 import { Plant as PlantDB } from '../../database';
-import { Router } from '../../index';
+import { Router } from '../../router';
 import { Plant } from '../../models';
 
 export default class PlantView extends Component {
@@ -17,7 +17,6 @@ export default class PlantView extends Component {
       },
       renderRight: (params) => {
         return (<NavbarButton iconName='pencil' route='plantEdit' routeParams={{
-          controllerID: params.params.controllerID,
           plant: params.params.plant}}/>);
       }
     }
@@ -62,8 +61,7 @@ export default class PlantView extends Component {
   }
 
   onPressWater(plant) {
-    this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant, controllerID: this.props.controllerID}));
-    //client.waterPlant(this.props.plant.id, 10);
+    this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant}));
   }
 
   moistureValue() {
@@ -74,11 +72,9 @@ export default class PlantView extends Component {
 
 PlantView.propTypes = {
   plant: React.PropTypes.object,
-  controllerID: React.PropTypes.string,
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
 };
-
 
 const styles = StyleSheet.create({
   container: {
