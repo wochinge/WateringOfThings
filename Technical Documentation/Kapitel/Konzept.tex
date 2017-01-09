@@ -10,6 +10,51 @@
     
     \subsection{Datenmodell}
     
+     \begin{minipage}{\textwidth}
+        Microcontroller\\
+        \begin{tabularx}{\linewidth}{|l|l|X|}
+            \hline
+            Attribut & Datentyp & Beschreibung\\
+            \hline
+            id & String & Eindeutiger, sicherer Token zur Authentifizierung des Microcontrollers \\
+            \hline                              
+        \end{tabularx}
+    \end{minipage}
+
+\vspace{0.5cm}
+
+     \begin{minipage}{\textwidth}
+        Plant\\
+          \begin{tabularx}{\linewidth}{|l|l|X|}
+              \hline
+            Attribut & Datentyp & Beschreibung\\
+            \hline
+            id & Int & Eindeutige ID der Pflanze \\
+            name & String & Frei wählbarer Name für die Pflanze \\
+            pin & Int & \begin{tabular}[t]{@{}ll}
+            Pin am Microcontroller über den der \\Feuchtigkeitssensor mit der Pflanze verbunden ist \\
+            \end{tabular}\\
+            position & Int & Position der Pflanze in der Aufstellung in Grad \\
+            moistureTreshold & Float & Wert unter dem die Pflanze als trocken gilt \\
+            latestMoistureValue & Float & Letzter gemessener Trockenheitswert der Pflanze  \\
+            \hline                              
+        \end{tabularx}
+    \end{minipage}
+
+\vspace{0.5cm}
+
+     \begin{minipage}{\textwidth}
+        MoistureValue\\
+        \begin{tabularx}{\linewidth}{|l|l|X|}
+            \hline
+            Attribut & Datentyp & Beschreibung\\
+            \hline
+            date & Long & Timestamp, wann der Wert erhoben wurde \\
+            value & Float & Erhobener Feuchtigkeitswert \\
+            \hline                              
+        \end{tabularx}
+    \end{minipage}
+    
     \subsection{Mobile Applikation}
 
         \subsubsection{React Native}
