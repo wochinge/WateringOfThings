@@ -277,6 +277,22 @@
             \end{tabularx}
         \end{minipage}\\
     
-        \subsubsection{Verwendete Hardwarekomponenten}
-
+        \subsubsection{Aufbau}
+        Die Möglichkeit einer Tröpfchenbewässerung wurde verworfen um die Pflanzen eine größere Unterschiede bei der Pflanzenbewässerung sicherstellen zu können. Um trotzdem möglichst viele Pflanzen versorgen zu können, wird ein kreisförmiger Aufbau der Pflanzen vorausgesetzt, wie in Abbildung \ref{fig:position} gezeigt. Damit können von einer Hardwarekomponente acht Pflanzen versorgt werden. \\
+        
+        Für den Aufbau werden folgende Komponenten mindestens benötigt:
+        \begin{itemize}
+            \item 1 WLAN-fähiger Microcontroller, der mittels MQTT kommunizieren kann
+            \item 1 Wasserschlauch über den das Wasser von der Quelle zur Pflanze geleitet wird
+            \item 1 Servomotor, welcher den Schlauch zur entsprechenden Pflanze bewegt
+            \item 1 Pumpe, die das Wasser von der Quelle zur Pflanze befördert
+           \item 8 Feuchtigkeitssensoren, die den Feuchtigkeitsgehalt der Blumenerde messen
+        \end{itemize}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.6\linewidth]{Pictures/Konzept/Position}
+            \caption{Anordnung der Pflanzen}
+            \label{fig:position}
+        \end{figure}
+        
     \subsection{Codequalität}
