@@ -68,6 +68,14 @@ React Native bietet eine Option einfach ein neues Projekt anzulegen. Der Befehl 
     \subsection{Mobile Applikation}
         
         \subsubsection{Installation}
+Um das Projekt mit React native ausführen zu können, muss als Erstes Node installiert sein. Zusätzlich sollte Watchman installiert werden. Dies beobachtet Dateiänderungen und sorgt für eine bessere Performance \cite{facebook_inc._start_2017}.  Als nächstes kann mit dem Package Manager npm das Paket \textit{react-native-cli},welches das  React Native command line interface ist installiert werden. \\
+
+Um eine React Native iOS App zu starten muss nur noch im entsprechenden Verzeichnis \textit{react-native run-ios} ausgeführt werden. Alternativ kann die App auch über das Xcode-Projekt im ios Ordner der App gestartet werden. Dabei kann eine iOS App nur auf dem MacOS-System gestartet werden. \cite{facebook_inc._start_2017}\\
+
+Zum Ausführen einer Android App kann Android Studio oder eine ähnliche Umgebung installiert werden. Android Studio enthält das Android SDK und AVD, den Emulator. Diese werden zum ausführen der App benötigt \cite{facebook_inc._start_2017}. Im Ordner der React Native App kann nun die App mit dem Befehl \textit{react-native run-android} gestartet werden. \\
+
+Vor dem Starten der App sollte der Befehl \textit{npm install} ausgeführt werden, um alle Abhängigkeiten zu installieren. Zusätzlich muss der Image-Crop-Picker noch installiert werden. Dieser dient zum auswählen der Bilder in der App. Mit npm kann der Befehl \textit{npm i react-native-image-crop-picker --save} ausgeführt werden. Anschließend wird noch das Linking durchgeführt mit dem Befehl \textit{react-native link react-native-image-crop-picker} \cite{pusic_crop_2017}. In Xcode muss dann noch unter \textit{Deployment Info} das \textit{Deployment Target} auf 8.0 gesetzt werden. Unter dem Punkt \textit{Embedded Binaries} werden die beiden Dateien \textit{RSKImageCropper.framework} und \textit{QBImagePicker.framework} noch hinzugefügt \cite{pusic_crop_2017}. 
+
         \subsubsection{Verwendete Bibliotheken}
 
 \subsection{Server}
