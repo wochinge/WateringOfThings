@@ -77,7 +77,16 @@ Zum Ausführen einer Android App kann Android Studio oder eine ähnliche Umgebun
 Vor dem Starten der App sollte der Befehl \textit{npm install} ausgeführt werden, um alle Abhängigkeiten zu installieren. Zusätzlich muss der Image-Crop-Picker noch installiert werden. Dieser dient zum auswählen der Bilder in der App. Mit npm kann der Befehl \textit{npm i react-native-image-crop-picker --save} ausgeführt werden. Anschließend wird noch das Linking durchgeführt mit dem Befehl \textit{react-native link react-native-image-crop-picker} \cite{pusic_crop_2017}. In Xcode muss dann noch unter \textit{Deployment Info} das \textit{Deployment Target} auf 8.0 gesetzt werden. Unter dem Punkt \textit{Embedded Binaries} werden die beiden Dateien \textit{RSKImageCropper.framework} und \textit{QBImagePicker.framework} noch hinzugefügt \cite{pusic_crop_2017}. 
 
         \subsubsection{Verwendete Bibliotheken}
+Um eine einfache und übersichtliche  Navigation zu gewährleisten würde die Bibliothek \textit{ExNavigation} verwendet. Die Bibliothek wird im Moment in die reactjs Organisation eingebunden und in der nächsten Version unter dem Namen \textit{react-navigation} verfügbar sein \cite{Vatne_exnavigation_2017}. Die Bibliothek ermöglicht eine einfachere Navigation als die Standard React Native Navigation im Moment. Mit wenig Entwicklungsaufwand konnte so die Navigation zwischen den Views ermöglicht werden. \\
 
+
+ESLint
+image-crop-picker
+vector-icons
+
+
+%TODO
+react-redux, realm, fetch-blob
 \subsection{Server}
     
     \subsubsection{Installation / Ausführung}
