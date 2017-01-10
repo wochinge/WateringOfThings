@@ -1,7 +1,59 @@
 \section{Implementierung}
 
     \subsection{Projektaufbau}
+Ordnerstruktur
+
+  \lstdefinestyle{tree}{
+      literate=
+      {├}{{\smash{\raisebox{-1ex}{\rule{1pt}{\baselineskip}}}\raisebox{0.5ex}{\rule{1ex}{1pt}}}}1 
+      {─}{{\raisebox{0.5ex}{\rule{1.5ex}{1pt}}}}1 
+      {└}{{\smash{\raisebox{0.5ex}{\rule{1pt}{\dimexpr\baselineskip-1.5ex}}}\raisebox{0.5ex}{\rule{1ex}{1pt}}}}1 
+    }
     
+    \begin{lstlisting}[style=tree]
+    .
+    ├── .babelrc
+    ├── .buckconfig
+    ├── .eslintrc.json
+    ├── .flowconfig
+    ├── .watchmanconfig
+    └── __tests__/
+    ├── android/
+    ├── app/
+    ├── index.android.js
+    ├── index.ios.js
+    ├── ios/
+    ├── node_modules/
+    └── package.json
+    \end{lstlisting}
+    \vspace{-0.5 cm}
+    \begin{listing}[H]
+        \caption{Initiale Verzeichnisstruktur eines React Native Projekts}
+        \label{lst:idirectory_structure}
+    \end{listing}
+    
+App Unterordner
+    \begin{lstlisting}[style=tree]
+    .
+    ├── components
+    ├── config
+    ├── database
+    ├── images
+    ├── index.js
+    ├── lib/
+    ├── models/
+    ├── network
+    └── routes
+
+    \end{lstlisting}
+    \vspace{-0.5 cm}
+    \begin{listing}[H]
+        \caption{Initiale Verzeichnisstruktur eines React Native Projekts}
+        \label{lst:idirectory_structure}
+    \end{listing}
+        
+        
+        
     \subsection{Mobile Applikation}
         
         \subsubsection{Installation}
