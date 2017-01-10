@@ -1,7 +1,7 @@
 \section{Implementierung}
 
     \subsection{Projektaufbau}
-Ordnerstruktur
+React Native bietet eine Option einfach ein neues Projekt anzulegen. Der Befehl \textit{react-native init "projectname"} geniert alle benötigten Dateien und Ordner um ein Projekt zu starten. Dies ermöglicht einen schnellen, einfachen Einstieg in React Native. Die initiale Ordnerstruktur wurde im Zuge der React Native Arbeit näher erläutert. Für größere Projekte ist diese Struktur allerdings nicht ideal. Die initial generierten Dateien \textit{index.android.js} und \textit{index.ios.js} dienen den nativen Android und iOS Apps als Ausgangspunkt. Mit dem Befehl \textit{AppRegistry} kann die App dort registriert werden. Die Dateien enthalten zu Anfang allerdings viel doppelten Code. Um die Codequalität zu verbessern und zu vereinheitlichen wurde deshalb die Ordnerstruktur für das Projekt angepasst. Ziele für die Umstrukturierung war die maximale Wiederverwendbarkeit von Code. Die Graphik \ref{lst:directory_structure} zeigt die verwendete Ordnerstruktur.
 
   \lstdefinestyle{tree}{
       literate=
@@ -29,10 +29,20 @@ Ordnerstruktur
     \vspace{-0.5 cm}
     \begin{listing}[H]
         \caption{Initiale Verzeichnisstruktur eines React Native Projekts}
-        \label{lst:idirectory_structure}
+        \label{lst:directory_structure}
     \end{listing}
     
-App Unterordner
+ Die Android und iOS Ordner enthalten den Nativen Code für die Apps. Die React Native Entwicklung der App befindet sich fast ausschließlich in dem Ordner \textit{app}. Die Entwicklung von Tests befindet sich in \textit{\_\_tests\_\_}. Die verwendeten Bibliotheken stehen in der \textit{package.json} Datei und deren Versionen können dort angepasst werden. Die Konfiguration des JavaScript-Compilers befindet sich in der \textit{.babelrc} Datei. \\
+ 
+ In der Graphik \ref{lst:app_directory_structure} sind die Unterordner des Ordners app zu sehen. Die \textit{index.js} Datei wird von den beiden \textit{index.android.js} und \textit{index.ios.js} Dateien aufgerufen und exportiert dorthin.  Der erste zu erwähnende Ordner ist \textit{components}. Dieser dient der Strukturierung von wiederverwendbaren Komponenten, wie beispielsweise Buttons. In diesem Ordner liegt auch eine index.js Datei. Diese verwaltet was exportiert werden soll aus dem Ordner. \\
+ 
+ In dem Ordner \textit{config} befindet sich wiederverwendbare Styles, die so von überall her genutzt werden können. Zusätzlich befinden sich in der \textit{images.js} Datei Pfade für die verwendeten Bilder. Damit können diese zentral verwaltet werden. Auch in diesem Ordner liegt eine index Datei zur Export-Verwaltung. Die Bilder selbst werden im Ordner \textit{images} gespeichert.\\
+ 
+ %TODO
+ Database, models, redux
+ 
+ Die Routen reflektieren die verschiedenen Views in der App. Die Views werden in \ref{views} näher erklärt. In dem Ordner \textit{routes} werden die Views implementiert. Hier befindet sich der Hauptteil der Implementierung der App. Die Datei \textit{router.js} ist zuständig zwischen den verschiedenen Views zu navigieren und den aktuellen View anzuzeigen. Die Datei wird von der index.js Datei importiert. Dies sorgt für eine Übersichtliche Entwicklung aller Teile der App.
+ 
     \begin{lstlisting}[style=tree]
     .
     ├── components
@@ -40,16 +50,17 @@ App Unterordner
     ├── database
     ├── images
     ├── index.js
-    ├── lib/
-    ├── models/
+    ├── router.js
+    ├── models
     ├── network
+    ├── redux
     └── routes
 
     \end{lstlisting}
     \vspace{-0.5 cm}
     \begin{listing}[H]
         \caption{Initiale Verzeichnisstruktur eines React Native Projekts}
-        \label{lst:idirectory_structure}
+        \label{lst:app_directory_structure}
     \end{listing}
         
         
