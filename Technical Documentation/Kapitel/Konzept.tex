@@ -139,7 +139,17 @@ Im View zum gießen der Pflanzen, wie in View \ref{water} zu sehen, sieht man no
     \subsection{REST-API}
 
         \subsubsection{Django}
+        Auf dem Server läuft eine Webapp, welche mit dem Python Web Application Framework \textit{Python} umgesetzt wurde. Django bietet im Gegensatz zu Alternativen wie Flask schon eine große Vielfalt an Funktionalität Out-of-the-Box an. Nützlich erweist sich hierbei insbesondere das ORM-Mapping, welches den Umgang mit der Datenbank sehr einfach macht sowie es ermöglicht die verwendete Datenbank ohne Aufwand zu ändern. Aktuell wird als Datenbank \textit{SQLite} genutzt. Falls diese bei steigernde Nutzungsdauer nicht mehr ausreicht, kann aber durch bloße Änderung der Verbindungsdaten auf andere Datenbanken, wie \textit{MySQL} oder \textit{MongoDB}, gewechselt werden.
+        Folgenden weiteren Frameworks / Bibliotheken werden genutzt:
+        \begin{itemize}
+            \item django-rest-framework: Bereitstellung der REST-API
+            \item paho-mqtt: Kommunikation mit dem MQTT-Broker
+            \item celery: Asynchrones, periodisches Beauftragen der Feuchtigkeitsmessungen
+        \end{itemize}
+    
         \subsubsection{Ressourcen}
+        Die Daten werden als JSON und XML bereitgestellt.\\
+        
         \newcommand{\tabitem}{~~\llap{\textbullet}~~}
      \begin{minipage}{\textwidth}
              GET controller/\{controllerID\}/ 
@@ -335,5 +345,8 @@ Im View zum gießen der Pflanzen, wie in View \ref{water} zu sehen, sieht man no
             \caption{Anordnung der Pflanzen}
             \label{fig:position}
         \end{figure}
+    
+        \subsection{Codequalität}
+        Die Codequalität der React Native App wird anhand des Tools \textit{ESLint} überwacht. ESLint wird mit der Konfiguration von Google genutzt und um Validierungen für React und React Native erweitert.
+        Die Django-App mittels eines Linters auf die Einhaltung des Python-Styleguides PEP 8 validiert.
         
-    \subsection{Codequalität}
