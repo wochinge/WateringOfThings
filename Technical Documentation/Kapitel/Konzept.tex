@@ -1,6 +1,31 @@
 \section{Konzept}
 %TODO Beschreiben dass Pflanzen in Kreis stehen müssen.
     \subsection{Architektur}
+    WateringOfThings besteht aus aus vier Haupt-Komponenten: 
+   \begin{itemize}
+       \item Microcontroller
+           \begin{itemize}
+               \item Bewässern der Pflanzen
+               \item Erheben der Feuchtigkeitswerte der Blumenerde
+           \end{itemize}
+       \item MQTT-Broker
+           \begin{itemize}
+               \item Bidirektionale, leichtgewichtige Kommunikation zwischen Server und Microcontroller
+               \item Informiert Server über Daten der Microcontroller
+               \item Informiert ausgewählten Microcontroller über Befehle vom Server
+           \end{itemize}
+       \item REST API
+           \begin{itemize}
+               \item Informiert Microcontroller in regelmäßigen Abständen die Feuchtigkeitswerte zu nehmen
+               \item Speicherung aller Daten (Pflanzen, Feuchtigkeitswerte) in SQLite-Datenbank
+               \item Bereitstellung aller Daten im JSON-Format via REST API
+           \end{itemize}
+    \item App
+        \begin{itemize}
+            \item Eingabeschnittstelle für Nutzer
+            \item Visualisierung der Informationen
+        \end{itemize}
+   \end{itemize}
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.7\linewidth]{../Pictures/Konzept/Architecture}
