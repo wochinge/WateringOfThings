@@ -10,6 +10,8 @@ I18n.translations = {
     settingsTab: 'Settings',
 
     save: 'Save',
+    delete: 'Delete',
+    cancel: 'Cancel',
 
     'addControllerTitle': 'Add controller',
     'welcome': 'Welcome to WateringOfPlants!',
@@ -26,6 +28,8 @@ I18n.translations = {
     pin: 'Pin',
     pinPlaceHolder: '0 - 7',
     moistureThreshold: 'Moisture threshold',
+    deletePlantAlert: 'Delete Plant',
+    deletePlantAlertMessage: 'Do you want  to delete this plant?',
 
     healthState: 'Health status',
     tooDry: 'Plant is too dry.',
@@ -40,6 +44,8 @@ I18n.translations = {
     settingsTab: 'Einstellungen',
 
     save: 'Speichern',
+    delete: 'Löschen',
+    cancel: 'Abbrechen',
 
     'addControllerTitle': 'Controller hinzufügen',
     'welcome': 'Willkommen zu WateringOfPlants!',
@@ -54,6 +60,8 @@ I18n.translations = {
     positionPlaceholder: '0 - 180 Grad',
     pin: 'Pin',
     moistureThreshold: 'Feuchtigkeitsgrenzwert',
+    deletePlantAlert: 'Pflanze löschen',
+    deletePlantAlertMessage: 'Willst du die Pflanze löschen?',
 
     healthState: 'Bewässerungszustand',
     tooDry: 'Pflanze ist zu trocken.',

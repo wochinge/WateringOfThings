@@ -1,12 +1,13 @@
 
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, Alert, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
 import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Plant as PlantDB } from '../../database';
 import { connect } from 'react-redux';
+import { NavbarButton } from '../../components';
 
 
 class PlantEditView extends Component {
@@ -15,6 +16,13 @@ class PlantEditView extends Component {
     navigationBar: {
       title(params) {
         return params.plant ? I18n.t('edit_plant') : I18n.t('create_plant');
+      },
+      renderRight: (params) => {
+        if (params.params.plant) {
+          return (
+            <NavbarButton iconName='trash' onPress={params.params.showPlantAlert}/>
+          );
+        }
       }
     }
   }
@@ -39,12 +47,23 @@ class PlantEditView extends Component {
       validPin: plantEditMode ? true : false,
       validPosition: plantEditMode ? true : false
     };
+
     this._savePlant = this._savePlant.bind(this);
     this._saveImage = this._saveImage.bind(this);
     this._selectPlantImage = this._selectPlantImage.bind(this);
     this._validateName = this._validateName.bind(this);
     this._validatePin = this._validatePin.bind(this);
     this._validatePosition = this._validatePosition.bind(this);
+    this._deletePlantAlert = this._deletePlantAlert.bind(this);
+    this._deletePlant = this._deletePlant.bind(this);
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.navigator.updateCurrentRouteParams({
+        showPlantAlert: this._deletePlantAlert
+      });
+    }, 1000);
   }
 
   _getPlantImage(plantEditMode, plant) {
@@ -132,6 +151,19 @@ class PlantEditView extends Component {
       position: position,
       validPosition: valid
     });
+  }
+
+  _deletePlantAlert() {
+    Alert.alert(I18n.t('deletePlantAlert'),
+      I18n.t('deletePlantAlertMessage'),
+      [
+        {text: I18n.t('delete'), onPress: this._deletePlant},
+        {text: I18n.t('cancel'), style: 'cancel'}
+      ]);
+  }
+  _deletePlant() {
+    this.props.client.deletePlant(this.props.plant.id);
+    this.props.navigator.pop(2);
   }
 
   render() {
