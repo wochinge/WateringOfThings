@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, Image } from 'react-native';
 import { NavbarButton } from '../../components';
-import {colors, fonts, images} from '../../config';
+import {colors, fonts, images, I18n} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../router';
 import { Plant } from '../../database';
@@ -86,6 +86,11 @@ class HomeView extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
+          {(this.state.dry_plants._cachedRowCount===0 && this.state.healthy_plants._cachedRowCount===0) ?
+            <Text>
+              {I18n.t('noPlants')}
+            </Text>
+          : null}
           {this.state.dry_plants._cachedRowCount > 0 ?
             <View
               style={styles.sectionHeader}>

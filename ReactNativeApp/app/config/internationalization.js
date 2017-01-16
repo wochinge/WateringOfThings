@@ -31,7 +31,8 @@ I18n.translations = {
     tooDry: 'Plant is too dry.',
     enoughWater: 'Plant lives in perfect conditions.',
     noValues: 'No values available.',
-    water: 'Water'
+    water: 'Water',
+    noPlants: 'You have no plants yet, add one!'
   },
   de: {
     homeTab: 'Home',
@@ -58,7 +59,8 @@ I18n.translations = {
     tooDry: 'Pflanze ist zu trocken.',
     enoughWater: 'Pflanze hat genug Wasser.',
     noValues: 'Keine Daten vorhanden.',
-    water: 'Gießen'
+    water: 'Gießen',
+    noPlants: 'Füge eine Pflanze hinzu'
 
   }
 };
