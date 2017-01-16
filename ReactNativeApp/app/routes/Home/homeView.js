@@ -102,6 +102,7 @@ class HomeView extends Component {
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
             enableEmptySections={true}
+            scrollEnabled={false}
           />
           {this.state.healthy_plants._cachedRowCount > 0 ?
             <View
@@ -114,6 +115,7 @@ class HomeView extends Component {
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
             enableEmptySections={true}
+            scrollEnabled={false}
           />
            <ActivityIndicator
               animating={!this.state.loaded}
