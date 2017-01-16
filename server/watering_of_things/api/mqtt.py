@@ -8,11 +8,9 @@ import watering_of_things.config.mqtt_settings as mqtt_config
 
 logger = logging.getLogger(__name__)
 
-# mqtt server
-HOSTNAME = 'test.mosca.io'
-PORT = 1883
-MATCH_ANY = '+'
+MILLISECONDS_PER_MILLILITER = 50
 
+MATCH_ANY = '+'
 # Topics for mqtt
 BASE_TOPIC = 'WateringOfPlants/microController/'
 MOISTURE_VALUES_TOPIC = BASE_TOPIC + MATCH_ANY + '/measuredValues/' + MATCH_ANY
@@ -49,15 +47,20 @@ def _on_moisture_values_measured(client, userdata, msg):
         MoistureValue.objects.create(plant=plant, value=value)
 
 
-def water_plant(micro_controller_id, plant, time):
+def water_plant(micro_controller_id, plant, amount):
     topic = _water_topic(micro_controller_id)
-    message = {'position': plant.position, 'time': time}
+    message = {'position': plant.position, 'time': amount * MILLISECONDS_PER_MILLILITER}
     client.publish(topic, json.dumps(message))
 
 
 def request_moisture_values(controller_id, pins):
     message = {'nrOfPins': len(pins), 'pins': pins}
-    single(topic=_water_topic(controller_id), payload=json.dumps(message), hostname=HOSTNAME, port=PORT)
+    single(topic=_water_topic(controller_id),
+           payload=json.dumps(message),
+           hostname=mqtt_config.SERVER,
+           port=mqtt_config.PORT,
+           auth={'username': mqtt_config.USERNAME, 'password': mqtt_config.PASSWORD}
+           )
 
 
 client = mqtt.Client()
