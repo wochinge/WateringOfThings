@@ -4,7 +4,9 @@ import {colors, images, fonts, commonStyles, I18n} from '../../config';
 import Button from 'apsl-react-native-button';
 import { Plant } from '../../models';
 import { connect } from 'react-redux';
+import autobind from 'autobind-decorator';
 
+@autobind
 class WaterPlantView extends Component {
 
   static route = {
@@ -18,7 +20,6 @@ class WaterPlantView extends Component {
     this.state = {
       amount: 50,
     };
-    this.onPressWatering = this.onPressWatering.bind(this);
   }
 
   render() {

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, RefreshControl, Image } from 'react-native';
 import { NavbarButton } from '../../components';
 import {colors, fonts, images, I18n} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../router';
 import { Plant } from '../../database';
 import { connect } from 'react-redux';
+import autobind from 'autobind-decorator';
 
-
+@autobind
 class HomeView extends Component {
 
   static route = {
@@ -34,31 +35,38 @@ class HomeView extends Component {
     this.state = {
       healthy_plants: healthy.cloneWithRows([]),
       dry_plants: dry.cloneWithRows([]),
-      loaded: true
+      loaded: true,
+      refreshing: false
     };
-    this.renderPlants = this.renderPlants.bind(this);
-    this._fetchData = this._fetchData.bind(this);
-    this._categorizePlants = this._categorizePlants.bind(this);
   }
 
   componentWillMount() {
     this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
       if (this.props.client) {
-        this._fetchData();
+        this._initialFetch();
       }
     });
   }
 
   componentDidMount() {
-    this._fetchData();
+    this._initialFetch();
   }
 
   componentWillUnmount() {
     this._subscription.remove();
   }
 
-  _fetchData() {
+  _initialFetch() {
     this.setState({loaded: false});
+    this._fetchData();
+  }
+
+  _userInitiatedFetch() {
+    this.setState({refreshing: true});
+    this._fetchData();
+  }
+
+  _fetchData() {
     this.props.client.getPlants()
     .then(this._categorizePlants);
   }
@@ -77,15 +85,26 @@ class HomeView extends Component {
     this.setState({
       healthy_plants: this.state.healthy_plants.cloneWithRows(ok),
       dry_plants: this.state.dry_plants.cloneWithRows(toDry),
-      loaded: true
+      loaded: true,
+      refreshing: false
     });
 
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._userInitiatedFetch}
+            />
+          }
+          style={styles.container}
+        >
+          <ActivityIndicator
+             animating={!this.state.loaded}
+             style={styles.activityIndicator}/>
           {(this.state.dry_plants._cachedRowCount===0 && this.state.healthy_plants._cachedRowCount===0) ?
             <Text>
               {I18n.t('noPlants')}
@@ -117,12 +136,7 @@ class HomeView extends Component {
             enableEmptySections={true}
             scrollEnabled={false}
           />
-           <ActivityIndicator
-              animating={!this.state.loaded}
-              style={styles.activityIndicator}
-          />
         </ScrollView>
-      </View>
     );
   }
 
@@ -181,6 +195,7 @@ export default connect(mapStateToProps)(HomeView);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.defaultBackground,
+    flex: 1
   },
   sectionHeader: {
     flex: 1,

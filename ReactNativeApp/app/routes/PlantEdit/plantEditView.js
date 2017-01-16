@@ -8,8 +8,9 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { Plant as PlantDB } from '../../database';
 import { connect } from 'react-redux';
 import { NavbarButton } from '../../components';
+import autobind from 'autobind-decorator';
 
-
+@autobind
 class PlantEditView extends Component {
 
   static route = {
@@ -47,15 +48,6 @@ class PlantEditView extends Component {
       validPin: plantEditMode ? true : false,
       validPosition: plantEditMode ? true : false
     };
-
-    this._savePlant = this._savePlant.bind(this);
-    this._saveImage = this._saveImage.bind(this);
-    this._selectPlantImage = this._selectPlantImage.bind(this);
-    this._validateName = this._validateName.bind(this);
-    this._validatePin = this._validatePin.bind(this);
-    this._validatePosition = this._validatePosition.bind(this);
-    this._deletePlantAlert = this._deletePlantAlert.bind(this);
-    this._deletePlant = this._deletePlant.bind(this);
   }
 
   componentDidMount() {

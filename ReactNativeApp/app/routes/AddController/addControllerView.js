@@ -8,7 +8,9 @@ import { ValidatedTextInput } from '../../components';
 import { Router } from '../../router';
 import { connect } from 'react-redux';
 import { changeControllerID } from '../../redux/actions';
+import autobind from 'autobind-decorator';
 
+@autobind
 class AddControllerView extends Component {
 
   static route = {
@@ -26,9 +28,6 @@ class AddControllerView extends Component {
       inputMessage: I18n.t('addController'),
       validating: false
     };
-    this._validateControllerID = this._validateControllerID.bind(this);
-    this._save = this._save.bind(this);
-    this._controllerValidationResult = this._controllerValidationResult.bind(this);
   }
 
   render() {
