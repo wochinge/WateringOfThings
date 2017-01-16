@@ -49,7 +49,8 @@ def _on_moisture_values_measured(client, userdata, msg):
 
 def water_plant(micro_controller_id, plant, amount):
     topic = _water_topic(micro_controller_id)
-    message = {'position': plant.position, 'time': amount * MILLISECONDS_PER_MILLILITER}
+    time = MILLISECONDS_PER_MILLILITER * int(amount)
+    message = {'position': plant.position, 'time': time}
     client.publish(topic, json.dumps(message))
 
 
