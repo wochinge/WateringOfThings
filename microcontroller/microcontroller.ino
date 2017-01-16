@@ -27,13 +27,13 @@
 #define D9 3
 #define D10 1
 
-#define A D5
-#define B D6
-#define C D7
-#define MOISTURE_START_PIN D4
+#define A D1
+#define B D2
+#define C D3
+#define MOISTURE_START_PIN D8
 
-#define SERVO_PIN D2
-#define PUMP_PIN D3
+#define SERVO_PIN D4
+#define PUMP_PIN D7
 #define TILL_SERVO_FINISHED 1000
 
 WiFiClient client;
@@ -49,7 +49,7 @@ void waterPlant(int position, int time) {
   digitalWrite(PUMP_PIN, HIGH);
   delay(time);
   digitalWrite(PUMP_PIN, LOW);
-  movePumpTo(-position, false);
+  movePumpTo(-1 * position, false);
   Serial.println("Watering end");  
 }
 
