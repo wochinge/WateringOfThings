@@ -27,12 +27,12 @@ class TabNavigationLayout extends Component {
         <TabItem
           id="home"
           title={I18n.t('homeTab')}
-          onPress={() => {
+          onPress={(tabItemOnPress, event) => {
             this.props.navigation.performAction(({tabs, stacks}) => {
               tabs('main').jumpToTab('home');
               stacks('home').popToTop();
-
             });
+            tabItemOnPress(event);
           }}
           >
           <StackNavigation
