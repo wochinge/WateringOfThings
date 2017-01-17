@@ -66,7 +66,6 @@ class PlantEditView extends Component {
     }
 
     if (!plantURL) {
-      console.log(images.defaultPlantImage);
       return images.defaultPlantImage;
     }
     return plantURL;
@@ -153,6 +152,7 @@ class PlantEditView extends Component {
         {text: I18n.t('cancel'), style: 'cancel'}
       ]);
   }
+
   _deletePlant() {
     this.props.client.deletePlant(this.props.plant.id);
     this.props.navigator.pop(2);
