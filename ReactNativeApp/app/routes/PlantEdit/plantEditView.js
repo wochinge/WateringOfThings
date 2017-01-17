@@ -136,7 +136,7 @@ class PlantEditView extends Component {
   _validatePosition(position) {
     position = parseInt(position);
     let valid = false;
-    if (!isNaN(position)) {
+    if (!isNaN(position) && position >= 0 && position <= 180) {
       valid = true;
     }
     this.setState({
