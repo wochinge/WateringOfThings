@@ -47,8 +47,11 @@ class Plant {
   }
 
   save(id, imagePath) {
-    const destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${id}.jpg`;
+    imagePath = imagePath.replace('file://', '');
+    let destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${id}.jpg`;
+    console.log(destinationPath)
     this._moveFileFromTmpToDocuments(imagePath, destinationPath);
+    destinationPath = 'file://' + destinationPath;
     realm.write(() => {
       realm.create('Plant', {
         id: id,
@@ -62,9 +65,9 @@ class Plant {
     .then((exist) => {
       if (exist) {
         RNFetchBlob.fs.unlink(destination).
-        then(() => RNFetchBlob.fs.mv(source, destination));
+        then(() => RNFetchBlob.fs.cp(source, destination));
       } else {
-        RNFetchBlob.fs.mv(source, destination);
+        RNFetchBlob.fs.cp(source, destination);
       }
     });
   }
