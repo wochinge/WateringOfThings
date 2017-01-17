@@ -47,8 +47,9 @@ def _on_moisture_values_measured(client, userdata, msg):
     if split[INDEX_ACTUAL_TOPIC] == 'measuredValues':
         pin = split[INDEX_PIN]
         value = msg.payload
-        plant = Plant.objects.get(microController_id=micro_controller_id, pin=pin)
-        MoistureValue.objects.create(plant=plant, value=value)
+        plants = Plant.objects.get(microController_id=micro_controller_id, pin=pin)
+        for p in plants:  # Should normally be only one!
+            MoistureValue.objects.create(plant=p, value=value)
 
 
 def water_plant(micro_controller_id, plant, amount):
