@@ -25,6 +25,10 @@ def _water_topic(micro_controller_id):
     return BASE_TOPIC + micro_controller_id + '/water'
 
 
+def _measure_topic(controller_id):
+    return BASE_TOPIC + controller_id + '/measure'
+
+
 def _on_connect(client, userdata, flags, rc):
     logger.info('Mqtt client connected')
     client.subscribe('WateringOfPlants/microController/' + MATCH_ANY + '/measuredValues/' + MATCH_ANY)
@@ -56,7 +60,7 @@ def water_plant(micro_controller_id, plant, amount):
 
 def request_moisture_values(controller_id, pins):
     message = {'nrOfPins': len(pins), 'pins': pins}
-    single(topic=_water_topic(controller_id),
+    single(topic=_measure_topic(controller_id),
            payload=json.dumps(message),
            hostname=mqtt_config.SERVER,
            port=mqtt_config.PORT,
