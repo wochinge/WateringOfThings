@@ -14,10 +14,13 @@ class HomeView extends Component {
   static route = {
     navigationBar: {
       renderTitle: () => { return (
-        <Text style= {styles.headline}>
-          <Icon name="tint" style={styles.icon} size={35} />
-          Watering my Things
-        </Text>
+        <View style= {styles.navContainer}>
+          <Text style= {styles.headline}>
+          {/*<Icon name="tint" style={styles.icon} size={35} />*/}
+
+            Watering my Things
+          </Text>
+        </View>
       );},
       renderLeft: () => {},
       renderRight:<NavbarButton iconName='plus-square-o' route='plantEdit'/>
@@ -253,6 +256,20 @@ const styles = StyleSheet.create({
     fontFamily: fonts.defaultFamily,
     color: colors.navText,
     alignSelf: 'center',
+    textAlign: 'center',
+  },
+  navContainer:{
+    backgroundColor: colors.navbar,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: colors.navBotton,
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
+    shadowColor: colors.shadow,
+    shadowRadius: 1,
+    shadowOpacity: 1,
+    shadowOffset:{width: 0, height: 2},
   },
   icon: {
     paddingTop:30,
@@ -265,6 +282,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+
   noPlants:{
     marginTop: 100,
     alignSelf: 'center',

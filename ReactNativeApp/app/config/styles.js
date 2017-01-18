@@ -10,12 +10,14 @@ const colors = {
   defaultText: 'dimgray',
   noPlantText: 'lightgray',
   gridText: 'white',
-  navbar: 'green',
-  navText: 'white',
+  navbar: 'white',
+  navText: 'dimgray',
   button: 'blue',
   gridTextBackground: 'rgba(0, 0, 0, 0.5)',
   valid: 'green',
-  invalid: 'red'
+  invalid: 'red',
+  navBotton: 'dimgray',
+  shadow: 'lightgray',
 };
 
 const fonts = {
