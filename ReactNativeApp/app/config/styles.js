@@ -8,6 +8,7 @@ const colors = {
   separator: 'lightgray',
   touchFeedback: 'lightgray',
   defaultText: 'dimgray',
+  noPlantText: 'lightgray',
   gridText: 'white',
   navbar: 'green',
   navText: 'white',

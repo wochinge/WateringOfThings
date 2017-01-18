@@ -106,9 +106,11 @@ class HomeView extends Component {
              animating={!this.state.loaded}
              style={styles.activityIndicator}/>
           {(this.state.dry_plants._cachedRowCount===0 && this.state.healthy_plants._cachedRowCount===0) ?
-            <Text>
-              {I18n.t('noPlants')}
-            </Text>
+            <View style={styles.noPlantsContainer}>
+              <Text style={styles.noPlants}>
+                {I18n.t('noPlants')}
+              </Text>
+            </View>
           : null}
           {this.state.dry_plants._cachedRowCount > 0 ?
             <View
@@ -257,5 +259,17 @@ const styles = StyleSheet.create({
     paddingRight:20,
     marginRight:10,
     color: colors.navText,
+  },
+  noPlantsContainer :{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  noPlants:{
+    marginTop: 100,
+    alignSelf: 'center',
+    textAlign:  'center',
+    fontSize: 20,
+    color: colors.noPlantText,
   }
 });

@@ -8,7 +8,7 @@ export default class Plant {
 
   healthStatusText() {
     if (this.plant.latestMoistureValue) {
-      if (this.plant.latestMoistureValue < this.props.plant.moistureThreshold) {
+      if (this.plant.latestMoistureValue < this.plant.moistureThreshold) {
         return I18n.t('tooDry');
       } else {
         return I18n.t('enoughWater');
