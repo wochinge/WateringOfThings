@@ -206,9 +206,10 @@ export default connect(mapStateToProps)(HomeView);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.defaultBackground,
-    flex: 1
+    flex: 1,
   },
   sectionHeader: {
+    marginTop: -20,
     flex: 1,
     padding: 10,
     flexWrap: 'wrap',
@@ -276,9 +277,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomColor: colors.navBotton,
-    borderStyle: 'solid',
-    borderBottomWidth: 1,
     shadowColor: colors.shadow,
     shadowRadius: 1,
     shadowOpacity: 1,
@@ -289,7 +287,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-
   noPlants:{
     marginTop: 100,
     alignSelf: 'center',
