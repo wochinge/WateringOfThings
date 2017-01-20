@@ -12,7 +12,7 @@ const colors = {
   gridText: 'white',
   navbar: 'white',
   navText: 'dimgray',
-  button: 'blue',
+  button: '#303F9F',
   gridTextBackground: 'rgba(0, 0, 0, 0.5)',
   valid: 'green',
   invalid: 'red',
@@ -37,6 +37,7 @@ const commonStyles = StyleSheet.create({
     borderColor: colors.button,
     marginTop: 30,
     marginBottom: 30,
+    borderRadius: 1,
   },
   defaultButtonText: {
     fontSize: 18,

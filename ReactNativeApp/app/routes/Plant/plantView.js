@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import {colors, images, fonts, commonStyles, I18n } from '../../config';
 import { NavbarButton } from '../../components';
 import Button from 'apsl-react-native-button';
@@ -43,15 +43,64 @@ export default class PlantView extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <Image style={styles.image} source={this.state.imageURL}/>
         <ScrollView>
-          <Image style={styles.image} source={this.state.imageURL}/>
+
+            <View style={styles.nameContainer}>
+              <Text style={styles.plantName}>
+                {this.props.plant.name}
+              </Text>
+              {this.moistureValue()}
+            </View>
+
           <View style={styles.innerContainer}>
-            {this.moistureValue()}
-            <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
+            <View style={[styles.infos, styles.infosBottom]}>
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.latestMoistureValue}
+                </Text>
+                <Text style={styles.infoText}>
+                  Moisture Value
+                </Text>
+              </View>
+
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.moistureThreshold}
+                </Text>
+                <Text style={[styles.infoText, styles.infoTextRight]}>
+                  Threshold
+                </Text>
+              </View>
+
+            </View>
+            <View style={styles.infos}>
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.position}
+                </Text>
+                <Text style={styles.infoText}>
+                Position
+                </Text>
+              </View>
+
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.pin}
+                </Text>
+                <Text style={[styles.infoText, styles.infoTextRight]}>
+                  Pin
+                </Text>
+              </View>
+            </View>
+
+            <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
               onPress={() => this.onPressWater(this.props.plant)}>
               {I18n.t('water')}
             </Button>
+
           </View>
+
         </ScrollView>
       </View>
     );
@@ -75,28 +124,68 @@ PlantView.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   innerContainer: {
-    borderRadius: 10,
-    marginTop: 10,
+    paddingTop: 30,
     flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nameContainer: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.separator,
+    flex: 1,
+    justifyContent: 'space-around',
+    width: Dimensions.get('window').width,
   },
   image:{
-    width: 300,
+    width: Dimensions.get('window').width,
     height: 200,
-    borderColor: colors.separator,
-    borderWidth: 2,
-    alignSelf: 'center',
   },
   moistureText:{
     color: colors.defaultText,
     fontFamily: fonts.defaultFamily,
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
     paddingTop: 10,
   },
+  plantName: {
+    fontWeight: 'bold',
+    color: colors.defaultText,
+    fontFamily: fonts.defaultFamily,
+    fontSize: 24,
+    textAlign: 'center',
+  },
+  button:{
+    margin: 50,
+  },
+  infos: {
+    flex: 1,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    flexDirection:'row',
+  },
+  infosBottom: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.separator,
+    margin: 5,
+  },
+  infoTextRight: {
+
+  },
+  infoText: {
+    textAlign: 'center',
+    paddingBottom: 20,
+  },
+  infoValue: {
+    fontWeight: 'bold',
+    marginRight: 60,
+    marginLeft: 60,
+  },
+
 });
