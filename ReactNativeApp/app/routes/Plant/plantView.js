@@ -46,9 +46,6 @@ export default class PlantView extends Component {
         <ScrollView>
           <Image style={styles.image} source={this.state.imageURL}/>
           <View style={styles.innerContainer}>
-          <Text style={styles.statusText}>
-            {I18n.t('healthState')}
-          </Text>
             {this.moistureValue()}
             <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
               onPress={() => this.onPressWater(this.props.plant)}>
@@ -85,14 +82,12 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     borderRadius: 10,
-    margin: 60,
-    padding: 20,
+    marginTop: 10,
     flex:1,
   },
   image:{
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    width: 300,
+    height: 200,
     borderColor: colors.separator,
     borderWidth: 2,
     alignSelf: 'center',
@@ -100,14 +95,8 @@ const styles = StyleSheet.create({
   moistureText:{
     color: colors.defaultText,
     fontFamily: fonts.defaultFamily,
-    fontSize: 18,
-    textAlign: 'left',
-  },
-  statusText:{
-    fontSize: 24,
-    fontWeight: 'bold',
-    color : colors.defaultText,
-    fontFamily: fonts.defaultFamily,
-    textAlign: 'left',
+    fontSize: 20,
+    textAlign: 'center',
+    paddingTop: 10,
   },
 });

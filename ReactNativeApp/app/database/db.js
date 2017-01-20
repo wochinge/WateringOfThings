@@ -49,7 +49,7 @@ class Plant {
   save(id, imagePath) {
     imagePath = imagePath.replace('file://', '');
     let destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${id}.jpg`;
-    console.log(destinationPath)
+    console.log(destinationPath);
     this._moveFileFromTmpToDocuments(imagePath, destinationPath);
     destinationPath = 'file://' + destinationPath;
     realm.write(() => {
