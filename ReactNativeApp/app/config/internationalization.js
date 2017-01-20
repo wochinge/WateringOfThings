@@ -36,7 +36,9 @@ I18n.translations = {
     enoughWater: 'Plant lives in perfect conditions.',
     noValues: 'No values available.',
     water: 'Water',
-    noPlants: 'Add your plants'
+    noPlants: 'Add your plants',
+    homeDryPlants: 'Your plants need watering',
+    homeHealthyPlants: 'Perfect conditions',
   },
   de: {
     homeTab: 'Home',
@@ -68,7 +70,9 @@ I18n.translations = {
     enoughWater: 'Pflanze hat genug Wasser.',
     noValues: 'Keine Daten vorhanden.',
     water: 'Gießen',
-    noPlants: 'Füge deine Pflanze hinzu'
+    noPlants: 'Füge deine Pflanze hinzu',
+    homeDryPlants: 'Die Pflanzen brauchen wasser',
+    homeHealthyPlants: 'Perfekte Bedingungen',
 
   }
 };

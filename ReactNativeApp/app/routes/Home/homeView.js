@@ -17,7 +17,6 @@ class HomeView extends Component {
         <View style= {styles.navContainer}>
           <Text style= {styles.headline}>
           {/*<Icon name="tint" style={styles.icon} size={35} />*/}
-
             Watering my Things
           </Text>
         </View>
@@ -118,7 +117,11 @@ class HomeView extends Component {
           {this.state.dry_plants._cachedRowCount > 0 ?
             <View
               style={styles.sectionHeader}>
-              <Icon name="exclamation-triangle" size={18}/>
+              <Icon name="shower" size={18} style={styles.icon}/>
+              <Text>
+                {I18n.t('homeDryPlants')}
+              </Text>
+
             </View>
             : null}
           <ListView
@@ -131,7 +134,10 @@ class HomeView extends Component {
           {this.state.healthy_plants._cachedRowCount > 0 ?
             <View
               style={styles.sectionHeader}>
-              <Icon name="check" size={18}/>
+              <Icon name="heart-o" size={18} style={styles.icon}/>
+              <Text>
+                {I18n.t('homeHealthyPlants')}
+              </Text>
             </View>
             : null}
           <ListView
@@ -205,11 +211,17 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flex: 1,
     padding: 10,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    backgroundColor: colors.shadow,
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection:'row',
+    borderStyle: 'solid',
+    borderTopColor: colors.navBotton,
+    borderTopWidth: 1,
   },
-
+  icon: {
+    paddingRight: 10,
+    marginRight: 10,
+  },
   list: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -271,12 +283,6 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     shadowOpacity: 1,
     shadowOffset:{width: 0, height: 2},
-  },
-  icon: {
-    paddingTop:30,
-    paddingRight:20,
-    marginRight:10,
-    color: colors.navText,
   },
   noPlantsContainer :{
     flex: 1,
