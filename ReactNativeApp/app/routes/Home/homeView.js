@@ -206,7 +206,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     alignSelf: 'stretch',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: colors.shadow,
   },
 
   list: {
