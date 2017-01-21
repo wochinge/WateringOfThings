@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import {colors, images, fonts, commonStyles, I18n } from '../../config';
-import { NavbarButton } from '../../components';
+import { NavbarButton, PlantStatus } from '../../components';
 import Button from 'apsl-react-native-button';
 import { Plant as PlantDB } from '../../database';
 import { Router } from '../../router';
-import { Plant } from '../../models';
 
 export default class PlantView extends Component {
 
@@ -50,7 +49,7 @@ export default class PlantView extends Component {
               <Text style={styles.plantName}>
                 {this.props.plant.name}
               </Text>
-              {this.moistureValue()}
+              <PlantStatus plant={this.props.plant} style={styles.moistureText}/>
             </View>
 
           <View style={styles.innerContainer}>
@@ -109,11 +108,6 @@ export default class PlantView extends Component {
   onPressWater(plant) {
     this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant}));
   }
-
-  moistureValue() {
-    const plant = new Plant(this.props.plant);
-    return <Text style={styles.moistureText}>{plant.healthStatusText()}</Text>;
-  }
 }
 
 PlantView.propTypes = {
@@ -148,10 +142,6 @@ const styles = StyleSheet.create({
     height: 200,
   },
   moistureText:{
-    color: colors.defaultText,
-    fontFamily: fonts.defaultFamily,
-    fontSize: 18,
-    textAlign: 'center',
     paddingTop: 10,
   },
   plantName: {

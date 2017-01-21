@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Slider, ScrollView } from 'react-native';
-import {colors, images, fonts, commonStyles, I18n} from '../../config';
+import { images, commonStyles, I18n} from '../../config';
 import Button from 'apsl-react-native-button';
-import { Plant } from '../../models';
+import { PlantStatus } from '../../components';
 import { connect } from 'react-redux';
 import autobind from 'autobind-decorator';
 
@@ -27,7 +27,7 @@ class WaterPlantView extends Component {
       <View style={styles.container}>
         <ScrollView>
           <View style={styles.innerContainer}>
-            {this.moistureValue()}
+            <PlantStatus plant={this.props.plant} style={styles.moistureText}/>
               <View
                 style={styles.sliderImages}>
                 <Image
@@ -60,12 +60,6 @@ class WaterPlantView extends Component {
   onPressWatering(amount) {
     this.props.client.waterPlant(this.props.plant.id, amount);
   }
-
-  moistureValue() {
-    const plant = new Plant(this.props.plant);
-    return <Text style={styles.moistureText}>{plant.healthStatusText()}</Text>;
-  }
-
 }
 
 WaterPlantView.propTypes = {
@@ -95,9 +89,6 @@ const styles = StyleSheet.create({
     flex:1,
   },
   moistureText:{
-    color: colors.defaultText,
-    fontFamily: fonts.defaultFamily,
-    fontSize: 18,
     textAlign: 'left',
     padding: 20,
   },
