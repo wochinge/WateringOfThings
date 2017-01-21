@@ -22,7 +22,7 @@ const colors = {
 
 const fonts = {
   listSize: 20,
-  defaultFamily: 'Arial',
+  defaultFamily: 'Avenir',
 };
 
 const commonStyles = StyleSheet.create({

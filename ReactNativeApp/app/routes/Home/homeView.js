@@ -175,11 +175,8 @@ class HomeView extends Component {
     }
     return (
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={imageURL}>
-          <View style={styles.textBackground}>
-            <Text style={styles.textStyle}>{plant.name}</Text>
-          </View>
-        </Image>
+        <Image style={styles.image} source={imageURL}/>
+        <Text style={styles.textStyle}>{plant.name}</Text>
     </View>
     );
   }
@@ -232,12 +229,11 @@ const styles = StyleSheet.create({
   row: {
     margin: 2,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.separator,
     backgroundColor: colors.defaultBackground,
     alignSelf: 'center',
     width: 170,
     height: 130,
+    paddingBottom: 5,
   },
   imageContainer:{
     justifyContent: 'flex-end',
@@ -251,15 +247,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textStyle: {
-    color: colors.gridText,
+    color: colors.black,
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
     textAlign: 'center',
     width: 170,
-  },
-  textBackground: {
-    backgroundColor: colors.gridTextBackground,
-    justifyContent :'flex-end',
   },
   activityIndicator: {
     justifyContent: 'center',
