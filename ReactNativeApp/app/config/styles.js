@@ -16,8 +16,8 @@ const colors = {
   gridTextBackground: 'rgba(0, 0, 0, 0.5)',
   valid: 'green',
   invalid: 'red',
-  navBotton: 'dimgray',
   shadow: 'lightgray',
+  selected: 'teal'
 };
 
 const fonts = {
