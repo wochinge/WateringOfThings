@@ -75,7 +75,7 @@ void getMoistureValues(JsonArray& pins, int nrOfPins) {
 }
 
 void callback (char* topic, byte* payload, unsigned int length) {
-  StaticJsonBuffer<100> jsonBuffer;
+  StaticJsonBuffer<108> jsonBuffer;
   JsonObject& root = jsonBuffer.parseObject((char*) payload);
   String parsedTopic(topic);
   Serial.println(topic);
