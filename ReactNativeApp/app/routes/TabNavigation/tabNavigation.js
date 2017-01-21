@@ -7,7 +7,7 @@ import {
 import { Router, defaultRouteConfig , _handleTransition } from '../../router';
 import { I18n } from '../../config';
 import { connect } from 'react-redux';
-
+import { TabIcon } from '../../components';
 
 class TabNavigationLayout extends Component {
 
@@ -26,7 +26,7 @@ class TabNavigationLayout extends Component {
           >
         <TabItem
           id="home"
-          title={I18n.t('homeTab')}
+          renderIcon={(isSelected) => <TabIcon iconName='home' isSelected={isSelected}/>}
           onPress={(tabItemOnPress, event) => {
             this.props.navigation.performAction(({tabs, stacks}) => {
               tabs('main').jumpToTab('home');
@@ -45,7 +45,7 @@ class TabNavigationLayout extends Component {
         </TabItem>
         <TabItem
           id="plantEdit"
-          title={I18n.t('addTab')}>
+          renderIcon={(isSelected) => <TabIcon iconName='plus' isSelected={isSelected}/>}>
           <StackNavigation
             id="plantEdit"
             initialRoute={Router.getRoute('plantEdit')}
@@ -55,7 +55,7 @@ class TabNavigationLayout extends Component {
         </TabItem>
         <TabItem
           id="provideController"
-          title={I18n.t('settingsTab')}>
+          renderIcon={(isSelected) => <TabIcon iconName='cog' isSelected={isSelected}/>}>
           <StackNavigation
             id="provideController"
             initialRoute={Router.getRoute('provideController')}
