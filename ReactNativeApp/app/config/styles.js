@@ -13,7 +13,7 @@ const colors = {
   navbar: 'white',
   navText: 'dimgray',
   button: '#303F9F',
-  gridTextBackground: 'rgba(0, 0, 0, 0.5)',
+  gridTextBackground: 'rgba(50, 50, 50, 0.5)',
   valid: 'green',
   invalid: 'red',
   shadow: 'lightgray',
