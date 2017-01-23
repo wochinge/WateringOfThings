@@ -16,7 +16,6 @@ class HomeView extends Component {
       renderTitle: () => { return (
         <View style= {styles.navContainer}>
           <Text style= {styles.headline}>
-          {/*<Icon name="tint" style={styles.icon} size={35} />*/}
             Watering my Things
           </Text>
         </View>
@@ -96,18 +95,18 @@ class HomeView extends Component {
   render() {
     return (
         <ScrollView
+          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._userInitiatedFetch}
             />
           }
-          style={styles.container}
-        >
+          style={styles.container}>
           <ActivityIndicator
              animating={!this.state.loaded}
              style={styles.activityIndicator}/>
-          {(this.state.dry_plants._cachedRowCount===0 && this.state.healthy_plants._cachedRowCount===0) ?
+          {(this.state.dry_plants._cachedRowCount === 0 && this.state.healthy_plants._cachedRowCount === 0) ?
             <View style={styles.noPlantsContainer}>
               <Text style={styles.noPlants}>
                 {I18n.t('noPlants')}
@@ -116,7 +115,7 @@ class HomeView extends Component {
           : null}
           {this.state.dry_plants._cachedRowCount > 0 ?
             <View
-              style={styles.sectionHeader}>
+              style={[styles.sectionHeader, styles.topSection]}>
               <Icon name="shower" size={18} style={styles.icon}/>
               <Text>
                 {I18n.t('homeDryPlants')}
@@ -208,16 +207,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.defaultBackground,
     flex: 1,
   },
-  sectionHeader: {
+  topSection: {
     marginTop: -20,
-    flex: 1,
-    padding: 10,
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    flexDirection:'row',
     borderStyle: 'solid',
     borderTopColor: colors.navBotton,
     borderTopWidth: 1,
+    paddingTop: 10
+  },
+  sectionHeader: {
+    flex: 1,
+    padding: 10,
+    paddingTop: 20,
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection:'row',
+
   },
   icon: {
     paddingRight: 10,
