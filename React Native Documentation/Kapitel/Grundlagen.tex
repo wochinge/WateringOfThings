@@ -5,21 +5,22 @@
  
  %TODO oneDirectional
 \subsection{JSX}
-Die Erstellung von View-Komponenten mittels JavaScript und React wirkt insbesondere für HTML-gewöhnte Entwickler wenig intuitiv. Beispielsweise wird mit folgendem Code ein div-Element mit dem Text \textit{Hello} erzeugt.
+Die meisten Web-Frameworks verfolgen eine Integration von JavaScript in HTML. React und damit React Native setzen hingegen die Komponentendefinition ebenfalls in JavaScript um.
+Die Erstellung von View-Komponenten mittels JavaScript und React wirkt dabei jedoch insbesondere für HTML-gewöhnte Entwickler wenig intuitiv. Beispielsweise wird mit folgendem Code ein div-Element mit dem Text \textit{Hello} erzeugt.
 \begin{listing}[H]
     \begin{minted}{js}
-   const element = React.createElement(
-        "div",
-        null,
-        "Hello"
-        );
-    }
+const element = React.createElement(
+    "div",
+    null,
+    "Hello"
+    );
+}
     \end{minted}
     \caption{Erstellung eines div-Elements mit dem Text \textit{Hello} ohne JSX}
     \label{lst:jsx_without_jsx}
 \end{listing}
 
-Meist wird daher die Syntax-Erweiterung \textit{JSX} genutzt. JSX ist ein an HTML angelehnter \textit{Syntactic Sugar}, welcher es erlaubt Listing \ref{lst:jsx_without_jsx} wie folgt zu schreiben:
+Meist wird daher die ebenfalls von Facebook entwickelte Syntax-Erweiterung \textit{JSX} genutzt. JSX ist ein an HTML angelehnter \textit{Syntactic Sugar}, welcher es erlaubt Listing \ref{lst:jsx_without_jsx} wie folgt zu schreiben:
 \begin{listing}[H]
     \begin{minted}{js}
 const element = <div>Hello</div>;
@@ -27,8 +28,8 @@ const element = <div>Hello</div>;
     \caption{Erstellung eines div-Elements mit dem Text \textit{Hello} mit JSX}
     \label{lst:jsx_with_jsx}
 \end{listing}
-Diese neue Syntax muss vor Ausführung jedoch wieder zu konventionellem JavaScript übersetzt werden. Dies kann beispielsweise mit Babel geschehen \cite{facebook_inc._introducing_2016}.
-Um JavaScript innerhalb von JSX-Komponenten zu verwenden, muss das JavaScript in geschweiften Klammern definiert werden. 
+Diese neue Syntax muss vor Ausführung jedoch erst wieder zu konventionellem JavaScript übersetzt werden. Dies kann beispielsweise mit Babel geschehen \cite{facebook_inc._introducing_2016}.
+Um JavaScript innerhalb von JSX-Komponenten zu verwenden, müssen konventionelle JavaScript-Anweisungen in geschweiften Klammern definiert werden. 
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -55,7 +56,7 @@ const element = (
     \label{lst:jsx_nested}
 \end{listing}
 
-Oft ist es weiterhin notwendig Daten von den Elternkomponenten in die Kindkomponenten zu übergeben. Dies wird in JSX mittels sogenannter \textit{Properties} umgesetzt.
+Oft ist es weiterhin notwendig, Daten von den Elternkomponenten in die Kindkomponenten zu übergeben. Dies wird in JSX mittels sogenannter \textit{Properties} umgesetzt.
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -81,5 +82,5 @@ ReactDOM.render(<Hello userName='Max' />, mountNodeInDOM);
 
 
 \subsection{Cross-Platform-Mobile-Development}
-Applikationen für mobile Plattformen werden traditionell in drei Kategorien unterteilt. \textit{Native}, \textit{hybride} und \textit{Web-Apps}. Native Apps werden speziell für die jeweilige Plattform entwickelt, z.B. für iOS oder Android, und nutzen die APIs der Plattform direkt. Dadurch sind native Apps am besten an die jeweilige Plattform angepasst und erzielen damit eine hohe Performance. Naturgemäß besitzen native Apps das Look-and-Feel der jeweiligen Plattform. Dieses Vorgehen hat jedoch den Nachteil, dass für jede Plattform eine eigenständige App entwickelt werden muss und spezifisches Know-How pro Plattform nötig ist. Daher verbreiten sich immer öfters HTML5-basierte Web-Apps. Dieses müssen nicht installiert werden, sondern werden im Browser des Gerätes ausgeführt. Somit können sie wie normale Websiten mit Technologien wie HTML5, CSS und JavaScript erstellt werden. Nachteil der Webapps ist die geringe Performance im Vergleich zu nativen Apps und dass sie nur auf einen Teil der Hardwareressourcen, wie z.B. GPS, zugreifen können. Den Kompromiss zwischen nativen und Web-Apps bilden hybride Apps. Hier wird letztlich eine Webview in eine native App gewrapped. Damit verhalten sich hybride Apps für den Nutzer wie native Apps. Hybride Apps können zusätzlich alle Hardwarefunktionen des Geräts nutzen. Da die View weiter im Browser gerendert wird, ist jedoch auch hier die Performance geringer. Bekannte Frameworks für hybride Apps sind beispielsweise PhoneGap \cite{adobe_systems_inc._adobe_2016} oder Cordova \cite{the_apache_software_foundation_apache_2016}.
-Frameworks, wie Xamarin \cite{xamarin_inc._xamarin_2016} oder React Native, vereinen die Vorteile dieser drei Kategorien. Wie bei den hybriden und Web-Apps werden die Apps plattformunabhängig entwickelt. Dazu wird entweder in C\# (Xamarin) oder JavaScript (React Native) benutzt. Die dabei verwendeten Komponenten werden jedoch auf native Komponenten abgebildet, sodass das Endprodukt komplett nativ läuft.
+Applikationen für mobile Plattformen werden traditionell in drei Kategorien unterteilt. \textit{Native}, \textit{hybride} und \textit{Web-Apps}. Native Apps werden speziell für die jeweilige Plattform entwickelt, z.B. für iOS oder Android, und nutzen die APIs der Plattform direkt. Dadurch sind native Apps am besten an die jeweilige Plattform angepasst und erzielen damit eine hohe Performance. Naturgemäß besitzen native Apps  dabei das Look-and-Feel der jeweiligen Plattform. Dieses Vorgehen hat jedoch den Nachteil, dass für jede Plattform eine eigenständige App entwickelt werden muss und spezifisches Know-How pro Plattform nötig ist. Daher steigt die Verbreitung HTML5-basierter Web-Apps. Dieses müssen nicht installiert werden, sondern werden im Browser des Gerätes ausgeführt. Somit können sie wie normale Websiten mit Technologien wie HTML5, CSS und JavaScript erstellt werden. Nachteil der Webapps ist die geringe Performance im Vergleich zu nativen Apps und dass sie nur auf einen Teil der Hardwareressourcen, wie z.B. GPS, zugreifen können. Den Kompromiss zwischen nativen und Web-Apps bilden hybride Apps. Hier wird letztlich eine Webview in eine native App gewrapped. Damit verhalten sich hybride Apps für den Nutzer wie native Apps. Hybride Apps können zusätzlich alle Hardwarefunktionen des Geräts nutzen. Da die View weiter im Browser gerendert wird, ist jedoch auch hier die Performance geringer. Bekannte Frameworks für hybride Apps sind beispielsweise PhoneGap \cite{adobe_systems_inc._adobe_2016} oder Cordova \cite{the_apache_software_foundation_apache_2016}.
+Frameworks, wie Xamarin \cite{xamarin_inc._xamarin_2016} oder React Native, vereinen die Vorteile dieser drei Kategorien. Wie bei den hybriden und Web-Apps werden die Apps plattformunabhängig entwickelt. Dazu wird entweder in C\# (Xamarin) oder JavaScript (React Native) benutzt. Die dabei verwendeten Komponenten werden jedoch auf native Komponenten abgebildet, sodass das Endprodukt komplett nativ läuft. Zu beachten ist, dass die Komponenten im Gegensatz zur herkömmlichen nativen Programmierung manuell an das Look-and-Feel der jeweiligen Plattform angepasst werden muss.
