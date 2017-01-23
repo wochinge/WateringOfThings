@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, RefreshControl, Image } from 'react-native';
 import { NavbarButton } from '../../components';
-import {colors, fonts, images, I18n} from '../../config';
+import {colors, fonts, I18n} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../router';
-import { Plant } from '../../database';
 import { connect } from 'react-redux';
+import { updatePlants } from '../../redux/actions';
+
 import autobind from 'autobind-decorator';
 
 @autobind
@@ -41,20 +42,12 @@ class HomeView extends Component {
     };
   }
 
-  componentWillMount() {
-    this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
-      if (this.props.client) {
-        this._initialFetch();
-      }
-    });
+  componentWillReceiveProps(nextProps) {
+    this._categorizePlants(nextProps.plants);
   }
 
   componentDidMount() {
     this._initialFetch();
-  }
-
-  componentWillUnmount() {
-    this._subscription.remove();
   }
 
   _initialFetch() {
@@ -69,7 +62,7 @@ class HomeView extends Component {
 
   _fetchData() {
     this.props.client.getPlants()
-    .then(this._categorizePlants);
+    .then(this.props.updatePlants);
   }
 
   _categorizePlants(listOfPlants) {
@@ -156,27 +149,16 @@ class HomeView extends Component {
         this.onPlantPress(plant)}>
         <View>
           <View style={styles.row}>
-
-            {this._setImage(plant)}
-
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} key={plant.plantImage.uri} source={plant.plantImage}>
+                <View style={styles.textBackground}>
+                  <Text style={styles.textStyle}>{plant.name}</Text>
+                </View>
+              </Image>
+          </View>
           </View>
         </View>
       </TouchableHighlight>
-    );
-  }
-
-  _setImage(plant) {
-    const plantDB = new Plant();
-    const plantImageURL = plantDB.getPlantImagePath(plant.id);
-    let imageURL = images.defaultPlantImage;
-    if (plantImageURL) {
-      imageURL = plantImageURL;
-    }
-    return (
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={imageURL}/>
-        <Text style={styles.textStyle}>{plant.name}</Text>
-    </View>
     );
   }
 
@@ -188,16 +170,25 @@ class HomeView extends Component {
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
-  client: React.PropTypes.object.isRequired
+  client: React.PropTypes.object.isRequired,
+  plants: React.PropTypes.array.isRequired,
+  updatePlants: React.PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => (
-  {
-    client: state.controller.client
-  }
-);
+const mapStateToProps = (state) => {
+  return ({
+    client: state.controller.client,
+    plants: state.plant.plants,
+  });
+};
 
-export default connect(mapStateToProps)(HomeView);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updatePlants: (plants) => dispatch(updatePlants(plants))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
 
 const styles = StyleSheet.create({
   container: {

@@ -11,6 +11,7 @@ const MicrocontrollerSchema = {
 
 const PlantSchema = {
   name: 'Plant',
+  primaryKey: 'id',
   properties: {
     id:         'int',
     imagePath:  'string'
@@ -48,8 +49,7 @@ class Plant {
 
   save(id, imagePath) {
     imagePath = imagePath.replace('file://', '');
-    let destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${id}.jpg`;
-    console.log(destinationPath);
+    let destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${id}_${Date.now()}.jpg`;
     this._moveFileFromTmpToDocuments(imagePath, destinationPath);
     destinationPath = 'file://' + destinationPath;
     realm.write(() => {
@@ -58,6 +58,7 @@ class Plant {
         imagePath: destinationPath
       }, true);
     });
+    return destinationPath;
   }
 
   _moveFileFromTmpToDocuments(source, destination) {

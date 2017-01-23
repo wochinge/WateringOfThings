@@ -36,29 +36,29 @@ export default class WoTClient {
     .then(this._toJSON);
   }
 
-  createPlant(name, pin, position, threshold) {
+  createPlant(plant) {
     return fetch(this._createURL('plant'), {
       method: 'POST',
       headers: header,
       body: JSON.stringify({
-        name: name,
-        pin: pin,
-        position: position,
-        moistureThreshold: threshold
+        name: plant.name,
+        pin: plant.pin,
+        position: plant.position,
+        moistureThreshold: plant.moistureThreshold
       })
     })
     .then(this._toJSON);
   }
 
-  updatePlant(id, name, pin, position, threshold) {
-    return fetch(this._createURL('plant', id), {
+  updatePlant(plant) {
+    return fetch(this._createURL('plant', plant.id), {
       method: 'PUT',
       headers: header,
       body: JSON.stringify({
-        name: name,
-        pin: pin,
-        position: position,
-        moistureThreshold: threshold
+        name: plant.name,
+        pin: plant.pin,
+        position: plant.position,
+        moistureThreshold: plant.moistureThreshold
       })
     })
     .then(this._toJSON);

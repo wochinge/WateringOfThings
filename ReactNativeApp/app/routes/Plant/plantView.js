@@ -24,19 +24,8 @@ export default class PlantView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageURL: images.defaultPlantImage
+      imageURL: props.plant.plantImage
     };
-    this._setImage();
-  }
-
-  _setImage() {
-    const plantDB = new PlantDB();
-    const plantImageURL = plantDB.getPlantImagePath(this.props.plant.id);
-    if (plantImageURL) {
-      this.state = {
-        imageURL: plantImageURL
-      };
-    }
   }
 
   render() {

@@ -19,7 +19,6 @@ const initialState = {
 };
 
 export default function controller(state = initialState, action = {}) {
-  console.log(action);
   switch (action.type) {
   case CHANGE_CONTROLLER_ID:
     return {
