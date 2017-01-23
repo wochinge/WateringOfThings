@@ -32,7 +32,7 @@ PlantStatus.propTypes = {
 
 const styles = StyleSheet.create({
   moistureText:{
-    color: colors.defaultText,
+    color: colors.black,
     fontFamily: fonts.defaultFamily,
     fontSize: 18,
     textAlign: 'center',

@@ -42,9 +42,8 @@ export default class PlantView extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <Image style={styles.image} source={this.state.imageURL}/>
         <ScrollView>
-
+          <Image style={styles.image} source={this.state.imageURL}/>
             <View style={styles.nameContainer}>
               <Text style={styles.plantName}>
                 {this.props.plant.name}
@@ -67,7 +66,7 @@ export default class PlantView extends Component {
                 <Text style={styles.infoValue}>
                   {this.props.plant.moistureThreshold}
                 </Text>
-                <Text style={[styles.infoText, styles.infoTextRight]}>
+                <Text style={[styles.infoText]}>
                   Threshold
                 </Text>
               </View>
@@ -87,7 +86,7 @@ export default class PlantView extends Component {
                 <Text style={styles.infoValue}>
                   {this.props.plant.pin}
                 </Text>
-                <Text style={[styles.infoText, styles.infoTextRight]}>
+                <Text style={[styles.infoText]}>
                   Pin
                 </Text>
               </View>
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     paddingTop: 10,
     paddingBottom: 10,
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: colors.separator,
     flex: 1,
     justifyContent: 'space-around',
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   },
   plantName: {
     fontWeight: 'bold',
-    color: colors.defaultText,
+    color: colors.black,
     fontFamily: fonts.defaultFamily,
     fontSize: 24,
     textAlign: 'center',
@@ -165,17 +164,20 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.separator,
     margin: 5,
   },
-  infoTextRight: {
-
-  },
   infoText: {
     textAlign: 'center',
-    paddingBottom: 20,
+    paddingBottom: 10,
+    fontSize: 18,
+    color: colors.defaultText,
+
   },
   infoValue: {
+    paddingTop: 10,
     fontWeight: 'bold',
-    marginRight: 60,
-    marginLeft: 60,
+    marginRight: 70,
+    marginLeft: 70,
+    fontSize: 18,
+    color: colors.defaultText,
   },
 
 });
