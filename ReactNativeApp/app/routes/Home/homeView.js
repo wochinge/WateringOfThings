@@ -78,7 +78,7 @@ class HomeView extends Component {
     const toDry = [];
 
     for (let plant of listOfPlants) {
-      if (!plant.lastMoistureValue || (plant.lastMoistureValue > plant.moistureThreshold))
+      if (!plant.latestMoistureValue || (plant.latestMoistureValue > plant.moistureThreshold))
         ok.push(plant);
       else {
         toDry.push(plant);
