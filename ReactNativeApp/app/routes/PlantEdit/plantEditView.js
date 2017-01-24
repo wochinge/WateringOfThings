@@ -1,20 +1,30 @@
 
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, Alert, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
 import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Plant as PlantDB } from '../../database';
 import { connect } from 'react-redux';
+import { NavbarButton } from '../../components';
+import autobind from 'autobind-decorator';
+import { editPlant, createPlant, deletePlant } from '../../redux/actions';
 
-
+@autobind
 class PlantEditView extends Component {
 
   static route = {
     navigationBar: {
       title(params) {
         return params.plant ? I18n.t('edit_plant') : I18n.t('create_plant');
+      },
+      renderRight: (params) => {
+        if (params.params.plant) {
+          return (
+            <NavbarButton iconName='trash' onPress={params.params.showPlantAlert}/>
+          );
+        }
       }
     }
   }
@@ -33,32 +43,20 @@ class PlantEditView extends Component {
       pin: plantEditMode? plant.pin : 0,
       position: plantEditMode ? plant.position : '',
       moistureThreshold: plantEditMode ? plant.moistureThreshold : 50,
-      plantImage: this._getPlantImage(plantEditMode, plant),
+      plantImage: plantEditMode ? plant.plantImage : images.defaultPlantImage,
       imageSelected: false,
       plantEditMode: plantEditMode,
       validPin: plantEditMode ? true : false,
       validPosition: plantEditMode ? true : false
     };
-    this._savePlant = this._savePlant.bind(this);
-    this._saveImage = this._saveImage.bind(this);
-    this._selectPlantImage = this._selectPlantImage.bind(this);
-    this._validateName = this._validateName.bind(this);
-    this._validatePin = this._validatePin.bind(this);
-    this._validatePosition = this._validatePosition.bind(this);
   }
 
-  _getPlantImage(plantEditMode, plant) {
-    let plantURL = null;
-    if (plantEditMode) {
-      const db = new PlantDB();
-      plantURL = db.getPlantImagePath(plant.id);
-    }
-
-    if (!plantURL) {
-      console.log(images.defaultPlantImage);
-      return images.defaultPlantImage;
-    }
-    return plantURL;
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.navigator.updateCurrentRouteParams({
+        showPlantAlert: this._deletePlantAlert
+      });
+    }, 1000);
   }
 
   _selectPlantImage() {
@@ -76,30 +74,37 @@ class PlantEditView extends Component {
 
   _savePlant() {
     const client = this.props.client;
+    const plant = {
+      id: this.state.plantEditMode ? this.props.plant.id : null,
+      name: this.state.name,
+      pin: this.state.pin,
+      position: this.state.position,
+      moistureThreshold: this.state.moistureThreshold,
+      latestMoistureValue: this.state.plantEditMode ? this.props.plant.latestMoistureValue : null,
+      plantImage: this.state.plantImage.uri
+    };
+
     if (this.state.plantEditMode) {
-      client.updatePlant(this.props.plant.id, this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
-      .then(() => this._saveImage(this.props.plant.id))
+      client.updatePlant(plant)
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
+      this.props.saveEditedPlant(plant);
       this.props.navigator.pop(2);
     } else {
-      client.createPlant(this.state.name, this.state.pin, this.state.position, `${this.state.moistureThreshold}`)
-      .then(created => this._saveImage(created.id))
+      client.createPlant(plant)
+      .then(plantWithID =>  {
+        plantWithID.plantImage = plant.plantImage;
+        this.props.saveCreatedPlant(plantWithID);
+      })
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
+
       this.props.navigation.performAction(({ tabs, stacks }) => {
         tabs('main').jumpToTab('home');
         stacks('home').popToTop();
       });
-    }
-  }
-
-  _saveImage(id) {
-    if (this.state.imageSelected) {
-      const db = new PlantDB();
-      db.save(id, this.state.plantImage.uri);
     }
   }
 
@@ -125,13 +130,28 @@ class PlantEditView extends Component {
   _validatePosition(position) {
     position = parseInt(position);
     let valid = false;
-    if (!isNaN(position)) {
+    if (!isNaN(position) && position >= 0 && position <= 180) {
       valid = true;
     }
     this.setState({
       position: position,
       validPosition: valid
     });
+  }
+
+  _deletePlantAlert() {
+    Alert.alert(I18n.t('deletePlantAlert'),
+      I18n.t('deletePlantAlertMessage'),
+      [
+        {text: I18n.t('delete'), onPress: this._deletePlant},
+        {text: I18n.t('cancel'), style: 'cancel'}
+      ]);
+  }
+
+  _deletePlant() {
+    this.props.client.deletePlant(this.props.plant.id);
+    this.props.deletePlant(this.props.plant);
+    this.props.navigator.pop(2);
   }
 
   render() {
@@ -205,6 +225,9 @@ PlantEditView.propTypes = {
   navigator: PropTypes.object,
   plant: React.PropTypes.object,
   navigation: PropTypes.object,
+  saveCreatedPlant: PropTypes.func.isRequired,
+  saveEditedPlant: PropTypes.func.isRequired,
+  deletePlant: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => (
@@ -213,7 +236,15 @@ const mapStateToProps = (state) => (
   }
 );
 
-export default connect(mapStateToProps)(PlantEditView);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveEditedPlant: (plant) => dispatch(editPlant(plant)),
+    saveCreatedPlant: (plant) => dispatch(createPlant(plant)),
+    deletePlant: (plant) => dispatch(deletePlant(plant))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlantEditView);
 
 const styles = StyleSheet.create({
   container: {

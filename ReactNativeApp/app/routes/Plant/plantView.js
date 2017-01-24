@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import {colors, images, fonts, commonStyles, I18n } from '../../config';
-import { NavbarButton } from '../../components';
+import { NavbarButton, PlantStatus } from '../../components';
 import Button from 'apsl-react-native-button';
 import { Plant as PlantDB } from '../../database';
 import { Router } from '../../router';
-import { Plant } from '../../models';
 
 export default class PlantView extends Component {
 
@@ -25,19 +24,8 @@ export default class PlantView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageURL: images.defaultPlantImage
+      imageURL: props.plant.plantImage
     };
-    this._setImage();
-  }
-
-  _setImage() {
-    const plantDB = new PlantDB();
-    const plantImageURL = plantDB.getPlantImagePath(this.props.plant.id);
-    if (plantImageURL) {
-      this.state = {
-        imageURL: plantImageURL
-      };
-    }
   }
 
   render() {
@@ -45,16 +33,61 @@ export default class PlantView extends Component {
       <View style={styles.container}>
         <ScrollView>
           <Image style={styles.image} source={this.state.imageURL}/>
+            <View style={styles.nameContainer}>
+              <Text style={styles.plantName}>
+                {this.props.plant.name}
+              </Text>
+              <PlantStatus plant={this.props.plant} style={styles.moistureText}/>
+            </View>
+
           <View style={styles.innerContainer}>
-          <Text style={styles.statusText}>
-            {I18n.t('healthState')}
-          </Text>
-            {this.moistureValue()}
-            <Button style={commonStyles.defaultButton} textStyle={commonStyles.defaultButtonText}
+            <View style={[styles.infos, styles.infosBottom]}>
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.latestMoistureValue}
+                </Text>
+                <Text style={styles.infoText}>
+                  Moisture Value
+                </Text>
+              </View>
+
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.moistureThreshold}
+                </Text>
+                <Text style={[styles.infoText]}>
+                  Threshold
+                </Text>
+              </View>
+
+            </View>
+            <View style={styles.infos}>
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.position}
+                </Text>
+                <Text style={styles.infoText}>
+                Position
+                </Text>
+              </View>
+
+              <View style={styles.infoView}>
+                <Text style={styles.infoValue}>
+                  {this.props.plant.pin}
+                </Text>
+                <Text style={[styles.infoText]}>
+                  Pin
+                </Text>
+              </View>
+            </View>
+
+            <Button style={[commonStyles.defaultButton, styles.button]} textStyle={commonStyles.defaultButtonText}
               onPress={() => this.onPressWater(this.props.plant)}>
               {I18n.t('water')}
             </Button>
+
           </View>
+
         </ScrollView>
       </View>
     );
@@ -62,11 +95,6 @@ export default class PlantView extends Component {
 
   onPressWater(plant) {
     this.props.navigator.push(Router.getRoute('waterPlant', {plant: plant}));
-  }
-
-  moistureValue() {
-    const plant = new Plant(this.props.plant);
-    return <Text style={styles.moistureText}>{plant.healthStatusText()}</Text>;
   }
 }
 
@@ -78,36 +106,70 @@ PlantView.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   innerContainer: {
-    borderRadius: 10,
-    margin: 60,
-    padding: 20,
+    paddingTop: 30,
     flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  nameContainer: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 3,
+    borderBottomColor: colors.separator,
+    flex: 1,
+    justifyContent: 'space-around',
+    width: Dimensions.get('window').width,
   },
   image:{
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    borderColor: colors.separator,
-    borderWidth: 2,
+    width: 200,
+    height: 200,
+    marginTop: 10,
+    borderRadius: 100,
     alignSelf: 'center',
   },
   moistureText:{
-    color: colors.defaultText,
-    fontFamily: fonts.defaultFamily,
-    fontSize: 18,
-    textAlign: 'left',
+    paddingTop: 10,
   },
-  statusText:{
-    fontSize: 24,
+  plantName: {
     fontWeight: 'bold',
-    color : colors.defaultText,
+    color: colors.black,
     fontFamily: fonts.defaultFamily,
-    textAlign: 'left',
+    fontSize: 24,
+    textAlign: 'center',
   },
+  button:{
+    margin: 50,
+  },
+  infos: {
+    flex: 1,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    flexDirection:'row',
+  },
+  infosBottom: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.separator,
+    margin: 5,
+  },
+  infoText: {
+    textAlign: 'center',
+    paddingBottom: 10,
+    fontSize: 18,
+    color: colors.defaultText,
+
+  },
+  infoValue: {
+    paddingTop: 10,
+    fontWeight: 'bold',
+    marginRight: 70,
+    marginLeft: 70,
+    fontSize: 18,
+    color: colors.defaultText,
+  },
+
 });

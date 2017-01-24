@@ -1,5 +1,10 @@
 import changeControllerID from './controllerActions';
+import { createPlant, editPlant, deletePlant, updatePlants } from './plantActions';
 
 export {
-  changeControllerID
+  changeControllerID,
+  createPlant,
+  editPlant,
+  deletePlant,
+  updatePlants,
 };

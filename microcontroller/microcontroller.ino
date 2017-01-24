@@ -27,13 +27,13 @@
 #define D9 3
 #define D10 1
 
-#define A D5
-#define B D6
-#define C D7
-#define MOISTURE_START_PIN D4
+#define A D1
+#define B D2
+#define C D3
+#define MOISTURE_START_PIN D8
 
-#define SERVO_PIN D2
-#define PUMP_PIN D3
+#define SERVO_PIN D4
+#define PUMP_PIN D7
 #define TILL_SERVO_FINISHED 1000
 
 WiFiClient client;
@@ -49,7 +49,8 @@ void waterPlant(int position, int time) {
   digitalWrite(PUMP_PIN, HIGH);
   delay(time);
   digitalWrite(PUMP_PIN, LOW);
-  movePumpTo(-position, false);
+  delay(2000);
+  movePumpTo(90, false);
   Serial.println("Watering end");  
 }
 
@@ -74,7 +75,7 @@ void getMoistureValues(JsonArray& pins, int nrOfPins) {
 }
 
 void callback (char* topic, byte* payload, unsigned int length) {
-  StaticJsonBuffer<100> jsonBuffer;
+  StaticJsonBuffer<108> jsonBuffer;
   JsonObject& root = jsonBuffer.parseObject((char*) payload);
   String parsedTopic(topic);
   Serial.println(topic);
@@ -116,14 +117,6 @@ void setup(void) {
   
   mqttclient.setServer(MQTT_SERVER, MQTT_PORT);
   mqttclient.setCallback(callback);
-  
- // did that last thing work? sweet, let's do something
-  if (mqttclient.connect(MQTT_USERNAME, MQTT_USERNAME, MQTT_PASSWORD)) {
-    Serial.println("Connected to mqtt broker");
-    mqttclient.publish(BASE_TOPIC, "Initial");
-    mqttclient.subscribe(WATER_PLANTS);
-    mqttclient.subscribe(MEASURE_MOISTURE);
-  }
 
   pinMode(A, OUTPUT);
   pinMode(B, OUTPUT);
@@ -132,12 +125,34 @@ void setup(void) {
   digitalWrite(MOISTURE_START_PIN, HIGH);
   pinMode(PUMP_PIN, OUTPUT);
   pumpMover.attach(SERVO_PIN);
-  // Fix for invalid starting position
-  movePumpTo(-90, false);
+  
+  // Go to starting position
+  movePumpTo(90, false);
+}
 
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    if (mqttclient.connect(CONTROLLER_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
+      mqttclient.publish(BASE_TOPIC, "Connected");
+      mqttclient.subscribe(WATER_PLANTS);
+      mqttclient.subscribe(MEASURE_MOISTURE);
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(mqttclient.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
 }
 
 void loop(void) {
+  if (!mqttclient.connected()) {
+    reconnect();
+  }
   mqttclient.loop();
 }
 

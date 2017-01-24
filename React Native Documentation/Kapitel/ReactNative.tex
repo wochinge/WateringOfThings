@@ -1,7 +1,7 @@
 \section{React Native}
 
 \subsection{Components} \label{component}
-React Native und React konstruieren Applikationen mit Hilfe von \textit{Components}. React Native verwendet dabei native Komponenten von Android und iOS, während React Web Components nutzt  \cite{facebook_inc._getting_2017}. Die \textit{React.Component} Klasse von React wird als abstrakte Basisklasse verwendet. Alle eigenen Klassen werden im Normalfall von dieser Klasse abgeleitet. Mithilfe von Components kann die Anwendung in unabhängige und isolierte Teile gegliedert werden. Components sind mit JavaScript Funktionen vergleichbar, welche eine Eingabe erhalten und zurückgeben was am Bildschirm angezeigt werden soll \cite{facebook_inc._components_2017}. Im unteren Beispiel \ref{lst:component} wird die Component \textit{HomeView} angelegt. Jede Component braucht eine \textit{render} Funktion, die JSX rendert. \textit{AppRegistry} definiert den Anfangspunkt der App für React Native. Die wird in der App meist nur in der obersten index Datei verwendet \cite{facebook_inc._getting_2017}. 
+React Native und React konstruieren Applikationen mit Hilfe von \textit{Components}. React Native verwendet dabei native Komponenten von Android und iOS, während React Web Components nutzt  \cite{facebook_inc._getting_2017}. Für die Implementierung eigener Komponenten wird die \textit{React.Component}-Klasse von React als abstrakte Basisklasse verwendet. Mithilfe von Components kann das User Interface der Anwendung in unabhängige, wiederverwendbare Teile gegliedert werden. Die Components sind mit JavaScript-Funktionen vergleichbar, welche Daten als Eingabe erhalten und deren Visualisierung zurück geben \cite{facebook_inc._components_2017}. Im Beispiel \ref{lst:component} wird die Komponente \textit{HomeView} angelegt. Bei der Definition von Komponenten ist die Implementierung der \textit{render}-Funktion Pflicht. \textit{AppRegistry.registerComponent} definiert den Anfangspunkt der App für React Native und bekommt die hierarchisch höchste Komponente übergeben \cite{facebook_inc._getting_2017}. 
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -11,20 +11,20 @@ import { AppRegistry, Text } from 'react-native';
 class HomeView extends Component {
     render() {
         return (
-            <Text>Watering of Things App</Text>
+            <Text>Hello</Text>
         );
     }
 }
 
 AppRegistry.registerComponent('HomeView', () => HomeView);
     \end{minted}
-    \caption{Components}
+    \caption{Erstellung einer eigenen Komponente, die den Text \textit{Hello} ausgibt}
     \label{lst:component}
 \end{listing}
 
 \subsection{Props}
-JSX Attribute werden für selbst definierte Funktionen als ein Objekt übergeben. Dieses Objekt heißt \textit{Props} \cite{facebook_inc._components_2017}. Mithilfe von Props können die Components bei ihrer Erstellung angepasst werden. Props ermöglichen, dass eine Component an verschiedenen Stellen mit verschiedenen Daten wiederverwendet werden kann \cite{facebook_inc._props_2017}. Es ist allerdings nur lesender Zugriff bei Props möglich, d.h. sie können nicht modifiziert werden. Die Props werden vom Parent gesetzt. Im Beispiel \ref{lst:props} wir der Name der Pflanze übergeben um in der Component PlantView verschiedene Pflanzennamen anzeigen zu können, dadurch kann die Component leicht wiederverwendet werden. Es können eigene Components verwendet werden, als auch welche von React Native, wie beispielsweise \textit{<Text>}. Dies ermöglicht eine besondere Freiheit beim gestalten der App. Sollte eine vorgegebene Component nicht passen, kann man leicht eine neue kreieren und verwenden, wie in diesem Fall PlantView. Die \textit{<View>} Component kann verwendet werden, um einheitlichen Style und Layout zu gewährleisten. 
-
+Um Kindkomponenten dynamisch anzupassen, können Elternkomponenten Attribute innerhalb eines \textit{props}-Objektes übergeben \cite{facebook_inc._components_2017}. Props ermöglichen es, dass eine Component an verschiedenen Stellen mit verschiedenen Daten wiederverwendet werden kann \cite{facebook_inc._props_2017}. Es ist allerdings nur lesender Zugriff auf Props möglich, d.h. sie können nicht modifiziert werden. Im Beispiel \ref{lst:props} wird der Name der Pflanze übergeben, um in der Component \textit{PlantView} verschiedene Pflanzennamen anzeigen zu können. Dadurch kann die Component leicht wiederverwendet werden. Es können sowohl eigene Components als auch Components von React Native, wie beispielsweise \textit{<Text>}, verwendet werden. Ändern sich übergebene Properties werden betroffene Teile der View automatisch neu gerendert.
+%Dies ermöglicht eine besondere Freiheit beim Gestalten der App. Sollte eine vorgegebene Component nicht passen, kann man leicht eine neue kreieren und verwenden, wie in diesem Fall PlantView. Die \textit{<View>} Component ist das Elternelement der geschachtelten Components PlantView. 
 \begin{listing}[H]
     \begin{minted}{js}
 import React, { Component } from 'react';
@@ -41,7 +41,7 @@ class PlantView extends Component {
 class PlantsView extends Component {
     render() {
         return (
-            <View style={{alignItems: 'center'}}>
+            <View>
                 <PlantView name='Basilikum' />
                 <PlantView name='Kaktus' />
                 <PlantView name='Blume' />
@@ -51,12 +51,12 @@ class PlantsView extends Component {
 }
 
     \end{minted}
-    \caption{Props}
+    \caption{Definition einer \textit{PlantView}-Component, die den anzuzeigenden Pflanzenname als Property übergeben bekommt}
     \label{lst:props}
 \end{listing}
 
 \subsection{State}
-Während Props unveränderlich sind, kann man mit \textit{State} Daten ändern. State sollte im Normalfall im Konstruktor initialisiert werden, mit \textit{setState} können die Daten dann später bearbeitet werden. Im Beispiel \ref{lst:state} wird ein blinkender Text erstellt. Dies zeigt auch anschaulich den Unterschied zwischen Props und State. Props ist hier der Text, dieser wird über die zeit hinweg nicht verändert. Welcher Text angezeigt werden soll, also ein leerer Text oder der übergebene Text, wird vom State bestimmt \cite{facebook_inc._state_2017}. In einer App kann der State beispielsweise gesetzt werden wenn Daten vom Server empfangen wurden, davor wird noch ein Ladeicon angezeigt. 
+\textit{State} ermöglicht es die Daten einer Komponente zu ändern und damit ein erneutes Rendern der Ansicht auszulösen. State sollte im Normalfall im Konstruktor initialisiert werden und mit \textit{setState} können die Daten dann später bearbeitet werden. Im Beispiel \ref{lst:state} wird ein blinkender Text erstellt. Dies zeigt auch anschaulich den Unterschied zwischen Props und State. Ein Property ist hier der Text, der ausschließlich von der Elternkomponente geändert werden kann. Die Kindkomponente kann jedoch mittels des States die eigene Anzeige bestimmen. In Beispiel \cite{facebook_inc._state_2017}. Ein praktisches Beispiel für State ist der Zugriff auf eine REST API. Beispielsweise kann im State ein Feld \textit{isLoadingData} definiert werden, anhand dessen das Rendern einer Warteanimation gesteuert wird.
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -93,13 +93,13 @@ class BlinkApp extends Component {
 }
 
     \end{minted}
-    \caption{State \cite{facebook_inc._state_2017}}
+    \caption{Definition einer View, die einen blinkenden Text anzeigt \cite{facebook_inc._state_2017}}
     \label{lst:state}
 \end{listing}
 
 
 \subsection{Styling}
-Mit React Native ist Entwickeln meist sehr einfach, dies gilt auch für die Styles einer App. Die Definition ist an CSS Styles angelehnt und die meisten Styles können verwendet werden. Geschrieben werden sie allerdings einfach in JavaScript. Alle Components akzeptieren den Prop \textit{Style} \cite{facebook_inc._style_2017}. Es ist möglich einzelne als auch mehre Styles zu übergeben. Um die Styles zu bündeln und übersichtlich zu halten, kann ein Stylesheet mit \textit{StyleSheet.create} erstellt werden \cite{facebook_inc._style_2017}. 
+Das Definieren von Styles ist an CSS angelehnt, geschieht aber ebenfalls in JavaScript. Dabei können die meisten der in CSS bekannten Styles wiederverwendet werden. Alle von der React.Component-Klasse abgeleiteten Elemente akzeptieren den Prop \textit{Style} \cite{facebook_inc._style_2017} mit dessen Hilfe die Darstellung der Komponente angepasst werden kann. Um die Styles zu bündeln und übersichtlich zu halten, empfiehlt es sich, ein Stylesheet mit \textit{StyleSheet.create} zu erstellen \cite{facebook_inc._style_2017}. 
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -127,12 +127,12 @@ const styles = StyleSheet.create({
     }
 });    
     \end{minted}
-    \caption{Style}
+    \caption{Customizen von Komponenten mit Hilfe der \textit{style}-Property}
     \label{lst:style}
 \end{listing}
 
 \subsection{Layout}
-Nicht jedes Smartphone hat die selben Abmessungen und unterschiedliche Bildschirmgrößen. React Native verwendet für dieses Problem den Style \textit{flex} \cite{facebook_inc._flex_2017}.  Hiermit können Components sich dem gegebenen Platz in Höhe und Breite perfekt anpassen. Wird jeder Component \textit{flex: 1} gegeben, teilen sich die Components den Platz gleichmäßig auf. Je größer die vergebene Zahl ist, desto mehr Platz erhält diese Component dann im Verhältnis zu anderen Components in einem Parent-Element \cite{facebook_inc._flex_2017}. 
+Smartphones unterscheiden sich in ihren Abmessungen und Bildschirmgrößen. React Native bietet daher die Möglichkeit ein dynamisches Layout mittels dem Style \textit{flex} zu erstellen \cite{facebook_inc._flex_2017}.  Damit werden Abmessung nicht absolut definiert, sondern anhand von Gewichten. Wird beispielsweise jeder Component \textit{flex: 1} als Style übergeben, teilen sich die Komponenten den Platz gleichmäßig auf. Je größer die vergebene flex-Zahl ist, desto mehr Platz erhält diese Komponente im Verhältnis zu anderen Components innerhalb des gemeinsamen Parent-Element \cite{facebook_inc._flex_2017}. 
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -151,24 +151,24 @@ class HomeView extends Component {
 };
 
     \end{minted}
-    \caption{Flexbox}
+    \caption{Einsatz von Flexbox für eine dynamische Größenanpassung der Komponenten}
     \label{lst:flex}
 \end{listing}
+\hyphenation{Platt-form}
+Damit kann ein einheitliches Layout auf unterschiedlichen Geräten gewährleistet werden. Weitere Styles zum Verfeinern des Layouts sind \textit{flexDirection}, \textit{alignItems} und \textit{justifyContent}. Mit FlexDirection kann die Ausrichtung der Objekte bestimmt werden, d.h. die Objekte können vertikal (\textit{column}) oder horizontal (\textit{row}) angeordnet werden. Der Standardwert für Flexboxen ist horizontal. Die Eigenschaft \textit{justifyContent} regelt dabei die Verteilung der Komponenten in Flex-Richtung, d.h. beispielsweise dass sich die Komponenten in der Mitte oder am Rand konzentrieren, während \textit{alignItems} die Ausrichtung der Kind-Komponenten in der jeweils anderen Achse regelt \cite{facebook_inc._flex_2017}. \\
 
-Zusätzlich kann mithilfe von Flexboxen ein einheitliches Layout gewährleistet werden. Weitere Styles zum verfeinern des Layouts sind \textit{flexDirection}, \textit{alignItems} und \textit{justifyContent}. Mit FlexDirection kann die Ausrichtung der Objekte bestimmt werden, d.h. die Objekte können vertikal \textit{column} oder horizontal \textit{row} angeordnet werden. Der Standardwert für flexboxen ist horizontal. AlignItems regelt die Ausrichtung der Kind-Components \cite{facebook_inc._flex_2017}. \\
-
-Die Verteilung der Components wird mit justifyContent geregelt. Es ist möglich die Objekte links-, rechtsbündig oder mittig anzuordnen oder mit Abstand um das Objekt oder zwischen den Objekten \cite{facebook_inc._flex_2017}.
+%Die Verteilung der Components wird mit justifyContent geregelt. Es ist möglich die Objekte links-, rechtsbündig oder mittig anzuordnen oder mit Abstand um das Objekt oder zwischen den Objekten \cite{facebook_inc._flex_2017}.
 
 \subsection{Plattform-Spezialisierung}
-Auch wenn es das Ziel ist, möglichst viel Code zwischen den Plattformen wiederzuverwenden, gibt es Situationen in denen zwischen den Plattformen differenziert werden muss. Dies kann beispielsweise nötig werden, falls die App an das Look-And-Feel der jeweiligen Plattformen angepasst werden solll, um die User-Experience zu erhöhen.
-React Native bietet für die Plattformunterscheidung zwei Möglichkeiten. Zum einen kann die Plattform abgefragt werden, zum anderen kann Code in Dateien mit Plattform-spezifischen Endungen abgelegt werden. Beide Möglichkeiten werden nachfolgend gezeigt.
+Auch wenn es das Ziel ist, möglichst viel Code zwischen den Plattformen wiederzuverwenden, gibt es Situationen in denen zwischen den Plattformen differenziert werden muss. Dies kann beispielsweise nötig werden, falls die App an das Look-And-Feel der jeweiligen Plattformen angepasst werden solll, um damit die User-Experience zu erhöhen.
+React Native bietet für die Plattformunterscheidung zwei Möglichkeiten an. Zum einen kann die Plattform abgefragt werden, zum anderen kann Code in Dateien mit Plattform-spezifischen Endungen abgelegt werden. Beide Möglichkeiten werden nachfolgend gezeigt.
 
 \begin{listing}[H]
     \begin{minted}{js}
 import { Platform, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    // Das Element hat in iOS weißen Hintergrund und einen blauen in Android
+    // Das Element hat in iOS einen weißen Hintergrund und einen blauen in Android
     backgroundColor: (Platform.OS === 'ios') ? 'white' : 'blue',
 });
     \end{minted}
@@ -178,18 +178,18 @@ const styles = StyleSheet.create({
 
 \begin{listing}[H]
     \begin{minted}{js}
-// colors.ios.js
+// Datei: colors.ios.js
 export default defaultBackgroundColor = 'white';
 
-// colors.android.js
+// Datei: colors.android.js
 export default defaultBackgroundColor = 'blue';
  
-// style.js
-// Der Import erfolgt ohne Plattform spezifische Dateiendung
+// Datei: style.js
+// Der Import erfolgt ohne Plattform-spezifische Dateiendung
 import defaultBackgroundColor from './colors';
  
 const styles = StyleSheet.create({
-    // Das Element hat in iOS weißen Hintergrund und einen blauen in Android
+    // Das Element hat in iOS einen weißen Hintergrund und einen blauen in Android
     backgroundColor: defaultBackgroundColor
 });
      
@@ -199,8 +199,24 @@ const styles = StyleSheet.create({
 \end{listing}
 
 \subsection{Networking}
-Zum Ansprechen einer Rest API hat React Native die \textit{Fetch API} \cite{facebook_inc._fetch_2017}. Um Daten von einer URL zu laden, muss diese nur an die fetch-Funktion übergeben werden. Des Weiteren kann die Methode oder Header definiert werden. 
+Zum Ansprechen einer REST API stellt React Native die \textit{Fetch-API} bereit. \cite{facebook_inc._fetch_2017}. Um Daten mittels eines GET-Requests von einer URL zu laden, wird nach folgendem Schema vorgegangen:
+\begin{listing}[H]
+    \begin{minted}{js}
+fetch('https://mywebsite.com/endpoint/', {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+.then((responseJSON) => responseJSON.json())
+.then((decoded) => ...)
+.catch((eventualException) => ...);
+    \end{minted}
+    \caption{GET-Request mit der Fetch-API \cite{facebook_inc._fetch_2017}}
+    \label{lst:get_fetch}
+\end{listing}
 
+Beim Senden von Daten an die API müssen diese in das passende JSON-Format umgewandelt sowie das Datenformat im Header spezifiziert werden:
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -215,8 +231,10 @@ fetch('https://mywebsite.com/endpoint/', {
         secondParam: 'yourOtherValue',
     })
 })
+.then((responseJSON) => ... )
+.catch((eventualException) => ...);
     \end{minted}
-    \caption{Fetch \cite{facebook_inc._fetch_2017}}
+    \caption{POST-Request mit der Fetch-API \cite{facebook_inc._fetch_2017}}
     \label{lst:fetch}
 \end{listing}
 

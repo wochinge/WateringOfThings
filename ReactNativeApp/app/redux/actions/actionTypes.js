@@ -1,2 +1,7 @@
 export const CHANGE_CONTROLLER_ID = 'CHANGE_CONTROLLER_ID';
 export const SET_PLANT_IMAGE = 'SET_PLANT_IMAGE';
+
+export const CREATE_PLANT = 'CREATE_PLANT';
+export const EDIT_PLANT = 'EDIT_PLANT';
+export const DELETE_PLANT = 'DELETE_PLANT';
+export const UPDATE_PLANTS = 'UPDATE_PLANTS';

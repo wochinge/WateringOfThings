@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableHighlight , StyleSheet, ListView, ActivityIndicator, ScrollView, RefreshControl, Image } from 'react-native';
 import { NavbarButton } from '../../components';
-import {colors, fonts, images} from '../../config';
+import {colors, fonts, I18n} from '../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Router } from '../../router';
-import { Plant } from '../../database';
 import { connect } from 'react-redux';
+import { updatePlants } from '../../redux/actions';
 
+import autobind from 'autobind-decorator';
 
+@autobind
 class HomeView extends Component {
 
   static route = {
     navigationBar: {
       renderTitle: () => { return (
-        <Text style= {styles.headline}>
-          <Icon name="tint" style={styles.icon} size={35} />
-          Watering my Things
-        </Text>
+        <View style= {styles.navContainer}>
+          <Text style= {styles.headline}>
+            Watering my Things
+          </Text>
+        </View>
       );},
       renderLeft: () => {},
       renderRight:<NavbarButton iconName='plus-square-o' route='plantEdit'/>
@@ -34,33 +37,32 @@ class HomeView extends Component {
     this.state = {
       healthy_plants: healthy.cloneWithRows([]),
       dry_plants: dry.cloneWithRows([]),
-      loaded: true
+      loaded: true,
+      refreshing: false
     };
-    this.renderPlants = this.renderPlants.bind(this);
-    this._fetchData = this._fetchData.bind(this);
-    this._categorizePlants = this._categorizePlants.bind(this);
   }
 
-  componentWillMount() {
-    this._subscription = this.props.route.getEventEmitter().addListener('onFocus', () => {
-      if (this.props.client) {
-        this._fetchData();
-      }
-    });
+  componentWillReceiveProps(nextProps) {
+    this._categorizePlants(nextProps.plants);
   }
 
   componentDidMount() {
+    this._initialFetch();
+  }
+
+  _initialFetch() {
+    this.setState({loaded: false});
     this._fetchData();
   }
 
-  componentWillUnmount() {
-    this._subscription.remove();
+  _userInitiatedFetch() {
+    this.setState({refreshing: true});
+    this._fetchData();
   }
 
   _fetchData() {
-    this.setState({loaded: false});
     this.props.client.getPlants()
-    .then(this._categorizePlants);
+    .then(this.props.updatePlants);
   }
 
   _categorizePlants(listOfPlants) {
@@ -68,7 +70,7 @@ class HomeView extends Component {
     const toDry = [];
 
     for (let plant of listOfPlants) {
-      if (!plant.lastMoistureValue || (plant.lastMoistureValue > plant.moistureThreshold))
+      if (!plant.latestMoistureValue || (plant.latestMoistureValue > plant.moistureThreshold))
         ok.push(plant);
       else {
         toDry.push(plant);
@@ -77,19 +79,41 @@ class HomeView extends Component {
     this.setState({
       healthy_plants: this.state.healthy_plants.cloneWithRows(ok),
       dry_plants: this.state.dry_plants.cloneWithRows(toDry),
-      loaded: true
+      loaded: true,
+      refreshing: false
     });
 
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._userInitiatedFetch}
+            />
+          }
+          style={styles.container}>
+          <ActivityIndicator
+             animating={!this.state.loaded}
+             style={styles.activityIndicator}/>
+          {(this.state.dry_plants._cachedRowCount === 0 && this.state.healthy_plants._cachedRowCount === 0) ?
+            <View style={styles.noPlantsContainer}>
+              <Text style={styles.noPlants}>
+                {I18n.t('noPlants')}
+              </Text>
+            </View>
+          : null}
           {this.state.dry_plants._cachedRowCount > 0 ?
             <View
-              style={styles.sectionHeader}>
-              <Icon name="exclamation-triangle" size={18}/>
+              style={[styles.sectionHeader, styles.topSection]}>
+              <Icon name="shower" size={18} style={styles.icon}/>
+              <Text>
+                {I18n.t('homeDryPlants')}
+              </Text>
+
             </View>
             : null}
           <ListView
@@ -97,11 +121,15 @@ class HomeView extends Component {
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
             enableEmptySections={true}
+            scrollEnabled={false}
           />
           {this.state.healthy_plants._cachedRowCount > 0 ?
             <View
               style={styles.sectionHeader}>
-              <Icon name="check" size={18}/>
+              <Icon name="heart-o" size={18} style={styles.icon}/>
+              <Text>
+                {I18n.t('homeHealthyPlants')}
+              </Text>
             </View>
             : null}
           <ListView
@@ -109,13 +137,9 @@ class HomeView extends Component {
             renderRow={this.renderPlants}
             contentContainerStyle={styles.list}
             enableEmptySections={true}
-          />
-           <ActivityIndicator
-              animating={!this.state.loaded}
-              style={styles.activityIndicator}
+            scrollEnabled={false}
           />
         </ScrollView>
-      </View>
     );
   }
 
@@ -125,30 +149,15 @@ class HomeView extends Component {
         this.onPlantPress(plant)}>
         <View>
           <View style={styles.row}>
-
-            {this._setImage(plant)}
-
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} key={plant.plantImage.uri} source={plant.plantImage}/>
+              <View style={styles.textBackground}>
+                <Text style={styles.textStyle}>{plant.name}</Text>
+              </View>
+          </View>
           </View>
         </View>
       </TouchableHighlight>
-    );
-  }
-
-  _setImage(plant) {
-    const plantDB = new Plant();
-    const plantImageURL = plantDB.getPlantImagePath(plant.id);
-    let imageURL = images.defaultPlantImage;
-    if (plantImageURL) {
-      imageURL = plantImageURL;
-    }
-    return (
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={imageURL}>
-          <View style={styles.textBackground}>
-            <Text style={styles.textStyle}>{plant.name}</Text>
-          </View>
-        </Image>
-    </View>
     );
   }
 
@@ -160,28 +169,51 @@ class HomeView extends Component {
 HomeView.propTypes = {
   navigator: React.PropTypes.object,
   route: React.PropTypes.object,
-  client: React.PropTypes.object.isRequired
+  client: React.PropTypes.object.isRequired,
+  plants: React.PropTypes.array.isRequired,
+  updatePlants: React.PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => (
-  {
-    client: state.controller.client
-  }
-);
+const mapStateToProps = (state) => {
+  return ({
+    client: state.controller.client,
+    plants: state.plant.plants,
+  });
+};
 
-export default connect(mapStateToProps)(HomeView);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updatePlants: (plants) => dispatch(updatePlants(plants))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.defaultBackground,
+    flex: 1,
+  },
+  topSection: {
+    marginTop: -20,
+    borderStyle: 'solid',
+    borderTopColor: colors.navBotton,
+    borderTopWidth: 1,
+    paddingTop: 10
   },
   sectionHeader: {
     flex: 1,
     padding: 10,
-    alignSelf: 'stretch',
-    alignItems: 'center'
-  },
+    paddingTop: 20,
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    flexDirection:'row',
 
+  },
+  icon: {
+    paddingRight: 10,
+    marginRight: 10,
+  },
   list: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -191,12 +223,11 @@ const styles = StyleSheet.create({
   row: {
     margin: 2,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.separator,
     backgroundColor: colors.defaultBackground,
     alignSelf: 'center',
     width: 170,
     height: 130,
+    paddingBottom: 5,
   },
   imageContainer:{
     justifyContent: 'flex-end',
@@ -210,15 +241,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textStyle: {
-    color: colors.gridText,
+    color: colors.black,
     fontSize: fonts.listSize,
     fontFamily: fonts.defaultFamily,
     textAlign: 'center',
     width: 170,
-  },
-  textBackground: {
-    backgroundColor: colors.gridTextBackground,
-    justifyContent :'flex-end',
   },
   activityIndicator: {
     justifyContent: 'center',
@@ -229,11 +256,28 @@ const styles = StyleSheet.create({
     fontFamily: fonts.defaultFamily,
     color: colors.navText,
     alignSelf: 'center',
+    textAlign: 'center',
   },
-  icon: {
-    paddingTop:30,
-    paddingRight:20,
-    marginRight:10,
-    color: colors.navText,
+  navContainer:{
+    backgroundColor: colors.navbar,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: colors.shadow,
+    shadowRadius: 1,
+    shadowOpacity: 1,
+    shadowOffset:{width: 0, height: 2},
+  },
+  noPlantsContainer :{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  noPlants:{
+    marginTop: 100,
+    alignSelf: 'center',
+    textAlign:  'center',
+    fontSize: 20,
+    color: colors.noPlantText,
   }
 });

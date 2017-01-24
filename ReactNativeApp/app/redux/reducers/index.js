@@ -1,5 +1,9 @@
 import controller from './controllerReducer';
+import plant from './plantReducer';
 
-export {
-  controller
+const reducers = {
+  controller: controller,
+  plant: plant
 };
+
+export default reducers;

@@ -8,7 +8,7 @@ export default class InputFormRow extends Component {
   constructor() {
     super();
     this.state = {
-      firstInput: false
+      firstInput: true
     };
   }
 

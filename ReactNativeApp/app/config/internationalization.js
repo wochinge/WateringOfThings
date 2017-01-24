@@ -10,6 +10,8 @@ I18n.translations = {
     settingsTab: 'Settings',
 
     save: 'Save',
+    delete: 'Delete',
+    cancel: 'Cancel',
 
     'addControllerTitle': 'Add controller',
     'welcome': 'Welcome to WateringOfPlants!',
@@ -26,12 +28,17 @@ I18n.translations = {
     pin: 'Pin',
     pinPlaceHolder: '0 - 7',
     moistureThreshold: 'Moisture threshold',
+    deletePlantAlert: 'Delete Plant',
+    deletePlantAlertMessage: 'Do you want  to delete this plant?',
 
     healthState: 'Health status',
     tooDry: 'Plant is too dry.',
     enoughWater: 'Plant lives in perfect conditions.',
     noValues: 'No values available.',
-    water: 'Water'
+    water: 'Water',
+    noPlants: 'Add your plants',
+    homeDryPlants: 'Your plants need watering',
+    homeHealthyPlants: 'Perfect conditions',
   },
   de: {
     homeTab: 'Home',
@@ -39,6 +46,8 @@ I18n.translations = {
     settingsTab: 'Einstellungen',
 
     save: 'Speichern',
+    delete: 'Löschen',
+    cancel: 'Abbrechen',
 
     'addControllerTitle': 'Controller hinzufügen',
     'welcome': 'Willkommen zu WateringOfPlants!',
@@ -53,12 +62,17 @@ I18n.translations = {
     positionPlaceholder: '0 - 180 Grad',
     pin: 'Pin',
     moistureThreshold: 'Feuchtigkeitsgrenzwert',
+    deletePlantAlert: 'Pflanze löschen',
+    deletePlantAlertMessage: 'Willst du die Pflanze löschen?',
 
     healthState: 'Bewässerungszustand',
     tooDry: 'Pflanze ist zu trocken.',
     enoughWater: 'Pflanze hat genug Wasser.',
     noValues: 'Keine Daten vorhanden.',
-    water: 'Gießen'
+    water: 'Gießen',
+    noPlants: 'Füge deine Pflanze hinzu',
+    homeDryPlants: 'Die Pflanzen brauchen wasser',
+    homeHealthyPlants: 'Perfekte Bedingungen',
 
   }
 };

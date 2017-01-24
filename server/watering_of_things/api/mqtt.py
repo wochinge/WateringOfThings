@@ -8,11 +8,9 @@ import watering_of_things.config.mqtt_settings as mqtt_config
 
 logger = logging.getLogger(__name__)
 
-# mqtt server
-HOSTNAME = 'test.mosca.io'
-PORT = 1883
-MATCH_ANY = '+'
+MILLISECONDS_PER_MILLILITER = 50
 
+MATCH_ANY = '+'
 # Topics for mqtt
 BASE_TOPIC = 'WateringOfPlants/microController/'
 MOISTURE_VALUES_TOPIC = BASE_TOPIC + MATCH_ANY + '/measuredValues/' + MATCH_ANY
@@ -25,6 +23,10 @@ INDEX_PIN = 4
 
 def _water_topic(micro_controller_id):
     return BASE_TOPIC + micro_controller_id + '/water'
+
+
+def _measure_topic(controller_id):
+    return BASE_TOPIC + controller_id + '/measure'
 
 
 def _on_connect(client, userdata, flags, rc):
@@ -45,19 +47,26 @@ def _on_moisture_values_measured(client, userdata, msg):
     if split[INDEX_ACTUAL_TOPIC] == 'measuredValues':
         pin = split[INDEX_PIN]
         value = msg.payload
-        plant = Plant.objects.get(microController_id=micro_controller_id, pin=pin)
-        MoistureValue.objects.create(plant=plant, value=value)
+        plants = Plant.objects.filter(microController_id=micro_controller_id, pin=pin)
+        for p in plants:  # Should normally be only one!
+            MoistureValue.objects.create(plant=p, value=value)
 
 
-def water_plant(micro_controller_id, plant, time):
+def water_plant(micro_controller_id, plant, amount):
     topic = _water_topic(micro_controller_id)
+    time = MILLISECONDS_PER_MILLILITER * int(amount)
     message = {'position': plant.position, 'time': time}
     client.publish(topic, json.dumps(message))
 
 
 def request_moisture_values(controller_id, pins):
     message = {'nrOfPins': len(pins), 'pins': pins}
-    single(topic=_water_topic(controller_id), payload=json.dumps(message), hostname=HOSTNAME, port=PORT)
+    single(topic=_measure_topic(controller_id),
+           payload=json.dumps(message),
+           hostname=mqtt_config.SERVER,
+           port=mqtt_config.PORT,
+           auth={'username': mqtt_config.USERNAME, 'password': mqtt_config.PASSWORD}
+           )
 
 
 client = mqtt.Client()

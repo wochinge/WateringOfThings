@@ -1,1 +1,13 @@
 \section{Résumé}
+Mit dem Einsatz von WateringOfThings kann der Nutzer nun seine Pflanzen auch längere Zeit über alleine lassen, ohne auf eine ideale Bewässerung der Pflanzen verzichten zu müssen. Das Projekt stellt dabei eine Verknüpfung von Webtechnologien und Internet of Things dar. Dabei wurden zum einen eine native Smartphone-Applikation geschrieben, die sowohl auf Android als auch iOS lauffähig ist. Zum anderen wurde mithilfe von Django ein Web-API umgesetzt, die die Kommunikation mit den Hardwarekomponenten übernimmt sowie die gesammelten Daten zentral verwaltet und bereitstellt. Darüber hinaus wurde eine eigene Hardwarekomponente, beginnend von der Auswahl der benötigten Teile bis hin zur Umsetzung eines eigenen Platinenlayouts, konzeptioniert und in die Gesamtarchitektur mittels des leichtgewichtigen MQTT-Protokolls eingebunden. Im Zusammenspiel setzen diese drei Komponenten alle in Kapitel \ref{sec:usecases} beschriebenen Use Cases um. Aufgrund des Nutzen von WateringOfThings wird eine Fortführung des Projektes angestrebt. Dafür kommen folgende Features in Frage:
+\begin{itemize}
+    \item Hinzufügen eines weiteren Sensors, um den Nutzer über Fehlfunktionen zu benachrichtigen
+    \item Weitere Sensoren (Licht, Temperatur), um die Bewässerung zu automatisieren
+    \item Bündelung der Hardware in einem sich selbst bewässernden Blumentopf
+    \item Push-Notifications, um den Nutzer über zu trockene Pflanzen zu informieren
+    \item Möglichkeit mehrere Hardwarekomponenten pro App zu verwalten
+    \item Nutzertests um die UI nutzerfreundlicher zu gestalten
+    \item Visualisierung des Verlaufs der Feuchtigkeit einer Pflanze
+    \item Hinzufügen weiterer Sensoren, um den Düngebedarf der Blumenerde festzustellen
+\end{itemize}
+

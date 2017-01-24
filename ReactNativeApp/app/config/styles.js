@@ -8,18 +8,21 @@ const colors = {
   separator: 'lightgray',
   touchFeedback: 'lightgray',
   defaultText: 'dimgray',
+  noPlantText: 'lightgray',
   gridText: 'white',
-  navbar: 'green',
+  navbar: 'teal',
   navText: 'white',
-  button: 'blue',
-  gridTextBackground: 'rgba(0, 0, 0, 0.5)',
+  button: '#303F9F',
+  gridTextBackground: 'rgba(50, 50, 50, 0.5)',
   valid: 'green',
-  invalid: 'red'
+  invalid: 'red',
+  shadow: 'lightgray',
+  selected: 'teal'
 };
 
 const fonts = {
   listSize: 20,
-  defaultFamily: 'Arial',
+  defaultFamily: 'Avenir',
 };
 
 const commonStyles = StyleSheet.create({
@@ -34,6 +37,7 @@ const commonStyles = StyleSheet.create({
     borderColor: colors.button,
     marginTop: 30,
     marginBottom: 30,
+    borderRadius: 1,
   },
   defaultButtonText: {
     fontSize: 18,
