@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   label: {
     marginBottom: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
   item: {
     height: 40,
