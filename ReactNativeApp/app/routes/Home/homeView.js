@@ -150,11 +150,10 @@ class HomeView extends Component {
         <View>
           <View style={styles.row}>
             <View style={styles.imageContainer}>
-              <Image style={styles.image} key={plant.plantImage.uri} source={plant.plantImage}>
-                <View style={styles.textBackground}>
-                  <Text style={styles.textStyle}>{plant.name}</Text>
-                </View>
-              </Image>
+              <Image style={styles.image} key={plant.plantImage.uri} source={plant.plantImage}/>
+              <View style={styles.textBackground}>
+                <Text style={styles.textStyle}>{plant.name}</Text>
+              </View>
           </View>
           </View>
         </View>

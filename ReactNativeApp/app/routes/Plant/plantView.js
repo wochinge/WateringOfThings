@@ -126,8 +126,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
   },
   image:{
-    width: Dimensions.get('window').width,
+    width: 200,
     height: 200,
+    marginTop: 10,
+    borderRadius: 100,
+    alignSelf: 'center',
   },
   moistureText:{
     paddingTop: 10,
