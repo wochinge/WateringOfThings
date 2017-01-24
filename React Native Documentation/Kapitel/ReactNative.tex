@@ -160,15 +160,15 @@ Damit kann ein einheitliches Layout auf unterschiedlichen Geräten gewährleiste
 %Die Verteilung der Components wird mit justifyContent geregelt. Es ist möglich die Objekte links-, rechtsbündig oder mittig anzuordnen oder mit Abstand um das Objekt oder zwischen den Objekten \cite{facebook_inc._flex_2017}.
 
 \subsection{Plattform-Spezialisierung}
-Auch wenn es das Ziel ist, möglichst viel Code zwischen den Plattformen wiederzuverwenden, gibt es Situationen in denen zwischen den Plattformen differenziert werden muss. Dies kann beispielsweise nötig werden, falls die App an das Look-And-Feel der jeweiligen Plattformen angepasst werden solll, um die User-Experience zu erhöhen.
-React Native bietet für die Plattformunterscheidung zwei Möglichkeiten. Zum einen kann die Plattform abgefragt werden, zum anderen kann Code in Dateien mit Plattform-spezifischen Endungen abgelegt werden. Beide Möglichkeiten werden nachfolgend gezeigt.
+Auch wenn es das Ziel ist, möglichst viel Code zwischen den Plattformen wiederzuverwenden, gibt es Situationen in denen zwischen den Plattformen differenziert werden muss. Dies kann beispielsweise nötig werden, falls die App an das Look-And-Feel der jeweiligen Plattformen angepasst werden solll, um damit die User-Experience zu erhöhen.
+React Native bietet für die Plattformunterscheidung zwei Möglichkeiten an. Zum einen kann die Plattform abgefragt werden, zum anderen kann Code in Dateien mit Plattform-spezifischen Endungen abgelegt werden. Beide Möglichkeiten werden nachfolgend gezeigt.
 
 \begin{listing}[H]
     \begin{minted}{js}
 import { Platform, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    // Das Element hat in iOS weißen Hintergrund und einen blauen in Android
+    // Das Element hat in iOS einen weißen Hintergrund und einen blauen in Android
     backgroundColor: (Platform.OS === 'ios') ? 'white' : 'blue',
 });
     \end{minted}
@@ -178,18 +178,18 @@ const styles = StyleSheet.create({
 
 \begin{listing}[H]
     \begin{minted}{js}
-// colors.ios.js
+// Datei: colors.ios.js
 export default defaultBackgroundColor = 'white';
 
-// colors.android.js
+// Datei: colors.android.js
 export default defaultBackgroundColor = 'blue';
  
-// style.js
-// Der Import erfolgt ohne Plattform spezifische Dateiendung
+// Datei: style.js
+// Der Import erfolgt ohne Plattform-spezifische Dateiendung
 import defaultBackgroundColor from './colors';
  
 const styles = StyleSheet.create({
-    // Das Element hat in iOS weißen Hintergrund und einen blauen in Android
+    // Das Element hat in iOS einen weißen Hintergrund und einen blauen in Android
     backgroundColor: defaultBackgroundColor
 });
      
@@ -199,8 +199,24 @@ const styles = StyleSheet.create({
 \end{listing}
 
 \subsection{Networking}
-Zum Ansprechen einer Rest API hat React Native die \textit{Fetch API} \cite{facebook_inc._fetch_2017}, um Daten von einer URL zu laden, muss diese nur an die fetch-Funktion übergeben werden. Des Weiteren kann eine Methode oder ein Header definiert werden. 
+Zum Ansprechen einer REST API stellt React Native die \textit{Fetch-API} bereit. \cite{facebook_inc._fetch_2017}. Um Daten mittels eines GET-Requests von einer URL zu laden, wird nach folgendem Schema vorgegangen:
+\begin{listing}[H]
+    \begin{minted}{js}
+fetch('https://mywebsite.com/endpoint/', {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+.then((responseJSON) => responseJSON.json())
+.then((decoded) => ...)
+.catch((eventualException) => ...);
+    \end{minted}
+    \caption{GET-Request mit der Fetch-API \cite{facebook_inc._fetch_2017}}
+    \label{lst:get_fetch}
+\end{listing}
 
+Beim Senden von Daten an die API müssen diese in das passende JSON-Format umgewandelt sowie das Datenformat im Header spezifiziert werden:
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -215,8 +231,10 @@ fetch('https://mywebsite.com/endpoint/', {
         secondParam: 'yourOtherValue',
     })
 })
+.then((responseJSON) => ... )
+.catch((eventualException) => ...);
     \end{minted}
-    \caption{Fetch \cite{facebook_inc._fetch_2017}}
+    \caption{POST-Request mit der Fetch-API \cite{facebook_inc._fetch_2017}}
     \label{lst:fetch}
 \end{listing}
 
