@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from watering_of_things.api.models import MicroController, Plant
 from watering_of_things.api.serializers import PlantSerializer, MoistureValueSerializer
-from watering_of_things.api.mqtt import water_plant
+from watering_of_things.api.mqtt import water_plant, request_moisture_values
 
 
 def exists_microcontroller_id(controller_id):
@@ -45,7 +45,9 @@ class AllPlantsView(APIView):
     def post(self, request, controller_id):
         serializer = PlantSerializer(data=request.data)
         if exists_microcontroller_id(controller_id) and serializer.is_valid():
-            serializer.save(microController_id=controller_id)
+            created_plant = serializer.save(microController_id=controller_id)
+            request_moisture_values(controller_id, [created_plant.id])
+
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
