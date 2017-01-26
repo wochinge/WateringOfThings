@@ -46,7 +46,7 @@ class AllPlantsView(APIView):
         serializer = PlantSerializer(data=request.data)
         if exists_microcontroller_id(controller_id) and serializer.is_valid():
             created_plant = serializer.save(microController_id=controller_id)
-            request_moisture_values(controller_id, [created_plant.id])
+            request_moisture_values(controller_id, [created_plant.pin])
 
             return Response(serializer.data)
         else:
