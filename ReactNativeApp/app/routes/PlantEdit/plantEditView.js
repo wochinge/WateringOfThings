@@ -31,23 +31,17 @@ class PlantEditView extends Component {
 
   constructor(props) {
     super(props);
-    let plant = null;
-    let plantEditMode = false;
-    if (this.props.plant) {
-      plant = this.props.plant;
-      plantEditMode = true;
-    }
+    let plant = this.props.plant;
 
     this.state = {
-      name: plantEditMode ? plant.name : '',
-      pin: plantEditMode? plant.pin : 0,
-      position: plantEditMode ? plant.position : '',
-      moistureThreshold: plantEditMode ? plant.moistureThreshold : 50,
-      plantImage: plantEditMode ? plant.plantImage : images.defaultPlantImage,
+      name: plant ? plant.name : '',
+      pin: plant ? plant.pin : 0,
+      position: plant ? plant.position : '',
+      moistureThreshold: plant ? plant.moistureThreshold : 50,
+      plantImage: plant ? plant.plantImage : images.defaultPlantImage,
       imageSelected: false,
-      plantEditMode: plantEditMode,
-      validPin: plantEditMode ? true : false,
-      validPosition: plantEditMode ? true : false
+      validPin: plant ? true : false,
+      validPosition: plant ? true : false
     };
   }
 
@@ -75,16 +69,16 @@ class PlantEditView extends Component {
   _savePlant() {
     const client = this.props.client;
     const plant = {
-      id: this.state.plantEditMode ? this.props.plant.id : null,
+      id: this.props.plant ? this.props.plant.id : null,
       name: this.state.name,
       pin: this.state.pin,
       position: this.state.position,
       moistureThreshold: this.state.moistureThreshold,
-      latestMoistureValue: this.state.plantEditMode ? this.props.plant.latestMoistureValue : null,
+      latestMoistureValue: this.props.plant ? this.props.plant.latestMoistureValue : null,
       plantImage: this.state.plantImage.uri
     };
 
-    if (this.state.plantEditMode) {
+    if (this.props.plant) {
       client.updatePlant(plant)
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
@@ -169,18 +163,18 @@ class PlantEditView extends Component {
             />
           </TouchableHighlight>
           <InputFormRow label={I18n.t('name')}
-            defaultValue={this.state.plantEditMode ? this.props.plant.name : ''}
+            defaultValue={this.props.plant && this.props.plant.name}
             placeholder={I18n.t('namePlaceholder')}
             valid={this.state.name != ''}
             onChange={this._validateName}/>
           <InputFormRow label={I18n.t('pin')}
-            defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : ''}
+            defaultValue={this.props.plant && `${this.props.plant.pin}`}
             placeholder={I18n.t('pinPlaceHolder')}
             valid={this.state.validPin}
             keyboardType='numeric'
             onChange={this._validatePin}/>
           <InputFormRow label={I18n.t('position')}
-            defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : ''}
+            defaultValue={this.props.plant && `${this.props.plant.position}`}
             placeholder={I18n.t('positionPlaceholder')}
             keyboardType='numeric'
             valid={this.state.validPosition}
@@ -204,7 +198,7 @@ class PlantEditView extends Component {
               onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold: moistureThreshold})}
               minimumValue={100}
               maximumValue={900}
-              value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 500}/>
+              value={this.props.plant ? this.props.plant.moistureThreshold : 500}/>
           </View>
           <View
             style={styles.horizontalItem}>

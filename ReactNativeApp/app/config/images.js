@@ -16,4 +16,26 @@ const images = {
   glass10: require('../images/Glass10.png'),
 };
 
-export { images };
+const glassImages = [
+  require('../images/Glass1.png'),
+  require('../images/Glass2.png'),
+  require('../images/Glass3.png'),
+  require('../images/Glass4.png'),
+  require('../images/Glass5.png'),
+  require('../images/Glass6.png'),
+  require('../images/Glass7.png'),
+  require('../images/Glass8.png'),
+  require('../images/Glass9.png'),
+  require('../images/Glass10.png'),
+];
+
+function glassImage(number) {
+  if (number < 0) {
+    number = 0;
+  } else if (number >= glassImages.length) {
+    number = glassImages.length - 1;
+  }
+  return glassImages[number];
+}
+
+export { images, glassImage };

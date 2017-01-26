@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Slider, ScrollView } from 'react-native';
-import { images, commonStyles, I18n} from '../../config';
+import { glassImage, commonStyles, I18n} from '../../config';
 import Button from 'apsl-react-native-button';
 import { connect } from 'react-redux';
 import autobind from 'autobind-decorator';
@@ -17,10 +17,10 @@ class WaterPlantView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 50,
+      amount: 100,
     };
     this.state = {
-      imageURL: images.glass1
+      imageURL: glassImage(Math.floor(100 / 20))
     };
   }
 
@@ -34,54 +34,21 @@ class WaterPlantView extends Component {
               <View
                 style={styles.sliderImages}>
                 <Text>
-                  less
+                  {I18n.t('less')}
                 </Text>
                 <Text>
-                  {this.state.amount} ml
+                  {this.state.amount} {I18n.t('ml')}
                 </Text>
                 <Text>
-                  more
+                  {I18n.t('more')}
                 </Text>
               </View>
               <Slider style={styles.slider}
-                onValueChange={(amount) => {
-                  let tempImage;
-                  if(amount > 180){
-                    tempImage = images.glass10;
-                  }
-                  else if(amount > 160){
-                    tempImage = images.glass9;
-                  }
-                  else if(amount > 140){
-                    tempImage = images.glass8;
-                  }
-                  else if(amount > 120){
-                    tempImage = images.glass7;
-                  }
-                  else if(amount > 100){
-                    tempImage = images.glass6;
-                  }
-                  else if(amount > 80){
-                    tempImage = images.glass5;
-                  }
-                  else if(amount > 60){
-                    tempImage = images.glass4;
-                  }
-                  else if(amount > 40){
-                    tempImage = images.glass3;
-                  }
-                  else if(amount > 20){
-                    tempImage = images.glass2;
-                  }
-                  else if(amount < 20){
-                    tempImage = images.glass1;
-                  }
-                  return(this.setState({
+                onValueChange={(amount) =>
+                  this.setState({
                     amount: amount,
-                    imageURL: tempImage
+                    imageURL: glassImage(Math.floor(amount / 20))
                   })
-                  );
-                }
               }
                 minimumValue={1.0}
                 maximumValue={200.0}
