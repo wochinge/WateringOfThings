@@ -18,8 +18,6 @@ class WaterPlantView extends Component {
     super(props);
     this.state = {
       amount: 100,
-    };
-    this.state = {
       imageURL: glassImage(Math.floor(100 / 20))
     };
   }
