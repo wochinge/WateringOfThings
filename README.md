@@ -15,7 +15,7 @@ Repository for the web application course.
     react-native link
     ```
 
-2.  Configure the host of your REST API under ``app\network\host.{platform}.js
+2.  Configure the host of your REST API under `app\network\host.{platform}.js`
 
 ## Troubleshooting
 *   App quits after start or when selecting a plant image:
