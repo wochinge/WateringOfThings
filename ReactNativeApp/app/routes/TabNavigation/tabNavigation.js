@@ -5,7 +5,6 @@ import {
   StackNavigation,
 } from '@exponent/ex-navigation';
 import { Router, defaultRouteConfig , _handleTransition } from '../../router';
-import { I18n } from '../../config';
 import { connect } from 'react-redux';
 import { TabIcon } from '../../components';
 
@@ -20,12 +19,12 @@ class TabNavigationLayout extends Component {
   render() {
     return (
       <TabNavigation
-          id="main"
-          navigatorUID="main"
-          initialTab="home"
+          id='main'
+          navigatorUID='main'
+          initialTab='home'
           >
         <TabItem
-          id="home"
+          id='home'
           renderIcon={(isSelected) => <TabIcon iconName='home' isSelected={isSelected}/>}
           onPress={(tabItemOnPress, event) => {
             this.props.navigation.performAction(({tabs, stacks}) => {
@@ -36,28 +35,28 @@ class TabNavigationLayout extends Component {
           }}
           >
           <StackNavigation
-            id="home"
-            navigatorUID="home"
+            id='home'
+            navigatorUID='home'
             initialRoute={Router.getRoute('home')}
             defaultRouteConfig={defaultRouteConfig}
             onTransitionStart={_handleTransition.bind(this)}
             />
         </TabItem>
         <TabItem
-          id="plantEdit"
+          id='plantEdit'
           renderIcon={(isSelected) => <TabIcon iconName='plus' isSelected={isSelected}/>}>
           <StackNavigation
-            id="plantEdit"
+            id='plantEdit'
             initialRoute={Router.getRoute('plantEdit')}
             defaultRouteConfig={defaultRouteConfig}
             onTransitionStart={_handleTransition.bind(this)}
           />
         </TabItem>
         <TabItem
-          id="provideController"
+          id='provideController'
           renderIcon={(isSelected) => <TabIcon iconName='cog' isSelected={isSelected}/>}>
           <StackNavigation
-            id="provideController"
+            id='provideController'
             initialRoute={Router.getRoute('provideController')}
             defaultRouteConfig={defaultRouteConfig}
             onTransitionStart={_handleTransition.bind(this)}
