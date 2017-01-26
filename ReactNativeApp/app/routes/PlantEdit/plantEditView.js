@@ -5,7 +5,6 @@ import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
-import { Plant as PlantDB } from '../../database';
 import { connect } from 'react-redux';
 import { NavbarButton } from '../../components';
 import autobind from 'autobind-decorator';
@@ -34,14 +33,14 @@ class PlantEditView extends Component {
     let plant = this.props.plant;
 
     this.state = {
-      name: plant ? plant.name : '',
-      pin: plant ? plant.pin : 0,
-      position: plant ? plant.position : '',
+      name: plant && plant.name,
+      pin: plant && plant.pin,
+      position: plant && plant.position,
       moistureThreshold: plant ? plant.moistureThreshold : 50,
       plantImage: plant ? plant.plantImage : images.defaultPlantImage,
       imageSelected: false,
-      validPin: plant ? true : false,
-      validPosition: plant ? true : false
+      validPin: plant && true,
+      validPosition: plant && true
     };
   }
 
