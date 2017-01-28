@@ -44,7 +44,7 @@ Servo pumpMover;
 void waterPlant(int position, int time) {
   Serial.println("Water plant");
   Serial.println(position);
-  movePumpTo(position, true);
+  movePumpTo(180 - position, true);
   Serial.println(time);
   digitalWrite(PUMP_PIN, HIGH);
   delay(time);
