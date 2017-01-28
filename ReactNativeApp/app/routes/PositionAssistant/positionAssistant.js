@@ -19,18 +19,18 @@ class PositionAssistant extends Component {
   constructor(props) {
     super(props);
     const {height, width} = Dimensions.get('window');
-    const positionX = width / 2;
+    const positionX = width / 2 - 20;
     const positionY = height / 2.5;
     const radius = 0.3 * width;
     this.state = {
-      positionX: positionX - 20,
+      positionX: positionX,
       positionY: positionY,
       radius: radius,
       x: positionX,
       y: positionY - radius,
       angle: 90,
       height: 0.5 * height,
-      width: width
+      width: width,
     };
   }
 
@@ -59,8 +59,21 @@ class PositionAssistant extends Component {
     });
   }
 
-  _handlePanResponderMove({nativeEvent: {locationX, locationY}}) {
-    const { positionX, positionY, radius } = this.state;
+  _handlePanResponderMove({nativeEvent: {pageX, pageY, locationX, locationY}}) {
+    let { dx, dy, positionX, positionY, radius } = this.state;
+    // Workaround, because positionX/Y are not changing on Android
+    if (!dx) {
+      this.setState({
+        dx: dx = pageX - locationX,
+        dy: dy = pageY - locationY,
+      });
+      // dx = pageX - locationX;
+      // dy = pageY - locationY;
+    }
+    locationX = pageX - dx;
+    locationY = pageY - dy;
+    // End Workaround
+
     const deltaY = positionY - locationY;
     const deltaX = positionX - locationX;
     const hypotenuse = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -81,6 +94,7 @@ class PositionAssistant extends Component {
       y: newY,
       angle: angleInDegree,
     });
+    return true;
   }
 
   _savePosition() {
