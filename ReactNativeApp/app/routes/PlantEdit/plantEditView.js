@@ -1,6 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Alert, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, Alert, View, Text, Image, Slider, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
 import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
@@ -40,7 +40,7 @@ class PlantEditView extends Component {
       plantImage: plant ? plant.plantImage : images.defaultPlantImage,
       imageSelected: false,
       validPin: plant && true,
-      validPosition: plant && true
+      validPosition: plant && true,
     };
   }
 
@@ -93,12 +93,20 @@ class PlantEditView extends Component {
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
-
+      this._clear();
       this.props.navigation.performAction(({ tabs, stacks }) => {
         tabs('main').jumpToTab('home');
         stacks('home').popToTop();
       });
     }
+  }
+
+  _clear() {
+    const empty = {text: ''};
+    this.refs['nameForm'].setNativeProps(empty);
+    this.refs['pinForm'].setNativeProps(empty);
+    this.refs['positionForm'].setNativeProps(empty);
+    this.setState({plantImage: images.defaultPlantImage});
   }
 
   _validateName(name) {
@@ -161,18 +169,21 @@ class PlantEditView extends Component {
               style={styles.plantImage}
             />
           </TouchableHighlight>
-          <InputFormRow label={I18n.t('name')}
+          <InputFormRow ref={'nameForm'}
+            label={I18n.t('name')}
             defaultValue={this.props.plant && this.props.plant.name}
             placeholder={I18n.t('namePlaceholder')}
             valid={this.state.name != ''}
             onChange={this._validateName}/>
-          <InputFormRow label={I18n.t('pin')}
+          <InputFormRow ref={'pinForm'}
+            label={I18n.t('pin')}
             defaultValue={this.props.plant && `${this.props.plant.pin}`}
             placeholder={I18n.t('pinPlaceHolder')}
             valid={this.state.validPin}
             keyboardType='numeric'
             onChange={this._validatePin}/>
-          <InputFormRow label={I18n.t('position')}
+          <InputFormRow ref={'positionForm'}
+            label={I18n.t('position')}
             defaultValue={this.props.plant && `${this.props.plant.position}`}
             placeholder={I18n.t('positionPlaceholder')}
             keyboardType='numeric'
