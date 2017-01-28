@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { NavbarButton } from '../../components';
 import autobind from 'autobind-decorator';
 import { editPlant, createPlant, deletePlant } from '../../redux/actions';
+import { Router } from '../../router';
 
 @autobind
 class PlantEditView extends Component {
@@ -50,6 +51,13 @@ class PlantEditView extends Component {
         showPlantAlert: this._deletePlantAlert
       });
     }, 1000);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { positionFromAssistant } = nextProps;
+    if (positionFromAssistant) {
+      this._savePositionFromAssistant(positionFromAssistant);
+    }
   }
 
   _selectPlantImage() {
@@ -128,6 +136,11 @@ class PlantEditView extends Component {
     });
   }
 
+  _savePositionFromAssistant(position) {
+    this.refs['positionForm'].setNativeProps({text: `${position}`});
+    this._validatePosition(position);
+  }
+
   _validatePosition(position) {
     position = parseInt(position);
     let valid = false;
@@ -189,6 +202,11 @@ class PlantEditView extends Component {
             keyboardType='numeric'
             valid={this.state.validPosition}
             onChange={this._validatePosition}/>
+          <Text
+            style={styles.posAssi}
+            onPress={() => this.props.navigator.push(Router.getRoute('positionAssistant'))}>
+            Positionassistent
+          </Text>
           <View
             style={styles.item}>
             <Text
@@ -236,7 +254,8 @@ PlantEditView.propTypes = {
 
 const mapStateToProps = (state) => (
   {
-    client: state.controller.client
+    client: state.controller.client,
+    positionFromAssistant: state.plant.positionAngle,
   }
 );
 
@@ -284,5 +303,10 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     marginTop: 10
+  },
+  posAssi: {
+    color: colors.selected,
+    paddingLeft: ((Dimensions.get('window').width)/3)-15,
+    paddingBottom: 20,
   }
 });

@@ -11,5 +11,5 @@ export {
   InputFormRow,
   ValidatedTextInput,
   TabIcon,
-  PlantStatus,
+  PlantStatus
 };
