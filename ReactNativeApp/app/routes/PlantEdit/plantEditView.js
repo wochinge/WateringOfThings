@@ -226,6 +226,7 @@ class PlantEditView extends Component {
               onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold: moistureThreshold})}
               minimumValue={100}
               maximumValue={900}
+              step={1}
               value={this.props.plant ? this.props.plant.moistureThreshold : 500}/>
           </View>
           <View
