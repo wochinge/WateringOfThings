@@ -79,7 +79,7 @@ I18n.translations = {
     noValues: 'Keine Daten vorhanden.',
     water: 'Gießen',
     noPlants: 'Füge deine Pflanze hinzu',
-    homeDryPlants: 'Die Pflanzen brauchen wasser',
+    homeDryPlants: 'Die Pflanzen brauchen Wasser',
     homeHealthyPlants: 'Perfekte Bedingungen',
 
   }
