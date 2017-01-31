@@ -1,8 +1,8 @@
 \section{Bibliotheken}
 
 \subsection{Einbinden von Bibliotheken}
-React Native konzentriert sich auf einige wenige Kernfunktionen. Zur Erweiterung der Funktionalität müssen dem Projekt daher entweder geeignete Bibliotheken hinzugefügt werden oder Code selbst geschrieben werden. Insbesondere falls es für eine gewünschte plattformspezifische Funktionalität noch kein Gegenstück in React Native gibt, muss mittels nativem Code eine Bridge zwischen beidem geschrieben werden. React Native besitzt allerdings eine sehr engagierte Community, sodass dies nur selten notwendig wird.\\
-Die Bibliotheken können mittels des Node Package Managers installiert werden. Es bietet sich an die Installation mit dem Flag \textit{-{}-save} durchzuführen, sodass die Bibliothek und deren Vision im package.json-File hinterlegt werden. Beinhalten Bibliotheken Funktionalitäten, die mittels nativem Code, also Objective-C, Swift oder Java, umgesetzt sind, müssen die Bibliotheken außerdem noch gelinkt werden. Diese zwei Schritte reichen meist um Bibliotheken dem Projekt hinzuzufügen. Dennoch sollten die Beschreibungen der Libraries auf entsprechende weitere Schritte hin überprüft werden, wie beispielsweise das Hinzufügen von Berechtigungen. 
+React Native konzentriert sich auf einige wenige Kernfunktionen. Zur Erweiterung der Funktionalität müssen dem Projekt daher entweder geeignete Bibliotheken hinzugefügt werden oder Code selbst geschrieben werden. Insbesondere falls es für eine gewünschte plattformspezifische Funktionalität noch kein Gegenstück in React Native gibt, muss mittels nativem Code eine Bridge zwischen nativem und JavaScript-Code geschrieben werden. React Native besitzt allerdings eine sehr engagierte Community, sodass dies nur selten notwendig wird.\\
+Die Bibliotheken können mittels des \textit{Node Package Managers} (\textit{npm}) installiert werden. Es bietet sich an, die Installation mit dem Flag \textit{-{}-save} durchzuführen, sodass die Bibliothek und deren Version im package.json-File hinterlegt werden. Beinhalten Bibliotheken Funktionalitäten, die mittels nativem Code, also Objective-C, Swift oder Java, umgesetzt sind, müssen die Bibliotheken außerdem noch gelinkt werden. Diese zwei Schritte reichen meist um Bibliotheken dem Projekt hinzuzufügen. Dennoch sollten die Beschreibungen der Libraries auf entsprechende weitere Schritte hin überprüft werden, wie beispielsweise das Hinzufügen von Berechtigungen. 
 
 \begin{listing}[H]
     \begin{minted}{bash}
@@ -16,7 +16,7 @@ react-native link
 \end{listing}
 
 \subsection{Navigation}
-Mobile Apps beinhalten im Regelfall mehrere Ansichten, zwischen denen der Nutzer durch Aktionen navigieren kann. Befindet sich der Nutzer beispielsweise in einer Listenansicht wird er über einen Klick über einen Button \textit{Hinzufügen} auf eine Sicht weiterleitet, in der er einen neuen Listeneintrag hinzufügen kann. React Native stellt zu diesem Zwecks den \textit{Navigator} und \textit{NavigatorIOS} bereit. Letzter kann jedoch ausschließlich für die iOS-Plattform genutzt werden. Der Navigator wird als oberste Komponente definiert, der alle anderen Komponenten beinhaltet. 
+Mobile Apps beinhalten im Regelfall mehrere Ansichten, zwischen denen der Nutzer durch Aktionen navigieren kann. Befindet sich der Nutzer beispielsweise in einer Listenansicht, wird er über einen Klick über einen Button \textit{Hinzufügen} auf eine Sicht weiterleitet, in der er einen neuen Listeneintrag hinzufügen kann. React Native stellt zu diesem Zwecks den \textit{Navigator} und \textit{NavigatorIOS} bereit. Letzter kann jedoch ausschließlich für die iOS-Plattform genutzt werden. Der Navigator wird als oberste Komponente definiert, der alle anderen Komponenten beinhaltet. 
 \begin{listing}[H]
     \begin{minted}{js}
 class App extends React.Component {
@@ -30,6 +30,7 @@ class App extends React.Component {
                 initialRoute={routes[0]}
                 initialRouteStack={routes}
                 renderScene={_renderScene}/>
+         );
     }
     
     _renderScene(route, navigitator) {
@@ -45,7 +46,7 @@ class App extends React.Component {
     \label{lst:navigator}
 \end{listing}
 
-Wie in Listing \ref{lst:navigator} zu sehen, wird die ganze Navigation von der Top-Level-Komponente aus gesteuert. Dadurch werden Komponenten-spezifische Wert, wie Titel, monolitisch in dieser Komponente gebündet. Außerdem wird die Render-Funktion schon bei wenigen Seiten durch die If-else-Kaskaden unübersichtlich. Dieses Problem wird durch Faktoren, wie unterschiedliche Navigationsleisten, noch vergrößert. Daher empfiehlt sich die Verwendung der Bibliothek \textit{ExNavigation} \cite{exNavigation_2016}). Aufgrund der Nützlichkeit und Popularität befindet sich die Bibliothek zur Zeit in der Aufnahme in die \textit{reactjs}-Organisation, wofür sie in \textit{react-navigation} unbenannt wird und zahlreiche Änderungen statt finden. ExNavigation bietet zahlreiche Features, wie Tabs oder Drawer-Navigation, an und erlaubt dabei die Änderungen des Navigationszustandes aus den Kind-Komponenten heraus. Auch wenn das nachfolgende Beispiel nur einen kurzen Einblick in die umfangreichen Funktionen der Bibliothek gewährt, so zeigt doch die Einfachheit und Modularität.
+Wie in Listing \ref{lst:navigator} zu sehen, wird die ganze Navigation von der Top-Level-Komponente aus gesteuert. Dadurch werden Komponenten-spezifische Werte, wie Titel, monolitisch in dieser Komponente gebündelt. Außerdem wird die render-Funktion schon bei wenigen Views durch if-else-Kaskaden unübersichtlich. Dieses Problem wird durch Faktoren, wie unterschiedliche Navigationsleisten, noch vergrößert. Daher empfiehlt sich die Verwendung der Bibliothek \textit{ExNavigation} \cite{exNavigation_2016}). Aufgrund der Nützlichkeit und Popularität befindet sich die Bibliothek zur Zeit in der Aufnahme in die \textit{reactjs}-Organisation, wofür sie in \textit{react-navigation} unbenannt wird und zahlreiche Änderungen stattfinden. ExNavigation bietet zahlreiche Features, wie Tabs oder Drawer-Navigation, an und erlaubt dabei die Änderungen des Navigationszustandes aus den Kind-Komponenten heraus. Auch wenn das nachfolgende Beispiel nur einen kurzen Einblick in die umfangreichen Funktionen der Bibliothek gewährt, so zeigt es doch die Einfachheit und Modularität.
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -87,7 +88,7 @@ Wie in Listing \ref{lst:navigator} zu sehen, wird die ganze Navigation von der T
 \end{listing}
 
 \subsection{Datenbank}
-Die React Native Dokumentation führt zur dauerhaften Persistenzierung von Daten die Klasse \textit{AsyncStorage} an, welche es erlaubt Daten im Key-Value-Format zu speichern. Facebook weist dabei darauf hin, \textit{AsyncStorage} nicht direkt zu verwenden, sondern allenfalls indirekt durch eine Bibliothek \cite{AsyncStorage_2017}. Eine weitere Alternative ist die Bibliothek \textit{react-native-sqlite-storage} \cite{react-native-sqlite-storage_2016}, wobei der Nutzer sich selbst um die entsprechenden SQL-Befehle kümmern muss. Empfehlenswert ist daher die Datenbank \textit{Realm}, welche für Java, Objective-C, Swift, Xamarin und eben React Native verfügbar ist und von Firmen wie Google, Amazon oder Intel genutzt wird \cite{Realm_2016}. Realm bietet eine einfache Anfragesprache, Verschlüsselung sowie Benachrichtigungen bei Datenänderungen. Große Stärke ist weiterhin die Performance, welche laut frei verfügbarem Benchmark, welche SQLite sowie AsyncStorage bei weitem übertrifft \cite{Introducing_Realm_React_Native_2016}. 
+Die React Native Dokumentation führt zur dauerhaften Persistenzierung von Daten die Klasse \textit{AsyncStorage} an, welche es erlaubt Daten im Key-Value-Format zu speichern. Facebook weist dabei darauf hin, \textit{AsyncStorage} nicht direkt zu verwenden, sondern allenfalls indirekt durch eine Bibliothek \cite{AsyncStorage_2017}. Eine weitere Alternative ist die Bibliothek \textit{react-native-sqlite-storage} \cite{react-native-sqlite-storage_2016}, wobei der Nutzer sich selbst um die entsprechenden SQL-Befehle kümmern muss. Empfehlenswert ist daher die Datenbank \textit{Realm}, welche für Java, Objective-C, Swift, Xamarin und eben React Native verfügbar ist und von Firmen wie Google, Amazon oder Intel genutzt wird \cite{Realm_2016}. Realm bietet eine einfache Anfragesprache, Verschlüsselung sowie Benachrichtigungen bei Datenänderungen. Große Stärke ist weiterhin die Performance, welche laut frei verfügbarem Benchmark SQLite sowie AsyncStorage bei weitem übertrifft \cite{Introducing_Realm_React_Native_2016}. 
 
 \begin{listing}[H]
     \begin{minted}{js}
@@ -114,14 +115,14 @@ let r = realm.objects('Dog').filtered('age < 8');
 \end{listing}
 
 \subsection{Internationalisierung}
-Die Anzeige lässt sich dank der Bibliothek \textit{react-native-i18n} einfach internationalisieren \cite{react-native-i18n_2017}. Dazu werden englischen Formulieren sowie deren Übersetzung anhand eines eindeutigen Keys identifiziert. Sofern die Option \textins{Fallback} aktiviert ist, wird bei Fehlen einer entsprechenden Übersetzung automatisch auf die englische Version zurückgegriffen. Standardmäßig werden Texte automatisch anhand der festgelegten Gerätesprache ausgewählt.
+Die Anzeige lässt sich dank der Bibliothek \textit{react-native-i18n} einfach internationalisieren \cite{react-native-i18n_2017}. Dazu werden englischen Formulieren sowie deren Übersetzung anhand eines eindeutigen Keys identifiziert. Sofern die Option \textit{Fallback} aktiviert ist, wird bei Fehlen einer entsprechenden Übersetzung automatisch auf die englische Version zurückgegriffen. Standardmäßig werden Texte automatisch anhand der festgelegten Gerätesprache ausgewählt.
 
 \begin{listing}[H]
     \begin{minted}{js}
 class Example extends React.Component {
     render () {
         return (
-            <Text>{I18n.t('hello_word')}</Text>
+            <Text>{I18n.t('hello_world')}</Text>
         );
     }
 }
@@ -130,10 +131,10 @@ I18n.fallbacks = true
 
 I18n.translations = {
     en: {
-        hello_word: 'Hello world!'
+        hello_world: 'Hello world!'
     },
     de: {
-        hello_word: 'Hallo Welt!'
+        hello_world: 'Hallo Welt!'
     }
 }
     \end{minted}

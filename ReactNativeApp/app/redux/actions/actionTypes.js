@@ -5,3 +5,4 @@ export const CREATE_PLANT = 'CREATE_PLANT';
 export const EDIT_PLANT = 'EDIT_PLANT';
 export const DELETE_PLANT = 'DELETE_PLANT';
 export const UPDATE_PLANTS = 'UPDATE_PLANTS';
+export const SET_PLANT_POSITION = 'SET_PLANT_POSITION';

@@ -99,14 +99,14 @@ class HomeView extends Component {
           <ActivityIndicator
              animating={!this.state.loaded}
              style={styles.activityIndicator}/>
-          {(this.state.dry_plants._cachedRowCount === 0 && this.state.healthy_plants._cachedRowCount === 0) ?
+         {(this.state.dry_plants._cachedRowCount === 0 && this.state.healthy_plants._cachedRowCount === 0) &&
             <View style={styles.noPlantsContainer}>
               <Text style={styles.noPlants}>
                 {I18n.t('noPlants')}
               </Text>
             </View>
-          : null}
-          {this.state.dry_plants._cachedRowCount > 0 ?
+          }
+          {this.state.dry_plants._cachedRowCount > 0 &&
             <View
               style={[styles.sectionHeader, styles.topSection]}>
               <Icon name="shower" size={18} style={styles.icon}/>
@@ -115,7 +115,7 @@ class HomeView extends Component {
               </Text>
 
             </View>
-            : null}
+          }
           <ListView
             dataSource={this.state.dry_plants}
             renderRow={this.renderPlants}
@@ -123,7 +123,7 @@ class HomeView extends Component {
             enableEmptySections={true}
             scrollEnabled={false}
           />
-          {this.state.healthy_plants._cachedRowCount > 0 ?
+          {this.state.healthy_plants._cachedRowCount > 0 &&
             <View
               style={styles.sectionHeader}>
               <Icon name="heart-o" size={18} style={styles.icon}/>
@@ -131,7 +131,7 @@ class HomeView extends Component {
                 {I18n.t('homeHealthyPlants')}
               </Text>
             </View>
-            : null}
+          }
           <ListView
             dataSource={this.state.healthy_plants}
             renderRow={this.renderPlants}

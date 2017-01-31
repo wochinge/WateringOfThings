@@ -1,6 +1,4 @@
 import Realm from 'realm';
-import RNFetchBlob from 'react-native-fetch-blob';
-
 
 const MicrocontrollerSchema = {
   name: 'Microcontroller',
@@ -48,29 +46,13 @@ class Plant {
   }
 
   save(id, imagePath) {
-    imagePath = imagePath.replace('file://', '');
-    let destinationPath = `${RNFetchBlob.fs.dirs.DocumentDir}/${id}_${Date.now()}.jpg`;
-    this._moveFileFromTmpToDocuments(imagePath, destinationPath);
-    destinationPath = 'file://' + destinationPath;
     realm.write(() => {
       realm.create('Plant', {
         id: id,
-        imagePath: destinationPath
+        imagePath: imagePath
       }, true);
     });
-    return destinationPath;
-  }
-
-  _moveFileFromTmpToDocuments(source, destination) {
-    RNFetchBlob.fs.exists(destination)
-    .then((exist) => {
-      if (exist) {
-        RNFetchBlob.fs.unlink(destination).
-        then(() => RNFetchBlob.fs.cp(source, destination));
-      } else {
-        RNFetchBlob.fs.cp(source, destination);
-      }
-    });
+    return imagePath;
   }
 }
 

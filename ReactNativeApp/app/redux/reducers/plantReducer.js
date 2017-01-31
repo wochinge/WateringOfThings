@@ -1,4 +1,4 @@
-import { CREATE_PLANT, EDIT_PLANT, DELETE_PLANT, UPDATE_PLANTS } from '../actions/actionTypes';
+import { CREATE_PLANT, EDIT_PLANT, DELETE_PLANT, UPDATE_PLANTS, SET_PLANT_POSITION } from '../actions/actionTypes';
 import { Plant } from '../../database';
 import { images } from '../../config';
 
@@ -28,6 +28,11 @@ export default function plant(state = initialState, action = {}) {
     plants = action.plants;
     break;
   }
+  case SET_PLANT_POSITION:
+    return {
+      ...state,
+      positionAngle: action.angle
+    };
   default:
     return state;
   }

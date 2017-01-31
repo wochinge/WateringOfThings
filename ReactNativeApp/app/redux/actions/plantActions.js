@@ -1,4 +1,4 @@
-import { CREATE_PLANT, EDIT_PLANT, DELETE_PLANT, UPDATE_PLANTS } from './actionTypes';
+import { CREATE_PLANT, EDIT_PLANT, DELETE_PLANT, UPDATE_PLANTS, SET_PLANT_POSITION } from './actionTypes';
 
 function createPlant(plant) {
   return {
@@ -28,9 +28,17 @@ function updatePlants(plants) {
   };
 }
 
+function setPlantPosition(angle) {
+  return {
+    type: SET_PLANT_POSITION,
+    angle: angle,
+  };
+}
+
 export {
   createPlant,
   editPlant,
   deletePlant,
   updatePlants,
+  setPlantPosition,
 };

@@ -1,15 +1,15 @@
 
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Alert, View, Text, Image, Slider, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, Alert, View, Text, Image, Slider, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
 import { images, colors, commonStyles, I18n } from '../../config';
 import { InputFormRow } from '../../components';
 import Button from 'apsl-react-native-button';
 import ImagePicker from 'react-native-image-crop-picker';
-import { Plant as PlantDB } from '../../database';
 import { connect } from 'react-redux';
 import { NavbarButton } from '../../components';
 import autobind from 'autobind-decorator';
 import { editPlant, createPlant, deletePlant } from '../../redux/actions';
+import { Router } from '../../router';
 
 @autobind
 class PlantEditView extends Component {
@@ -31,23 +31,17 @@ class PlantEditView extends Component {
 
   constructor(props) {
     super(props);
-    let plant = null;
-    let plantEditMode = false;
-    if (this.props.plant) {
-      plant = this.props.plant;
-      plantEditMode = true;
-    }
+    let plant = this.props.plant;
 
     this.state = {
-      name: plantEditMode ? plant.name : '',
-      pin: plantEditMode? plant.pin : 0,
-      position: plantEditMode ? plant.position : '',
-      moistureThreshold: plantEditMode ? plant.moistureThreshold : 50,
-      plantImage: plantEditMode ? plant.plantImage : images.defaultPlantImage,
+      name: plant && plant.name,
+      pin: plant && plant.pin,
+      position: plant && plant.position,
+      moistureThreshold: plant ? plant.moistureThreshold : 50,
+      plantImage: plant ? plant.plantImage : images.defaultPlantImage,
       imageSelected: false,
-      plantEditMode: plantEditMode,
-      validPin: plantEditMode ? true : false,
-      validPosition: plantEditMode ? true : false
+      validPin: plant && true,
+      validPosition: plant && true,
     };
   }
 
@@ -57,6 +51,13 @@ class PlantEditView extends Component {
         showPlantAlert: this._deletePlantAlert
       });
     }, 1000);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { positionFromAssistant } = nextProps;
+    if (positionFromAssistant || positionFromAssistant === 0) {
+      this._savePositionFromAssistant(positionFromAssistant);
+    }
   }
 
   _selectPlantImage() {
@@ -75,16 +76,16 @@ class PlantEditView extends Component {
   _savePlant() {
     const client = this.props.client;
     const plant = {
-      id: this.state.plantEditMode ? this.props.plant.id : null,
+      id: this.props.plant ? this.props.plant.id : null,
       name: this.state.name,
       pin: this.state.pin,
       position: this.state.position,
       moistureThreshold: this.state.moistureThreshold,
-      latestMoistureValue: this.state.plantEditMode ? this.props.plant.latestMoistureValue : null,
+      latestMoistureValue: this.props.plant ? this.props.plant.latestMoistureValue : null,
       plantImage: this.state.plantImage.uri
     };
 
-    if (this.state.plantEditMode) {
+    if (this.props.plant) {
       client.updatePlant(plant)
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
@@ -100,12 +101,20 @@ class PlantEditView extends Component {
       .catch((error) => {
         console.log('There has been a problem with the fetch operation: ' + error.message);
       });
-
+      this._clear();
       this.props.navigation.performAction(({ tabs, stacks }) => {
         tabs('main').jumpToTab('home');
         stacks('home').popToTop();
       });
     }
+  }
+
+  _clear() {
+    const empty = {text: ''};
+    this.refs['nameForm'].setNativeProps(empty);
+    this.refs['pinForm'].setNativeProps(empty);
+    this.refs['positionForm'].setNativeProps(empty);
+    this.setState({plantImage: images.defaultPlantImage});
   }
 
   _validateName(name) {
@@ -125,6 +134,11 @@ class PlantEditView extends Component {
       pin: pin,
       validPin: valid
     });
+  }
+
+  _savePositionFromAssistant(position) {
+    this.refs['positionForm'].setNativeProps({text: `${position}`});
+    this._validatePosition(position);
   }
 
   _validatePosition(position) {
@@ -168,23 +182,31 @@ class PlantEditView extends Component {
               style={styles.plantImage}
             />
           </TouchableHighlight>
-          <InputFormRow label={I18n.t('name')}
-            defaultValue={this.state.plantEditMode ? this.props.plant.name : ''}
+          <InputFormRow ref={'nameForm'}
+            label={I18n.t('name')}
+            defaultValue={this.props.plant && this.props.plant.name}
             placeholder={I18n.t('namePlaceholder')}
             valid={this.state.name != ''}
             onChange={this._validateName}/>
-          <InputFormRow label={I18n.t('pin')}
-            defaultValue={this.state.plantEditMode ? `${this.props.plant.pin}` : ''}
+          <InputFormRow ref={'pinForm'}
+            label={I18n.t('pin')}
+            defaultValue={this.props.plant && `${this.props.plant.pin}`}
             placeholder={I18n.t('pinPlaceHolder')}
             valid={this.state.validPin}
             keyboardType='numeric'
             onChange={this._validatePin}/>
-          <InputFormRow label={I18n.t('position')}
-            defaultValue={this.state.plantEditMode ? `${this.props.plant.position}` : ''}
+          <InputFormRow ref={'positionForm'}
+            label={I18n.t('position')}
+            defaultValue={this.props.plant && `${this.props.plant.position}`}
             placeholder={I18n.t('positionPlaceholder')}
             keyboardType='numeric'
             valid={this.state.validPosition}
             onChange={this._validatePosition}/>
+          <Text
+            style={styles.posAssi}
+            onPress={() => this.props.navigator.push(Router.getRoute('positionAssistant'))}>
+            Positionassistent
+          </Text>
           <View
             style={styles.item}>
             <Text
@@ -204,7 +226,8 @@ class PlantEditView extends Component {
               onSlidingComplete={(moistureThreshold) => this.setState({moistureThreshold: moistureThreshold})}
               minimumValue={100}
               maximumValue={900}
-              value={this.state.plantEditMode ? this.props.plant.moistureThreshold : 500}/>
+              step={1}
+              value={this.props.plant ? this.props.plant.moistureThreshold : 500}/>
           </View>
           <View
             style={styles.horizontalItem}>
@@ -232,7 +255,8 @@ PlantEditView.propTypes = {
 
 const mapStateToProps = (state) => (
   {
-    client: state.controller.client
+    client: state.controller.client,
+    positionFromAssistant: state.plant.positionAngle,
   }
 );
 
@@ -280,5 +304,10 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     marginTop: 10
+  },
+  posAssi: {
+    color: colors.selected,
+    paddingLeft: ((Dimensions.get('window').width)/3)-15,
+    paddingBottom: 20,
   }
 });

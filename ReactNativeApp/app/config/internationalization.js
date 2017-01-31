@@ -12,12 +12,20 @@ I18n.translations = {
     save: 'Save',
     delete: 'Delete',
     cancel: 'Cancel',
+    less: 'less',
+    more: 'more',
 
-    'addControllerTitle': 'Add controller',
-    'welcome': 'Welcome to WateringOfPlants!',
-    'addController': 'To water your plants, you have to provide the id of a controller.',
-    'invalidController': 'The given id was not valid. Please provide an valid id!',
-    'controllerPlaceholder': '12dasfsdasd34645',
+
+    addControllerTitle: 'Add controller',
+    welcome: 'Welcome to WateringOfPlants!',
+    addController: 'To water your plants, you have to provide the id of a controller.',
+    invalidController: 'The given id was not valid. Please provide an valid id!',
+    controllerPlaceholder: '12dasfsdasd34645',
+
+
+    noPlants: 'Add your plants',
+    homeDryPlants: 'Your plants need watering',
+    homeHealthyPlants: 'Perfect conditions',
 
     edit_plant: 'Edit plant',
     create_plant: 'Create plant',
@@ -36,9 +44,7 @@ I18n.translations = {
     enoughWater: 'Plant lives in perfect conditions.',
     noValues: 'No values available.',
     water: 'Water',
-    noPlants: 'Add your plants',
-    homeDryPlants: 'Your plants need watering',
-    homeHealthyPlants: 'Perfect conditions',
+    ml: 'ml',
   },
   de: {
     homeTab: 'Home',
@@ -48,11 +54,13 @@ I18n.translations = {
     save: 'Speichern',
     delete: 'Löschen',
     cancel: 'Abbrechen',
+    less: 'weniger',
+    more: 'mehr',
 
-    'addControllerTitle': 'Controller hinzufügen',
-    'welcome': 'Willkommen zu WateringOfPlants!',
-    'addController': 'Um deine Pflanzen zu gießen, musst du die ID deines Controllers angeben.',
-    'invalidController': 'Die gegebene ID war nicht valide!',
+    addControllerTitle: 'Controller hinzufügen',
+    welcome: 'Willkommen zu WateringOfPlants!',
+    addController: 'Um deine Pflanzen zu gießen, musst du die ID deines Controllers angeben.',
+    invalidController: 'Die gegebene ID war nicht valide!',
 
     edit_plant: 'Ändere Pflanze',
     create_plant: 'Erstelle Pflanze',
@@ -71,7 +79,7 @@ I18n.translations = {
     noValues: 'Keine Daten vorhanden.',
     water: 'Gießen',
     noPlants: 'Füge deine Pflanze hinzu',
-    homeDryPlants: 'Die Pflanzen brauchen wasser',
+    homeDryPlants: 'Die Pflanzen brauchen Wasser',
     homeHealthyPlants: 'Perfekte Bedingungen',
 
   }

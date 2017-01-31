@@ -15,7 +15,7 @@ Repository for the web application course.
     react-native link
     ```
 
-2.  Configure the host of your REST API under ``app\network\host.{platform}.js
+2.  Configure the host of your REST API under `app\network\host.{platform}.js`
 
 ## Troubleshooting
 *   App quits after start or when selecting a plant image:
@@ -75,3 +75,30 @@ Repository for the web application course.
     ```bash
     celery -B  -A watering_of_things worker -l info
     ```
+
+7.  Add a valid controller id, e.g.
+    ```python
+    python manage.py shell # Switch to the python shell
+    from watering_of_things.api.models import MicroController
+    MicroController(’<your valid id>’).save()
+    exit()
+    ```
+
+# Hardware
+
+## Requirements
+-   Hardware setup similar to this:
+    <https://github.com/wochinge/WateringOfThings/blob/master/Technical%20Documentation/Pictures/platinenlayout.png>
+-   Arduino IDE: <http://www.arduino.org/downloads>
+-   Set up your board in the IDE (we used a NodeMcu v.1.0)
+
+## Installation
+1.  Create a file called `WifiConfig.h` (see `WifiConfig_example.h` for an example) which stores the credentials for your wifi
+2.  Create a filed called `MqttConfig.h` (see `MqttConfig_example.h` for an example) which stores the credentials for your mqtt broker
+3.  Create a filed called `ID.h` (see `ID_example.h` for an example) which stores the unique ID of the hardware controller.
+    Note: This unique ID should also be stored on the server as valid controller id
+4.  Install the following libraries through the Arduino IDE:
+    -   PubSubClient (Nick O’Leary)
+    -   ArduinoJson (Benoit Blanchon)
+5.  You might change the pin settings to fit your hardware
+6.  Compile it and load it on your hardware

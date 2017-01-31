@@ -4,6 +4,7 @@ import PlantEditView from './PlantEdit/plantEditView';
 import PlantView from './Plant/plantView';
 import WaterPlantView from './WaterPlant/waterPlant';
 import TabNavigationLayout from './TabNavigation/tabNavigation';
+import PositionAssistant from './PositionAssistant/positionAssistant';
 
 export {
     AddControllerView,
@@ -11,5 +12,6 @@ export {
     PlantEditView,
     PlantView,
     WaterPlantView,
-    TabNavigationLayout
+    TabNavigationLayout,
+    PositionAssistant
 };

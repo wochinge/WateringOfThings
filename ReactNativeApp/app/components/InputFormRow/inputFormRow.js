@@ -12,6 +12,10 @@ export default class InputFormRow extends Component {
     };
   }
 
+  setNativeProps(nativeProps) {
+    this._textInput.setNativeProps({text: nativeProps.text});
+  }
+
   render() {
     return (
       <View
@@ -21,6 +25,7 @@ export default class InputFormRow extends Component {
             {this.props.label}
           </Text>
           <TextInput
+            ref={component => this._textInput = component}
             keyboardType={this.props.keyboardType ? this.props.keyboardType : 'default'}
             placeholder={this.props.placeholder}
             defaultValue={this.props.defaultValue}
@@ -70,6 +75,6 @@ const inputStyles = StyleSheet.create({
   },
   input: {
     flex: 2,
-    minHeight: 30,
+    minHeight: 20,
   }
 });

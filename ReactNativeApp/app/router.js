@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { AddControllerView, HomeView, PlantEditView, PlantView, WaterPlantView, TabNavigationLayout } from './routes';
+import { AddControllerView, HomeView, PlantEditView, PositionAssistant, PlantView, WaterPlantView, TabNavigationLayout } from './routes';
 import { colors } from './config/styles';
 import { BackButton } from './components';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ export const Router = createRouter(() => ({
   waterPlant: () => WaterPlantView,
   provideController: () => AddControllerView,
   tabNavigationLayout: () => TabNavigationLayout,
+  positionAssistant: () => PositionAssistant
 }));
 
 export function _handleTransition(routeWhereIsTransitionedTo) {

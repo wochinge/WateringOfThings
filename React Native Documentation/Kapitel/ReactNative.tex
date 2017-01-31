@@ -3,6 +3,10 @@
 \subsection{Components} \label{component}
 React Native und React konstruieren Applikationen mit Hilfe von \textit{Components}. React Native verwendet dabei native Komponenten von Android und iOS, während React Web Components nutzt  \cite{facebook_inc._getting_2017}. Für die Implementierung eigener Komponenten wird die \textit{React.Component}-Klasse von React als abstrakte Basisklasse verwendet. Mithilfe von Components kann das User Interface der Anwendung in unabhängige, wiederverwendbare Teile gegliedert werden. Die Components sind mit JavaScript-Funktionen vergleichbar, welche Daten als Eingabe erhalten und deren Visualisierung zurück geben \cite{facebook_inc._components_2017}. Im Beispiel \ref{lst:component} wird die Komponente \textit{HomeView} angelegt. Bei der Definition von Komponenten ist die Implementierung der \textit{render}-Funktion Pflicht. \textit{AppRegistry.registerComponent} definiert den Anfangspunkt der App für React Native und bekommt die hierarchisch höchste Komponente übergeben \cite{facebook_inc._getting_2017}. 
 
+\subsection{Props}
+Um Kindkomponenten dynamisch anzupassen, können Elternkomponenten Attribute innerhalb eines \textit{props}-Objektes übergeben \cite{facebook_inc._components_2017}. Props ermöglichen es, dass eine Component an verschiedenen Stellen mit verschiedenen Daten wiederverwendet werden kann \cite{facebook_inc._props_2017}. Es ist allerdings nur lesender Zugriff auf Props möglich, d.h. sie können nicht modifiziert werden. Im Beispiel \ref{lst:props} wird der Name der Pflanze übergeben, um in der Component \textit{PlantView} verschiedene Pflanzennamen anzeigen zu können. Dadurch kann die Component leicht wiederverwendet werden. Es können sowohl eigene Components als auch Components von React Native, wie beispielsweise \textit{<Text>}, verwendet werden. Ändern sich übergebene Properties werden betroffene Teile der View automatisch neu gerendert.
+%Dies ermöglicht eine besondere Freiheit beim Gestalten der App. Sollte eine vorgegebene Component nicht passen, kann man leicht eine neue kreieren und verwenden, wie in diesem Fall PlantView. Die \textit{<View>} Component ist das Elternelement der geschachtelten Components PlantView. 
+
 \begin{listing}[H]
     \begin{minted}{js}
 import React, { Component } from 'react';
@@ -15,16 +19,11 @@ class HomeView extends Component {
         );
     }
 }
-
 AppRegistry.registerComponent('HomeView', () => HomeView);
     \end{minted}
     \caption{Erstellung einer eigenen Komponente, die den Text \textit{Hello} ausgibt}
     \label{lst:component}
 \end{listing}
-
-\subsection{Props}
-Um Kindkomponenten dynamisch anzupassen, können Elternkomponenten Attribute innerhalb eines \textit{props}-Objektes übergeben \cite{facebook_inc._components_2017}. Props ermöglichen es, dass eine Component an verschiedenen Stellen mit verschiedenen Daten wiederverwendet werden kann \cite{facebook_inc._props_2017}. Es ist allerdings nur lesender Zugriff auf Props möglich, d.h. sie können nicht modifiziert werden. Im Beispiel \ref{lst:props} wird der Name der Pflanze übergeben, um in der Component \textit{PlantView} verschiedene Pflanzennamen anzeigen zu können. Dadurch kann die Component leicht wiederverwendet werden. Es können sowohl eigene Components als auch Components von React Native, wie beispielsweise \textit{<Text>}, verwendet werden. Ändern sich übergebene Properties werden betroffene Teile der View automatisch neu gerendert.
-%Dies ermöglicht eine besondere Freiheit beim Gestalten der App. Sollte eine vorgegebene Component nicht passen, kann man leicht eine neue kreieren und verwenden, wie in diesem Fall PlantView. Die \textit{<View>} Component ist das Elternelement der geschachtelten Components PlantView. 
 \begin{listing}[H]
     \begin{minted}{js}
 import React, { Component } from 'react';
@@ -44,7 +43,6 @@ class PlantsView extends Component {
             <View>
                 <PlantView name='Basilikum' />
                 <PlantView name='Kaktus' />
-                <PlantView name='Blume' />
             </View>
         );
     }
@@ -66,8 +64,8 @@ import {Text, View } from 'react-native';
 class Blink extends Component {
     constructor(props) {
         super(props);
-        this.state = {showText: true};
-
+        this.state = { showText: true };
+        
         // Toggle the state every second
         setInterval(() => {
             this.setState({ showText: !this.state.showText });
@@ -75,10 +73,7 @@ class Blink extends Component {
     }
 
     render() {
-        let display = this.state.showText ? this.props.text : ' ';
-        return (
-            <Text>{display}</Text>
-        );
+        return <Text>{this.state.showText && this.props.text}</Text>
     }
 }
 
