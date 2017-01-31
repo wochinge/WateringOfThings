@@ -55,7 +55,7 @@ class PlantEditView extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { positionFromAssistant } = nextProps;
-    if (positionFromAssistant) {
+    if (positionFromAssistant || positionFromAssistant === 0) {
       this._savePositionFromAssistant(positionFromAssistant);
     }
   }
