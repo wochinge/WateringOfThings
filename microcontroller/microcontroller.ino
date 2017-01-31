@@ -42,16 +42,15 @@ PubSubClient mqttclient(client);
 Servo pumpMover;
 
 void waterPlant(int position, int time) {
-  Serial.println("Water plant");
-  Serial.println(position);
-  movePumpTo(position, true);
-  Serial.println(time);
+  pumpMover.attach(SERVO_PIN);
+  movePumpTo(180 - position, true);
   digitalWrite(PUMP_PIN, HIGH);
   delay(time);
   digitalWrite(PUMP_PIN, LOW);
   delay(2000);
   movePumpTo(90, false);
-  Serial.println("Watering end");  
+  delay(1000);
+  pumpMover.detach();
 }
 
 void movePumpTo(int position, boolean delayTillFinished) {
@@ -100,6 +99,9 @@ int readMoistureValue(byte channel) {
 void setup(void) {
   Serial.begin(115200);
   delay(10);
+  pumpMover.attach(SERVO_PIN);
+  // Go to starting position
+  movePumpTo(90, false);
 
   // We start by connecting to a WiFi network
   WiFi.begin(WLAN_SSID, WLAN_PASS);
@@ -124,10 +126,7 @@ void setup(void) {
   pinMode(MOISTURE_START_PIN, OUTPUT);
   digitalWrite(MOISTURE_START_PIN, HIGH);
   pinMode(PUMP_PIN, OUTPUT);
-  pumpMover.attach(SERVO_PIN);
-  
-  // Go to starting position
-  movePumpTo(90, false);
+  pumpMover.detach();
 }
 
 void reconnect() {
