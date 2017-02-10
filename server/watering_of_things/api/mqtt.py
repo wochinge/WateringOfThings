@@ -4,6 +4,7 @@ from paho.mqtt.publish import single
 from watering_of_things.api.models import MicroController, Plant, MoistureValue
 import logging
 import json
+from decimal import Decimal
 import watering_of_things.config.mqtt_settings as mqtt_config
 
 logger = logging.getLogger(__name__)
@@ -45,11 +46,12 @@ def _on_moisture_values_measured(client, userdata, msg):
         return
 
     if split[INDEX_ACTUAL_TOPIC] == 'measuredValues':
-        pin = split[INDEX_PIN]
-        value = msg.payload
-        plants = Plant.objects.filter(microController_id=micro_controller_id, pin=pin)
-        for p in plants:  # Should normally be only one!
-            MoistureValue.objects.create(plant=p, value=value)
+        payload = msg.payload.decode('utf-8')
+        result = json.loads(payload)
+        for pin, measuredMoisture in result.items():
+            plants = Plant.objects.filter(microController_id=micro_controller_id, pin=pin)
+            for p in plants:  # Should normally be only one!
+                MoistureValue.objects.create(plant=p, value=measuredMoisture)
 
 
 def water_plant(micro_controller_id, plant, amount):
@@ -60,9 +62,8 @@ def water_plant(micro_controller_id, plant, amount):
 
 
 def request_moisture_values(controller_id, pins):
-    message = {'nrOfPins': len(pins), 'pins': pins}
     single(topic=_measure_topic(controller_id),
-           payload=json.dumps(message),
+           payload=json.dumps(pins),
            hostname=mqtt_config.SERVER,
            port=mqtt_config.PORT,
            auth={'username': mqtt_config.USERNAME, 'password': mqtt_config.PASSWORD}

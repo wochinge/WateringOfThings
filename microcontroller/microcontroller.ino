@@ -60,28 +60,32 @@ void movePumpTo(int position, boolean delayTillFinished) {
   }
 }
 
-void getMoistureValues(JsonArray& pins, int nrOfPins) {
+void getMoistureValues(JsonArray& pins) {
   digitalWrite(MOISTURE_START_PIN, LOW);
   delay(10);
-  char buf[4];
-  char concatenated[sizeof(MOISTURE_VALUES) + 1];
-  for (int i = 0; i < nrOfPins; ++i) {
-    sprintf(concatenated,"%s%i", MOISTURE_VALUES, pins[i].as<int>());
-    sprintf (buf, "%04d", readMoistureValue(pins[i]));
-    mqttclient.publish(concatenated, buf);
+  char payload [89];
+  StaticJsonBuffer<120> jsonBuffer;
+  JsonObject& root = jsonBuffer.createObject();
+ 
+  for (auto &pin : pins) {
+    int moistureValue = readMoistureValue(pin.as<byte>());
+    root[pin.as<String>()] = moistureValue;
   }
+  root.printTo(payload, sizeof(payload));
+  mqttclient.publish(MOISTURE_VALUES, payload);
   digitalWrite(MOISTURE_START_PIN, HIGH); 
 }
 
 void callback (char* topic, byte* payload, unsigned int length) {
   StaticJsonBuffer<164> jsonBuffer;
-  JsonObject& root = jsonBuffer.parseObject((char*) payload);
   String parsedTopic(topic);
   Serial.println(topic);
   if (parsedTopic == WATER_PLANTS) {
+    JsonObject& root = jsonBuffer.parseObject((char*) payload);
     waterPlant(root["position"], root["time"]);
   } else if (parsedTopic == MEASURE_MOISTURE) {
-    getMoistureValues(root["pins"], root["nrOfPins"]);
+    JsonArray& pins = jsonBuffer.parseArray((char*) payload);
+    getMoistureValues(pins);
   } else {
     Serial.print("Unknown topic: ");
     Serial.println(topic);
